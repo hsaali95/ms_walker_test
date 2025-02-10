@@ -30,6 +30,7 @@ class JWTService {
       );
       return payload;
     } catch (error) {
+      console.log("error", error);
       return null;
     }
   }
@@ -43,6 +44,7 @@ class JWTService {
       );
       return payload;
     } catch (error) {
+      console.log("error", error);
       return null;
     }
   }
