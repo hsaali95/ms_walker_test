@@ -1,6 +1,6 @@
 import Survey from "@/db/models/survey";
 import SurveyFile from "@/db/models/survey-file";
-import { verifyAccessToken } from "@/services/jwt/jwt-services";
+import JWTService from "@/services/jwt/jwt-services";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       token = cookies["session_accessToken"]; // Replace "token" with your cookie's name
     }
 
-    const userId = await verifyAccessToken(token || "");
+    const userId: any = await JWTService.verifyAccessToken(token || "");
     console.log("+++++++++++my token++++++++++++", userId.payload.id);
     const body = await request.json();
     const { surveyData } = body;

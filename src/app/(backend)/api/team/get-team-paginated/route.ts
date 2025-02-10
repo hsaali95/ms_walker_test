@@ -2,7 +2,7 @@ import TeamManagers from "@/db/models/team-managers";
 import TeamMembers from "@/db/models/team-members";
 import Team from "@/db/models/teams";
 import Users from "@/db/models/user";
-import { verifyAccessToken } from "@/services/jwt/jwt-services";
+import JWTService from "@/services/jwt/jwt-services";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     }
 
     // Verify the access token
-    const userData = await verifyAccessToken(token || "");
+    const userData: any = await JWTService.verifyAccessToken(token || "");
 
     const { searchParams } = new URL(request.url);
 

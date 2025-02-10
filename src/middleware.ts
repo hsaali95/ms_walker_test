@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { ROLE } from "./utils/enums";
-import { verifyAccessToken } from "./services/jwt/jwt-services";
 import { errorResponse } from "./utils/response.decorator";
+import JWTService from "./services/jwt/jwt-services";
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
@@ -89,7 +89,8 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-      const token: any = await verifyAccessToken(session_accessToken);
+      const token: any =
+        await JWTService.verifyAccessToken(session_accessToken);
       if (token?.payload?.id) {
         return NextResponse.next();
       } else {

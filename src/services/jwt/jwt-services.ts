@@ -36,7 +36,7 @@ class JWTService {
   }
 
   // Verify refresh token
-  async verifyRefreshToken(token: string): Promise<JWTPayload | null> {
+  static async verifyRefreshToken(token: string): Promise<JWTPayload | null> {
     try {
       const { payload } = await jwtVerify(
         token,
