@@ -477,16 +477,34 @@ export async function POST(request: Request) {
     // Determine if running in production or local
 
     // Configure Puppeteer executable path
+    // let browser: any;
+    // if (isProduction) {
+    //   browser = await puppeteerCore.launch({
+    //     headless: true,
+    //     args: chromium.args, // Use optimized arguments for production
+    //     executablePath: await chromium.executablePath(), // Dynamically use the correct Chromium binary
+    //   });
+    // } else {
+    //   browser = await puppeteer.launch({
+    //     headless: true,
+    //   });
+    // }
+
     let browser: any;
+
     if (isProduction) {
+      // Production environment: Use Puppeteer Core and @sparticuz/chromium
       browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath("/var/task/.next/server/app/(backend)/api/survey/bin"),
         headless: true,
-        args: chromium.args, // Use optimized arguments for production
-        executablePath: await chromium.executablePath(), // Dynamically use the correct Chromium binary
       });
     } else {
+      // Local environment: Use Puppeteer with bundled Chromium
       browser = await puppeteer.launch({
-        headless: true,
+        headless: true, // Enable headless mode
+        args: ["--no-sandbox", "--disable-setuid-sandbox"], // Safe args for local
       });
     }
 
