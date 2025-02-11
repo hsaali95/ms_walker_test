@@ -230,7 +230,10 @@ export async function POST(request: Request) {
   `;
 
     // Use Puppeteer to generate the PDF
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless: true, // Always run in headless mode
+      args: ["--no-sandbox", "--disable-setuid-sandbox"], // Important for Vercel
+    });
     const page = await browser.newPage();
     await page.setViewport({
       width: 1920,
