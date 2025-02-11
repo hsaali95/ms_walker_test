@@ -380,7 +380,129 @@ export async function POST(request: Request) {
     const uniqueFileName = `surveys_${uuidv4()}.pdf`;
 
     // Prepare the HTML content for the PDF
-    const htmlContent = `...`; // Same as your original HTML content
+    //     // Prepare the HTML content for the PDF
+    const htmlContent = `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th {
+            background-color: #4F131F;
+            color: white;
+            border: 1px solid #4F131F;
+            padding: 8px;
+            text-align: left;
+          }
+          td {
+            border: 1px solid #4F131F;
+            padding: 8px;
+            text-align: left;
+          }
+          h2 {
+            color: #4F131F;
+            text-align: center;
+          }
+          h3 {
+            color: #4F131F;
+            text-align: right;
+          }
+          a {
+            color: #4F131F;
+            text-decoration: none;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+          <img
+            src="data:image/png;base64,${base64OfLogo}"
+            alt="Survey Logo"
+            style="width: 300px; height: auto;"
+          />
+        </div>
+
+        <h2>Report</h2>
+        ${
+          startDate
+            ? `<h3>Date: from ${moment(startDate).format("DD/MM/YYYY")} to ${
+                endDate
+                  ? moment(endDate).format("DD/MM/YYYY")
+                  : moment().format("DD/MM/YYYY")
+              }</h3>`
+            : ""
+        }
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Customer Name</th>
+              <th>Customer Number</th>
+              <th>Customer City</th>
+              <th>Display Type</th>
+              <th>Supplier Name</th>
+              <th>Item Name</th>
+              <th>Status</th>
+              <th># of Cases</th>
+              <th>Display Cost</th>
+              <th>Images Links</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              Array.isArray(data)
+                ? data
+                    .map(
+                      (row: any) => `
+                      <tr>
+                        <td>${row.id || "-"}</td>
+                        <td>${row?.created_at ? moment(row.created_at).format("DD/MM/YYYY") : "-"}</td>
+                        <td>${row?.account?.fullCustomerInfo || "-"}</td>
+                        <td>${row?.account?.custNumber || "-"}</td>
+                        <td>${row?.account?.city || "-"}</td>
+                        <td>${row?.display?.display_type || "-"}</td>
+                        <td>${row?.supplier?.["Vendor Name"] || "-"}</td>
+                        <td>${row?.item?.ItemFullInfo || "-"}</td>
+                        <td>${row?.survey_status?.status || "-"}</td>
+                        <td>${row?.number_of_cases || "-"}</td>
+                        <td>${row?.display_coast || "-"}</td>
+                        <td>
+                          ${
+                            Array.isArray(row.survey_file)
+                              ? row.survey_file
+                                  .map((data: any, i: number) =>
+                                    data?.file?.path
+                                      ? `<a href="${SURVEY_IMAGE_BASE_URL + data.file.path}" target="_blank" rel="noopener noreferrer">
+                                                View Image ${i + 1}
+                                              </a>`
+                                      : "-"
+                                  )
+                                  .join("<br />")
+                              : "-"
+                          }
+                        </td>
+                      </tr>
+                    `
+                    )
+                    .join("")
+                : ""
+            }
+          </tbody>
+        </table>
+      </body>
+    </html>
+  `;
     let pdfBuffer;
     try {
       // Use Puppeteer to generate the PDF
