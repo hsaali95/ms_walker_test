@@ -126,7 +126,7 @@ export async function middleware(request: NextRequest) {
 
   // CORS Configuration
   const allowedOrigins = [
-    process.env.NEXT_PUBLIC_FRONTEND_URL || "https://ms-walker-test.vercel.app",
+    process.env.NEXT_PUBLIC_REACT_APP_BASE_URL || "https://ms-walker-test.vercel.app",
   ];
   const origin = request.headers.get("origin") || "";
 
