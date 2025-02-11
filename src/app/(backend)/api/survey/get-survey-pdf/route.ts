@@ -286,7 +286,6 @@ import Supplier from "@/db/models/supplier";
 import SurveyStatus from "@/db/models/survey-status";
 import Survey from "@/db/models/survey";
 import chromium from "chrome-aws-lambda";
-import puppeteer from "puppeteer-core";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
 import { SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
@@ -294,7 +293,8 @@ import supabase from "@/utils/supabase-client";
 import fs from "fs";
 import path from "path";
 import moment from "moment";
-
+import puppeteer from "puppeteer"; // Puppeteer for local development
+import puppeteerCore from "puppeteer-core"; // Puppeteer Core for production
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 export async function POST(request: Request) {
@@ -461,13 +461,17 @@ export async function POST(request: Request) {
         </body>
       </html>
     `;
-
-    // Use Puppeteer with chrome-aws-lambda to generate the PDF
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-    });
+   // Check if running in production
+   const isProduction = process.env.NODE_ENV === "production";
+   console.log("$$$$$$$$$$$$$$$$$$$$$$",isProduction);             
+   // Configure Puppeteer based on the environment
+   const browser = await (isProduction
+     ? puppeteerCore.launch({
+         args: chromium.args,
+         executablePath: await chromium.executablePath, // Path to Chromium binary in production
+         headless: chromium.headless,
+       })
+     : puppeteer.launch());
 
     const page = await browser.newPage();
     await page.setContent(htmlContent, { waitUntil: "domcontentloaded" });
