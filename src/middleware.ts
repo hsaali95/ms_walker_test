@@ -124,23 +124,19 @@ import JWTService from "./services/jwt/jwt-services";
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // CORS Configuration
-  const allowedOrigins = [
-    process.env.NEXT_PUBLIC_REACT_APP_BASE_URL || "https://ms-walker-test.vercel.app",
-  ];
-  const origin = request.headers.get("origin") || "";
+  // CORS Configuration (Allow All Origins)
+  // const allowedOrigins = ["*"]; // Allow all origins
+  // const origin = request.headers.get("origin") || "";
 
-  // Check if the origin is allowed
-  const isAllowedOrigin = allowedOrigins.includes(origin) || origin === "";
+  // Check if the origin is allowed (always true for allowing all origins)
+  // const isAllowedOrigin = true;
 
   // Handle CORS Preflight Requests (OPTIONS)
   if (request.method === "OPTIONS") {
     return new NextResponse(null, {
       status: 200,
       headers: {
-        "Access-Control-Allow-Origin": isAllowedOrigin
-          ? origin
-          : "https://ms-walker-test.vercel.app",
+        "Access-Control-Allow-Origin": "*",  // Allow all origins
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": "true",
@@ -151,18 +147,9 @@ export async function middleware(request: NextRequest) {
   // Apply CORS Headers to All API Requests
   if (path.startsWith("/api")) {
     const response = NextResponse.next();
-    response.headers.set(
-      "Access-Control-Allow-Origin",
-      isAllowedOrigin ? origin : "https://ms-walker-test.vercel.app"
-    );
-    response.headers.set(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    response.headers.set(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
+    response.headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
+    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     response.headers.set("Access-Control-Allow-Credentials", "true");
     return response;
   }
@@ -246,3 +233,4 @@ export const config = {
     "/api/:path*",
   ],
 };
+
