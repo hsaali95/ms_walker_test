@@ -45,8 +45,8 @@ export async function GET(request: NextRequest) {
     const userData: any = await JWTService.verifyAccessToken(token || "");
 
     const managerId =
-      userData?.payload.id && userData.payload.role_id === 3
-        ? userData.payload.id
+      userData?.payload?.id && userData?.payload?.role_id === 3
+        ? userData?.payload?.id
         : undefined;
     if (managerId) {
       // Fetch all teams and members assigned to the provided manager_id

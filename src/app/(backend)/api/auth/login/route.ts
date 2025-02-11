@@ -41,11 +41,11 @@ export async function POST(request: Request) {
     delete (userResponse as any).password;
 
     // Generate tokens
-    const accessToken = JWTService.signAccessToken(
+    const accessToken = await JWTService.signAccessToken(
       { id: userResponse.id, role_id: userResponse?.role_id },
       ACCESS_TOKEN_TIME || ""
     );
-    const refreshToken = JWTService.signRefreshToken(
+    const refreshToken = await JWTService.signRefreshToken(
       { id: userResponse.id },
       REFRESH_TOKEN_TIME || ""
     );

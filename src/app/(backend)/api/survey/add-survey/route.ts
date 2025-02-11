@@ -22,7 +22,6 @@ export async function POST(request: Request) {
     }
 
     const userId: any = await JWTService.verifyAccessToken(token || "");
-    console.log("+++++++++++my token++++++++++++", userId.payload.id);
     const body = await request.json();
     const { surveyData } = body;
 
@@ -59,7 +58,7 @@ export async function POST(request: Request) {
         {
           ...surveyData[j],
 
-          created_by: userId.payload.id, //add sales ref id here
+          created_by: userId?.payload?.id, //add sales ref id here
         },
         { returning: true }
       );

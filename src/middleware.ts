@@ -93,8 +93,6 @@ export async function middleware(request: NextRequest) {
         await JWTService.verifyAccessToken(session_accessToken);
       if (token?.payload?.id) {
         return NextResponse.next();
-      } else {
-        return errorResponse("Unauthorized", 401);
       }
     } catch {
       return errorResponse("Unauthorized", 401);
