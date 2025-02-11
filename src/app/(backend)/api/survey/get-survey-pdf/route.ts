@@ -285,7 +285,6 @@ import Item from "@/db/models/item";
 import Supplier from "@/db/models/supplier";
 import SurveyStatus from "@/db/models/survey-status";
 import Survey from "@/db/models/survey";
-import chromium from "chrome-aws-lambda";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
 import { SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
@@ -293,8 +292,10 @@ import supabase from "@/utils/supabase-client";
 import fs from "fs";
 import path from "path";
 import moment from "moment";
-import puppeteer from "puppeteer"; // Puppeteer for local development
-import puppeteerCore from "puppeteer-core"; // Puppeteer Core for production
+import puppeteerCore from "puppeteer-core";
+import puppeteer from "puppeteer";
+
+import chromium from "@sparticuz/chromium";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 export async function POST(request: Request) {
@@ -461,19 +462,35 @@ export async function POST(request: Request) {
         </body>
       </html>
     `;
-   // Check if running in production
-   const isProduction = process.env.NODE_ENV === "production";
-   console.log("$$$$$$$$$$$$$$$$$$$$$$",isProduction);             
-   // Configure Puppeteer based on the environment
-   const browser = await (isProduction
-     ? puppeteerCore.launch({
-         args: chromium.args,
-         executablePath: await chromium.executablePath, // Path to Chromium binary in production
-         headless: chromium.headless,
-       })
-     : puppeteer.launch());
+    // Check if running in production
+    const isProduction = process.env.NODE_ENV === "production";
+    console.log("$$$$$$$$$$$$$$$$$$$$$$", isProduction);
+    // Configure Puppeteer based on the environment
+    //  const browser = await (isProduction
+    //    ? puppeteerCore.launch({
+    //        args: chromium.args,
+    //        executablePath: await chromium.executablePath, // Path to Chromium binary in production
+    //        headless: chromium.headless,
+    //      })
+    //    : puppeteer.launch());
+    // Launch Puppeteer with @sparticuz/chromium configuration
+    // Determine if running in production or local
 
-    const page = await browser.newPage();
+    // Configure Puppeteer executable path
+    let browser: any;
+    if (isProduction) {
+      browser = await puppeteerCore.launch({
+        headless: true,
+        args: chromium.args, // Use optimized arguments for production
+        executablePath: await chromium.executablePath(), // Dynamically use the correct Chromium binary
+      });
+    } else {
+      browser = await puppeteer.launch({
+        headless: true,
+      });
+    }
+
+    const page = await browser?.newPage();
     await page.setContent(htmlContent, { waitUntil: "domcontentloaded" });
     const pdfBuffer = await page.pdf({
       format: "A4",
