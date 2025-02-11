@@ -9,10 +9,10 @@ import Survey from "@/db/models/survey";
 import puppeteer from "puppeteer";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
-import { SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
+import { base64OfLogo, SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
 import supabase from "@/utils/supabase-client";
-import fs from "fs";
-import path from "path";
+// import fs from "fs";
+// import path from "path";
 import moment from "moment";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -100,11 +100,11 @@ export async function POST(request: Request) {
     );
     // Generate a unique filename for the PDF
     const uniqueFileName = `surveys_${uuidv4()}.pdf`;
-    const logoPath = path.resolve(
-      process.cwd(),
-      "public/assets/images/ms_walker_logo.png"
-    );
-    const MsWalkerLogoBase64 = fs.readFileSync(logoPath, "base64");
+    // const logoPath = path.resolve(
+    //   process.cwd(),
+    //   "public/assets/images/ms_walker_logo.png"
+    // );
+    // const MsWalkerLogoBase64 = fs.readFileSync(logoPath, "base64");
     // Prepare the HTML content for the PDF
     const htmlContent = `
     <html>
@@ -150,7 +150,7 @@ export async function POST(request: Request) {
       <body>
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
           <img
-            src="data:image/png;base64,${MsWalkerLogoBase64}"
+            src="data:image/png;base64,${base64OfLogo}"
             alt="Survey Logo"
             style="width: 300px; height: auto;"
           />
