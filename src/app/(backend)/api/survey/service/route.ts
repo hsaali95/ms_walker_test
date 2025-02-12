@@ -89,8 +89,7 @@ export async function POST(request: Request) {
       "public/assets/images/ms_walker_logo.png"
     );
     const MsWalkerLogoBase64 = fs.readFileSync(logoPath, "base64");
-    // Prepare the HTML content for the PDF
-
+   
     // Upload the PDF to Supabase
     // Make a POST request to the external API after generating the HTML
     // const apiUrl = "http://localhost:3001/api/v1/survey/survey-pdf";
