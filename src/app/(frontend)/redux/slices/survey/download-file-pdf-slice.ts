@@ -29,7 +29,8 @@ export const downloadFilePdf = createAsyncThunk(
     // Call the API to download the file with the POST method and optional payload
     const response = await apiClient.request({
       config: {
-        url: `survey/get-survey-pdf`,
+        // url: `survey/get-survey-pdf`,
+        url: `survey/service`,
         method: "post",
         data: payload || {}, // Send the payload if provided, otherwise send an empty object
         onUploadProgress: (progressEvent: any) => {
