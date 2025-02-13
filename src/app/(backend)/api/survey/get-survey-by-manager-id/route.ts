@@ -103,8 +103,7 @@ export async function GET(request: NextRequest) {
           ],
         },
       });
-    }
-    if (startDate) {
+    } else if (startDate) {
       queryOptions.push({
         created_at: {
           [Op.between]: [

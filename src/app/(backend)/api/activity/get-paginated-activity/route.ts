@@ -35,8 +35,7 @@ export async function GET(request: NextRequest) {
           ],
         },
       });
-    }
-    if (startDate) {
+    } else if (startDate) {
       queryOptions.push({
         created_at: {
           [Op.between]: [
@@ -48,7 +47,7 @@ export async function GET(request: NextRequest) {
     }
     if (searchQuery) {
       const isNumeric = !isNaN(Number(searchQuery));
-    
+
       queryOptions.push({
         [Op.or]: [
           ...(isNumeric
@@ -86,7 +85,6 @@ export async function GET(request: NextRequest) {
         ],
       });
     }
-    
 
     // Fetch activities with pagination
     const data = await Activity.findAndCountAll({
@@ -94,8 +92,8 @@ export async function GET(request: NextRequest) {
       offset,
       where: queryOptions,
       order: sortColumn
-              ? sequelize.literal(`${addDoubleQuotes(sortColumn)} ${sortOrder}`)
-              : [["created_at", "desc"]],
+        ? sequelize.literal(`${addDoubleQuotes(sortColumn)} ${sortOrder}`)
+        : [["created_at", "desc"]],
       attributes: { exclude: ["deleted_at", "deleted_by"] },
       include: [
         {

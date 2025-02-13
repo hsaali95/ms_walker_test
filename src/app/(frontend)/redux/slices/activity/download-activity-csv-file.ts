@@ -22,6 +22,7 @@ interface DownloadActivityCsvPayload {
   ids?: number[];
   startDate?: any; // Adjust type as per your requirements
   endDate?: any; // Adjust type as per your requirements
+  searchQuery?: any;
 }
 
 // Create an async thunk to download the CSV file

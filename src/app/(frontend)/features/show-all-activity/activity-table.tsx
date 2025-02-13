@@ -164,7 +164,18 @@ const ActivityTable = () => {
     }
   };
   const downloadCsv = () => {
-    dispatch(downloadActivityCsv(listIds.length ? { ids: listIds } : {}));
+    dispatch(
+      downloadActivityCsv(
+        listIds.length
+          ? {
+              ids: listIds,
+              startDate: startDate,
+              endDate: endDate,
+              searchQuery,
+            }
+          : { startDate: startDate, endDate: endDate, searchQuery }
+      )
+    );
   };
   return (
     <>

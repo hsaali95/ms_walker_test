@@ -4,18 +4,86 @@ import Account from "@/db/models/account";
 import supabase from "@/utils/supabase-client";
 import Activity from "@/db/models/activity";
 import { helper } from "@/utils/helper";
+import { Op } from "sequelize";
+import moment from "moment";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 export async function POST(request: Request) {
   try {
-    const { ids } = await request.json(); // Parse the incoming JSON payload
+    const { ids, startDate, endDate, searchQuery } = await request.json();
 
     // Build the where clause if IDs are provided
-    const whereClause = ids && ids.length > 0 ? { id: ids } : {};
+    const queryOptions: any = [];
+        if (ids && ids.length > 0) {
+          queryOptions.push({
+            id: {
+              [Op.in]: ids,
+            },
+          });
+        }
+        if (startDate && endDate) {
+          queryOptions.push({
+            created_at: {
+              [Op.between]: [
+                moment(startDate).startOf("day").toISOString(),
+                moment(endDate).endOf("day").toISOString(),
+              ],
+            },
+          });
+        } else if (startDate) {
+          queryOptions.push({
+            created_at: {
+              [Op.between]: [
+                moment(startDate).startOf("day").toISOString(),
+                moment().endOf("day").toISOString(),
+              ],
+            },
+          });
+        }
+        if (searchQuery) {
+          const isNumeric = !isNaN(Number(searchQuery));
+    
+          queryOptions.push({
+            [Op.or]: [
+              ...(isNumeric
+                ? [
+                    {
+                      id: Number(searchQuery), // Exact match for integer ID
+                    },
+                  ]
+                : []),
+              {
+                activity_log: {
+                  [Op.iLike]: `%${searchQuery}%`,
+                },
+              },
+              {
+                notes: {
+                  [Op.iLike]: `%${searchQuery}%`,
+                },
+              },
+              {
+                merch_rep_id: {
+                  [Op.iLike]: `%${searchQuery}%`,
+                },
+              },
+              {
+                "$activity_account.CUSTOMER NAME$": {
+                  [Op.iLike]: `%${searchQuery}%`,
+                },
+              },
+              {
+                "$activity_account.CITY$": {
+                  [Op.iLike]: `%${searchQuery}%`,
+                },
+              },
+            ],
+          });
+        }
 
     // Fetch survey data from your database, excluding unnecessary fields
     const data: any = await Activity.findAll({
-      where: whereClause,
+      where: queryOptions,
       attributes: [
         "id",
         "start_time",

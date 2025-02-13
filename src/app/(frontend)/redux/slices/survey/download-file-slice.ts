@@ -21,7 +21,15 @@ const initialState: IDownloadFile = {
 // Create an async thunk to download the file
 export const downloadFile = createAsyncThunk(
   "download/filecsv",
-  async (payload: { ids?: number[] } = {}, { dispatch }) => {
+  async (
+    payload: {
+      ids?: number[];
+      startDate?: any; // Adjust type as per your requirements
+      endDate?: any; // Adjust type as per your requirements
+      searchQuery?: any;
+    } = {},
+    { dispatch }
+  ) => {
     // Call the API to download the file with the POST method and optional payload
     const response = await apiClient.request({
       config: {

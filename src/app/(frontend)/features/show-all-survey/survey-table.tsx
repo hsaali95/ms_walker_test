@@ -209,14 +209,30 @@ const SurveyTable = () => {
     }
   };
   const downloadCsv = () => {
-    dispatch(downloadFile(listIds.length ? { ids: listIds } : {}));
+    dispatch(
+      downloadFile(
+        listIds.length
+          ? {
+              ids: listIds,
+              startDate: startDate,
+              endDate: endDate,
+              searchQuery,
+            }
+          : { startDate: startDate, endDate: endDate, searchQuery }
+      )
+    );
   };
   const downloadPdf = () => {
     dispatch(
       downloadFilePdf(
         listIds.length
-          ? { ids: listIds, startDate: startDate, endDate: endDate }
-          : { startDate: startDate, endDate: endDate }
+          ? {
+              ids: listIds,
+              startDate: startDate,
+              endDate: endDate,
+              searchQuery,
+            }
+          : { startDate: startDate, endDate: endDate, searchQuery }
       )
     );
   };

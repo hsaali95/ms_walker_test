@@ -11,11 +11,13 @@ import { SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
 import { formatImageLinks, helper } from "@/utils/helper";
+import { Op } from "sequelize";
+import moment from "moment";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 export async function POST(request: Request) {
   try {
-    const { ids } = await request.json(); // Parse the incoming JSON payload
+    const { ids, startDate, endDate, searchQuery } = await request.json();
 
     const notRequiredOption = [
       "created_at",
@@ -24,12 +26,109 @@ export async function POST(request: Request) {
       "deleted_by",
     ];
 
-    // Build the where clause if IDs are provided
-    const whereClause = ids && ids.length > 0 ? { id: ids } : {};
+    const queryOptions: any = [];
+    if (ids && ids.length > 0) {
+      queryOptions.push({
+        id: {
+          [Op.in]: ids,
+        },
+      });
+    }
+    if (startDate && endDate) {
+      queryOptions.push({
+        created_at: {
+          [Op.between]: [
+            moment(startDate).startOf("day").toISOString(),
+            moment(endDate).endOf("day").toISOString(),
+          ],
+        },
+      });
+    } else if (startDate) {
+      queryOptions.push({
+        created_at: {
+          [Op.between]: [
+            moment(startDate).startOf("day").toISOString(),
+            moment().endOf("day").toISOString(),
+          ],
+        },
+      });
+    }
+    if (searchQuery) {
+      const numericSearch = parseInt(searchQuery, 10);
+
+      queryOptions.push({
+        [Op.or]: [
+          {
+            other_supplier: {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            other_item: {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            notes: {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$survey_status.status$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$account.CUSTOMER NAME$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$account.CITY$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$display.display_type$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$item.ItemFullInfo$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$supplier.vendorFullInfo$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          ...(isNaN(numericSearch)
+            ? []
+            : [
+                {
+                  number_of_cases: {
+                    [Op.eq]: numericSearch, // Exact match for integer values
+                  },
+                },
+                {
+                  display_coast: {
+                    [Op.eq]: numericSearch,
+                  },
+                },
+                {
+                  "$account.CUST NO$": {
+                    [Op.eq]: numericSearch,
+                  },
+                },
+              ]),
+        ],
+      });
+    }
 
     // Fetch survey data from your database, excluding unnecessary fields
     const data = await Survey.findAll({
-      where: whereClause,
+      where: queryOptions,
       attributes: {
         exclude: [
           "created_at",
