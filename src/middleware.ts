@@ -185,9 +185,10 @@ export async function middleware(request: NextRequest) {
           "/activity",
           "/team",
           "/group",
+          "/all-activity"
         ],
-        [ROLE.AGENT]: ["/survey", "/activity"],
-        [ROLE.MANAGER]: ["/survey", "/all-survey", "/team", "/activity"],
+        [ROLE.AGENT]: ["/survey", "/activity", "/all-activity"],
+        [ROLE.MANAGER]: ["/survey", "/all-survey", "/team", "/activity", "/all-activity"],
       };
 
       if (roleRoutes[user.role_id]?.includes(path)) {
@@ -230,6 +231,9 @@ export const config = {
     "/login",
     "/register-user",
     "/activity",
+    "/team",
+    "/group",
+    "/all-activity",
     "/api/:path*",
   ],
 };
