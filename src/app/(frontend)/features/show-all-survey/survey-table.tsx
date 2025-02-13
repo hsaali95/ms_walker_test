@@ -332,7 +332,7 @@ const SurveyTable = () => {
             name={"name"}
             displayKey={"name"}
             onChange={bulkOperations}
-            label="Bulk Opeations"
+            label="Bulk Operations"
             value={bulkOptions}
             isOnClear
             disabled={listIds.length ? false : true}
