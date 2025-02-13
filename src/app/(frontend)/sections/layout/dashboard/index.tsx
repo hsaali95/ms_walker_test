@@ -48,14 +48,14 @@ const ADMIN_PATHS: NavigationItem[] = [
   { segment: "team", title: "Team", icon: <Diversity3Icon /> },
   { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
   { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
-  { segment: "login", title: "Logout", icon: <LogoutIcon /> },
+  // { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
 const SALES_REF_PATHS: NavigationItem[] = [
   { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
   { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
   { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
-  { segment: "login", title: "Logout", icon: <LogoutIcon /> },
+  // { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
 const MANAGER_PATHS: NavigationItem[] = [
@@ -64,7 +64,7 @@ const MANAGER_PATHS: NavigationItem[] = [
   { segment: "team", title: "Team", icon: <Diversity3Icon /> },
   { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
   { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
-  { segment: "login", title: "Logout", icon: <LogoutIcon /> },
+  // { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
 const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
