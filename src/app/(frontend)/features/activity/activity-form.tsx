@@ -32,7 +32,6 @@ const ActivityForm = () => {
     (state) => state.createActivity
   );
   const { userDetails } = useAppSelector((state) => state.login);
-  console.log("userDetails", userDetails);
   const {
     register,
     handleSubmit,
@@ -56,6 +55,7 @@ const ActivityForm = () => {
       createActivity({
         ...data,
         account_id: data?.account_name?.id,
+        merch_rep_id: userDetails?.email,
       })
     );
   };
@@ -80,7 +80,9 @@ const ActivityForm = () => {
 
   useEffect(() => {
     if (ACCOUNT_INFO?.city) {
-      setValue("city", ACCOUNT_INFO.city);
+      setValue("city", ACCOUNT_INFO.city, {
+        shouldValidate: true,
+      });
     }
   }, [ACCOUNT_INFO, setValue]);
   useEffect(() => {
@@ -92,6 +94,7 @@ const ActivityForm = () => {
   useEffect(() => {
     if (ACTIVITY_STATUS === API_STATUS.SUCCEEDED) {
       reset();
+      dispatch(fetchUserData());
     }
   }, [ACTIVITY_STATUS]);
 
@@ -118,7 +121,7 @@ const ActivityForm = () => {
               getValues={getValues}
               label="Start Time"
               name="start_time"
-              minDateTime={
+              maxDateTime={
                 dayjs(getValues("end_time"))
                   ? dayjs(getValues("end_time"))
                   : undefined
@@ -213,8 +216,8 @@ const ActivityForm = () => {
             }}
           >
             <CustomInput
-              label="Merch Ref Id"
-              placeholder="Merch Ref Id"
+              label="Merch Rep Id"
+              placeholder="Merch Rep Id"
               name="merch_rep_id"
               register={register}
               errorMessage={errors?.merch_rep_id?.message as string}

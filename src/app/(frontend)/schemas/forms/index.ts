@@ -517,10 +517,10 @@ export const activitySchema = z
       .min(1, "City must be at least 1 character long")
       .optional(),
 
-    merch_rep_id: z
-      .string()
-      .min(1, "Merch rep id must be at least 1 character long")
-      .optional(),
+    // merch_rep_id: z
+    //   .string()
+    //   .min(1, "Merch rep id must be at least 1 character long")
+    //   .optional(),
 
     account_name: z
       .object(
@@ -554,16 +554,34 @@ export const activitySchema = z
     start_time: z
       .string({ required_error: "Please select start time" })
       .nonempty("Start time is required")
-      .refine((value) => dayjs(value, "YYYY-MM-DDTHH:mm:ss", true).isValid(), {
-        message: "Start time must be a valid date-time format",
-      }),
+      .nullable()
+      .refine(
+        (value) => {
+          if (value === null) {
+            return false;
+          }
+          return dayjs(value, "YYYY-MM-DDTHH:mm:ss", true).isValid();
+        },
+        {
+          message: "Start time must be a valid date-time format",
+        }
+      ),
 
     end_time: z
       .string({ required_error: "Please select end time" })
       .nonempty("End time is required")
-      .refine((value) => dayjs(value, "YYYY-MM-DDTHH:mm:ss", true).isValid(), {
-        message: "End time must be a valid date-time format",
-      }),
+      .nullable()
+      .refine(
+        (value) => {
+          if (value === null) {
+            return false;
+          }
+          return dayjs(value, "YYYY-MM-DDTHH:mm:ss", true).isValid();
+        },
+        {
+          message: "End time must be a valid date-time format",
+        }
+      ),
 
     is_complete: z
       .union([z.boolean(), z.string()])
