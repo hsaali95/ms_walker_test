@@ -69,8 +69,8 @@ export const getSurvey = createAsyncThunk(
         method: "get",
         params: {
           ...otherParams,
-          startDate: startDate ? dayjs(startDate).toISOString() : undefined,
-          endDate: endDate ? dayjs(endDate).toISOString() : undefined,
+          startDate: startDate ? dayjs.utc(startDate).toISOString() : undefined,
+          endDate: endDate ? dayjs.utc(endDate)?.toISOString() : undefined,
         },
       },
     });

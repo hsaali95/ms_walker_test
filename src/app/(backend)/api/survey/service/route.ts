@@ -192,9 +192,9 @@ export async function POST(request: Request) {
     // Upload the PDF to Supabase
     // Make a POST request to the external API after generating the HTML
 
-    // const apiUrl = "http://localhost:3001/api/v1/survey/survey-pdf";
-    const apiUrl =
-      "https://mswalkerpdf-production.up.railway.app/api/v1/survey/survey-pdf";
+    const apiUrl = "http://localhost:3001/api/v1/survey/survey-pdf";
+    // const apiUrl =
+    //   "https://mswalkerpdf-production.up.railway.app/api/v1/survey/survey-pdf";
 
     const payload = {
       startDate,

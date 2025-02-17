@@ -38,6 +38,8 @@ import SearchDropDown from "../../components/drop-down/SearchableDropDown";
 import CircularProgressWithLabel from "../../components/circular-progress-bar";
 import CustomButton from "../../components/button";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 const SurveyTable = () => {
   const [listIds, setListIds] = useState<any>([]);
   const [exportType, setExportType] = useState<any>("");
@@ -214,11 +216,15 @@ const SurveyTable = () => {
         listIds.length
           ? {
               ids: listIds,
-              startDate: startDate,
-              endDate: endDate,
+              startDate: startDate && dayjs.utc(startDate)?.toISOString(),
+              endDate: endDate && dayjs.utc(endDate)?.toISOString(),
               searchQuery,
             }
-          : { startDate: startDate, endDate: endDate, searchQuery }
+          : {
+              startDate: startDate && dayjs.utc(startDate)?.toISOString(),
+              endDate: endDate && dayjs.utc(endDate)?.toISOString(),
+              searchQuery,
+            }
       )
     );
   };
@@ -228,11 +234,15 @@ const SurveyTable = () => {
         listIds.length
           ? {
               ids: listIds,
-              startDate: startDate,
-              endDate: endDate,
+              startDate: startDate && dayjs?.utc(startDate)?.toISOString(),
+              endDate: endDate && dayjs?.utc(endDate)?.toISOString(),
               searchQuery,
             }
-          : { startDate: startDate, endDate: endDate, searchQuery }
+          : {
+              startDate: startDate && dayjs?.utc(startDate)?.toISOString(),
+              endDate: endDate && dayjs?.utc(endDate)?.toISOString(),
+              searchQuery,
+            }
       )
     );
   };
