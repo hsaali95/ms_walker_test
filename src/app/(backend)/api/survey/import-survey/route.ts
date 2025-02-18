@@ -4,16 +4,12 @@ import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
 import { createClient } from "@supabase/supabase-js";
 
-import { getContentType } from "@/utils/supabase-client";
+import supabase, { getContentType } from "@/utils/supabase-client";
 import { transformSurvey } from "@/utils/transformer";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 // Initialize Supabase client using environment variables for security
-const supabase = createClient(
-  "https://adteqwnkqoxbzkxyfzkq.supabase.co", // Should be in .env file
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkdGVxd25rcW94YnpreHlmemtxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzczODc2MTYsImV4cCI6MjA1Mjk2MzYxNn0.iipVN56Kilii7MKbDYo9KxQDTiB_HhbK2PfLgvA6cyM" // Should be in .env file
-);
 const fileUpload = async (fileUrl: string) => {
   // Fetch the file from the external URL
   const response = await fetch(fileUrl);
