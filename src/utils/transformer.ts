@@ -34,10 +34,11 @@ type SurveyDetail = {
 
 export const transformSurvey = async (surveyData: SurveyDetail) => {
   let supplierId;
+  const itemNo = surveyData.Item1Name.split(" ").pop();
   let [item, account] = await Promise.all([
     Item.findOne({
       where: {
-        Item: surveyData.Item1Name.split(" ").pop(),
+        Item: itemNo,
       },
     }),
     Account.findOne({
@@ -54,7 +55,7 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
       "CUSTOMER CITY": surveyData.AccountCity,
     });
   }
-
+  console.log(item);
   if (!item) {
     let supplier;
     if (surveyData.Supplier1Name) {
@@ -64,11 +65,14 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
         },
       });
     } else {
-      supplier = await Supplier.create({});
+      supplier = await Supplier.create({
+        "Vendor Name": surveyData.Supplier1Name,
+      });
     }
     item = await Item.create({
       supplier_id: supplier!.id,
       Description: surveyData.Item1Name,
+      Item: itemNo,
     });
     supplierId = supplier!.id;
   } else {
@@ -100,7 +104,7 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
     other_supplier: surveyData.Other1Supplier,
     other_item: surveyData.Other1Item,
     number_of_cases: surveyData.Number1Cases || 0,
-    display_coast: surveyData.Display1Cost || 0,
+    display_coast: surveyData.Display1Cost.toString().replaceAll("$", "") || 0,
     notes: surveyData.notes,
     account_id: account.id,
     display_id: display.id,
