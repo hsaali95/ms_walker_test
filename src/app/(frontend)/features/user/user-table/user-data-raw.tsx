@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import TableCellWithText from "@/app/(frontend)/components/tables/basic-table/table-cell-with-text";
 import BasicModal from "@/app/(frontend)/components/modal/basic-modal";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +12,7 @@ import CustomInput from "@/app/(frontend)/components/input";
 import CustomButton from "@/app/(frontend)/components/button";
 import { resetPassword } from "@/app/(frontend)/redux/slices/register-user/user-reset-password-slice";
 import { API_STATUS } from "@/utils/enums";
+import TableCellWithText from "@/app/(frontend)/components/tables/medium-table/table-cell-with-text";
 
 interface IUserDataRaw {
   data: any;
