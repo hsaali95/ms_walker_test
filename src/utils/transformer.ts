@@ -4,7 +4,6 @@ import Item from "@/db/models/item";
 import Supplier from "@/db/models/supplier";
 import Survey from "@/db/models/survey";
 import SurveyStatus from "@/db/models/survey-status";
-import { Description } from "@mui/icons-material";
 import { Op } from "sequelize";
 
 type SurveyDetail = {
@@ -34,6 +33,7 @@ type SurveyDetail = {
 };
 
 export const transformSurvey = async (surveyData: SurveyDetail) => {
+  let supplierId;
   let [item, account] = await Promise.all([
     Item.findOne({
       where: {
@@ -55,7 +55,6 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
     });
   }
 
-  let supplierId;
   if (!item) {
     let supplier;
     if (surveyData.Supplier1Name) {
@@ -108,5 +107,6 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
     supplier_id: supplierId,
     item_id: item.id,
     survey_status_id: surveyStatus!.id,
+    created_at: surveyData.Date,
   } as unknown as Survey;
 };

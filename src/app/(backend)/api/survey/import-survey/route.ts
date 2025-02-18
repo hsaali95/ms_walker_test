@@ -2,8 +2,6 @@ import { successResponse, errorResponse } from "@/utils/response.decorator";
 import Survey from "@/db/models/survey";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
-import { createClient } from "@supabase/supabase-js";
-
 import supabase, { getContentType } from "@/utils/supabase-client";
 import { transformSurvey } from "@/utils/transformer";
 
