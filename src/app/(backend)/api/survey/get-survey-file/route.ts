@@ -38,8 +38,8 @@ export async function POST(request: Request) {
       queryOptions.push({
         created_at: {
           [Op.between]: [
-            moment(startDate).startOf("day").toISOString(),
-            moment(endDate).endOf("day").toISOString(),
+            moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
+            moment(endDate, "DD/MM/YYYY").endOf("day").toISOString(),
           ],
         },
       });
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       queryOptions.push({
         created_at: {
           [Op.between]: [
-            moment(startDate).startOf("day").toISOString(),
+            moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment().endOf("day").toISOString(),
           ],
         },
