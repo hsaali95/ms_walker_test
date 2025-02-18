@@ -39,8 +39,8 @@ export async function POST(request: Request) {
       queryOptions.push({
         created_at: {
           [Op.between]: [
-            moment(startDate).startOf("day").toISOString(),
-            moment(endDate).endOf("day").toISOString(),
+            moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
+            moment(endDate, "DD/MM/YYYY").endOf("day").toISOString(),
           ],
         },
       });
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       queryOptions.push({
         created_at: {
           [Op.between]: [
-            moment(startDate).startOf("day").toISOString(),
+            moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment().endOf("day").toISOString(),
           ],
         },
@@ -192,9 +192,10 @@ export async function POST(request: Request) {
     // Upload the PDF to Supabase
     // Make a POST request to the external API after generating the HTML
 
-    // const apiUrl = "http://localhost:3001/api/v1/survey/survey-pdf";
     const apiUrl =
-      "https://mswalkerpdf-production.up.railway.app/api/v1/survey/survey-pdf";
+      process.env.NODE_ENV === "production"
+        ? "https://mswalkerpdf-production.up.railway.app/api/v1/survey/survey-pdf"
+        : "http://localhost:3001/api/v1/survey/survey-pdf";
 
     const payload = {
       startDate,

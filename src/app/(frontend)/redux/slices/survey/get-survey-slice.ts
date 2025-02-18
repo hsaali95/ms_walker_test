@@ -1,8 +1,9 @@
 import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
+import { helper } from "@/utils/helper";
 import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
 interface ISurvey {
   survey_name: string;
@@ -64,13 +65,12 @@ export const getSurvey = createAsyncThunk(
     const { startDate, endDate, ...otherParams } = params;
     const response = await apiClient.request({
       config: {
-        // url: `survey/get-survey`,//for future use for query optamization
         url: `survey/get-survey-by-manager-id`,
         method: "get",
         params: {
           ...otherParams,
-          startDate: startDate ? dayjs.utc(startDate).toISOString() : undefined,
-          endDate: endDate ? dayjs.utc(endDate)?.toISOString() : undefined,
+          startDate: startDate ? helper.dateSendToDb(startDate) : undefined,
+          endDate: endDate ? helper.dateSendToDb(endDate) : undefined,
         },
       },
     });

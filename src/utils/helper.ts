@@ -41,6 +41,9 @@ export const helper = {
   wrapInQuotes: (value: string | undefined | null) => {
     return `"${value || "-"}"`;
   },
+  dateSendToDb: (data: string | any) => {
+    return data ? dayjs(data).format("DD/MM/YYYY") : null;
+  },
 };
 export async function verifyPassword(
   plainPassword: string,
