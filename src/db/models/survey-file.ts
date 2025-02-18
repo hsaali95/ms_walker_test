@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "@/db/config/config";
 import File from "./file";
+import Survey from "./survey";
 
 class SurveyFile extends Model {
   public id!: number;
@@ -17,7 +18,11 @@ SurveyFile.init(
     },
     survey_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      references: {
+        model: "Surveys",
+        key: "id",
+      },
     },
     file_id: {
       type: DataTypes.INTEGER,

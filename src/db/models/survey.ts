@@ -156,6 +156,8 @@ Survey.hasMany(SurveyFile, {
   as: "survey_file",
 });
 
+SurveyFile.belongsTo(Survey, { foreignKey: "survey_id" });
+
 export default Survey;
 
 // (async function syncUserTable() {
