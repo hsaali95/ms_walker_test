@@ -74,7 +74,7 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
   } else {
     supplierId = item?.supplier_id;
   }
-
+  // eslint-disable-next-line
   let [surveyStatus, display] = await Promise.all([
     SurveyStatus.findOne({
       where: {

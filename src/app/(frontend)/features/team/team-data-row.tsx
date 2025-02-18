@@ -1,5 +1,5 @@
 import React from "react";
-import TableCellWithText from "@/app/(frontend)/components/tables/basic-table/table-cell-with-text";
+import TableCellWithText from "../../components/tables/medium-table/table-cell-with-text";
 
 interface IGroupDataRaw {
   data: any;

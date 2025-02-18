@@ -41,10 +41,10 @@ const fileUpload = async (fileUrl: string) => {
 export async function POST(request: Request) {
   try {
     let records = [];
-    let insertedSurveyIds = [];
+    const insertedSurveyIds = [];
     try {
       records = await request.json();
-    } catch (e) {
+    } catch {
       return errorResponse("Records is required", 404);
     }
 

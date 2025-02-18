@@ -1,11 +1,10 @@
-import AdvanceTable from "@/app/(frontend)/components/tables/advance-table/advance-table";
 import {
   useAppDispatch,
   useAppSelector,
 } from "@/app/(frontend)/hooks/redux-hook";
 
 import { GROUP_TABLE_COLUMN } from "@/utils/constant";
-import { TableCell, TableRow } from "@mui/material";
+import { TableRow } from "@mui/material";
 import React, { useEffect } from "react";
 import GroupDataRaw from "./group-data-row";
 import {
@@ -14,7 +13,7 @@ import {
   setGroupRowsPerPage,
 } from "../../redux/slices/group/get-paginated-group-slice";
 import { API_STATUS } from "@/utils/enums";
-import CustomCheckbox from "../../components/check-box";
+import MediumTable from "../../components/tables/medium-table/medium-table";
 
 const GroupTable = () => {
   const {
@@ -58,7 +57,7 @@ const GroupTable = () => {
 
   return (
     <>
-      <AdvanceTable
+      <MediumTable
         tableLoading={GROUP_STATUS === API_STATUS.PENDING}
         tableColumns={GROUP_TABLE_COLUMN}
         isPagination
@@ -69,9 +68,6 @@ const GroupTable = () => {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         tableBody={GROUP_DATA?.rows?.map((data: any, index: number) => (
           <TableRow key={index}>
-            <TableCell padding="checkbox">
-              <CustomCheckbox />
-            </TableCell>
             <GroupDataRaw data={data} />
           </TableRow>
         ))}
