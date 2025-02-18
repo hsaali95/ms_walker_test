@@ -35,6 +35,7 @@ import {
 import { downloadActivityCsv } from "../../redux/slices/activity/download-activity-csv-file";
 import dayjs from "dayjs";
 import { Toaster } from "../../components/snackbar";
+import { helper } from "@/utils/helper";
 const ActivityTable = () => {
   const [listIds, setListIds] = useState<any>([]);
   console.log("listIds", listIds);
@@ -169,11 +170,15 @@ const ActivityTable = () => {
         listIds.length
           ? {
               ids: listIds,
-              startDate: startDate,
-              endDate: endDate,
+              startDate: helper.dateSendToDb(startDate),
+              endDate: helper.dateSendToDb(endDate),
               searchQuery,
             }
-          : { startDate: startDate, endDate: endDate, searchQuery }
+          : {
+              startDate: helper.dateSendToDb(startDate),
+              endDate: helper.dateSendToDb(endDate),
+              searchQuery,
+            }
       )
     );
   };

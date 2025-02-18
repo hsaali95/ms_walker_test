@@ -14,72 +14,72 @@ export async function POST(request: Request) {
 
     // Build the where clause if IDs are provided
     const queryOptions: any = [];
-        if (ids && ids.length > 0) {
-          queryOptions.push({
-            id: {
-              [Op.in]: ids,
+    if (ids && ids.length > 0) {
+      queryOptions.push({
+        id: {
+          [Op.in]: ids,
+        },
+      });
+    }
+    if (startDate && endDate) {
+      queryOptions.push({
+        created_at: {
+          [Op.between]: [
+            moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
+            moment(endDate, "DD/MM/YYYY").endOf("day").toISOString(),
+          ],
+        },
+      });
+    } else if (startDate) {
+      queryOptions.push({
+        created_at: {
+          [Op.between]: [
+            moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
+            moment().endOf("day").toISOString(),
+          ],
+        },
+      });
+    }
+    if (searchQuery) {
+      const isNumeric = !isNaN(Number(searchQuery));
+
+      queryOptions.push({
+        [Op.or]: [
+          ...(isNumeric
+            ? [
+                {
+                  id: Number(searchQuery), // Exact match for integer ID
+                },
+              ]
+            : []),
+          {
+            activity_log: {
+              [Op.iLike]: `%${searchQuery}%`,
             },
-          });
-        }
-        if (startDate && endDate) {
-          queryOptions.push({
-            created_at: {
-              [Op.between]: [
-                moment(startDate).startOf("day").toISOString(),
-                moment(endDate).endOf("day").toISOString(),
-              ],
+          },
+          {
+            notes: {
+              [Op.iLike]: `%${searchQuery}%`,
             },
-          });
-        } else if (startDate) {
-          queryOptions.push({
-            created_at: {
-              [Op.between]: [
-                moment(startDate).startOf("day").toISOString(),
-                moment().endOf("day").toISOString(),
-              ],
+          },
+          {
+            merch_rep_id: {
+              [Op.iLike]: `%${searchQuery}%`,
             },
-          });
-        }
-        if (searchQuery) {
-          const isNumeric = !isNaN(Number(searchQuery));
-    
-          queryOptions.push({
-            [Op.or]: [
-              ...(isNumeric
-                ? [
-                    {
-                      id: Number(searchQuery), // Exact match for integer ID
-                    },
-                  ]
-                : []),
-              {
-                activity_log: {
-                  [Op.iLike]: `%${searchQuery}%`,
-                },
-              },
-              {
-                notes: {
-                  [Op.iLike]: `%${searchQuery}%`,
-                },
-              },
-              {
-                merch_rep_id: {
-                  [Op.iLike]: `%${searchQuery}%`,
-                },
-              },
-              {
-                "$activity_account.CUSTOMER NAME$": {
-                  [Op.iLike]: `%${searchQuery}%`,
-                },
-              },
-              {
-                "$activity_account.CITY$": {
-                  [Op.iLike]: `%${searchQuery}%`,
-                },
-              },
-            ],
-          });
-        }
+          },
+          {
+            "$activity_account.CUSTOMER NAME$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+          {
+            "$activity_account.CITY$": {
+              [Op.iLike]: `%${searchQuery}%`,
+            },
+          },
+        ],
+      });
+    }
 
     // Fetch survey data from your database, excluding unnecessary fields
     const data: any = await Activity.findAll({
@@ -102,7 +102,9 @@ export async function POST(request: Request) {
         },
       ],
     });
-
+    if (!data.length) {
+      return errorResponse("Data not found", 500);
+    }
     // Generate a unique filename
     const uniqueFileName = `activity_${uuidv4()}.csv`;
 

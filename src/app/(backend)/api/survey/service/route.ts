@@ -19,7 +19,6 @@ export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on
 export async function POST(request: Request) {
   try {
     const { ids, startDate, endDate, searchQuery } = await request.json();
-
     const notRequiredOption = [
       "created_at",
       "updated_at",
@@ -180,6 +179,9 @@ export async function POST(request: Request) {
         },
       ],
     });
+    if (!data.length) {
+      return errorResponse("Data not found", 500);
+    }
 
     // Generate a unique filename for the PDF
     const uniqueFileName = `surveys_${uuidv4()}.pdf`;
@@ -205,18 +207,23 @@ export async function POST(request: Request) {
       MsWalkerLogoBase64,
       data,
     };
+    let apiResponse: any;
+    let apiResult: any;
+    try {
+      apiResponse = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    const apiResponse = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+      apiResult = await apiResponse.json();
+    } catch {
+      return errorResponse("Something went wrong", 500);
+    }
 
-    const apiResult = await apiResponse.json();
-
-    if (!apiResponse.ok) {
+    if (!apiResponse?.ok) {
       throw new Error(`API request failed: ${apiResult.message}`);
     }
 

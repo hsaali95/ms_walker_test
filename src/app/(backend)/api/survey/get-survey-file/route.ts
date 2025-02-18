@@ -191,7 +191,9 @@ export async function POST(request: Request) {
         },
       ],
     });
-
+    if (!data.length) {
+      return errorResponse("Data not found", 500);
+    }
     // Generate a unique filename
     const uniqueFileName = `surveys_${uuidv4()}.csv`;
 
