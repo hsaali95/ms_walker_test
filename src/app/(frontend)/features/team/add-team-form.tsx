@@ -32,6 +32,7 @@ const AddTeamModal = () => {
     setValue,
     getValues,
     reset,
+    clearErrors,
     formState: { errors },
   } = useForm({
     reValidateMode: "onChange",
@@ -80,6 +81,10 @@ const AddTeamModal = () => {
   const onDelete = (id: number) => {
     setList((prev: any) => prev.filter((user: any) => user.id !== id));
   };
+  const closeModal = () => {
+    clearErrors();
+    setOpenModal(false);
+  };
   return (
     <>
       <PagesHeader
@@ -89,11 +94,7 @@ const AddTeamModal = () => {
         onButtonClick={handleOpenModal}
       />
       <div>
-        <BasicModal
-          open={openModal}
-          title="Add Team"
-          closeModal={() => setOpenModal(false)}
-        >
+        <BasicModal open={openModal} title="Add Team" closeModal={closeModal}>
           <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
             <CustomInput
               label="Name"
