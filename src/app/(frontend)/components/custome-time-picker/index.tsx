@@ -18,7 +18,7 @@ interface ICustomTimePicker {
   disabled?: boolean;
   disableFuture?: boolean;
   disablePast?: boolean;
-  minTime?: Dayjs;
+  minTime?: Dayjs | any;
   maxTime?: Dayjs;
   errorMessage?: string;
   setValue?: UseFormSetValue<FieldValues>;
@@ -50,7 +50,10 @@ const CustomTimePicker = (props: ICustomTimePicker) => {
 
   const handleTimeChange = (newValue: Dayjs | null) => {
     if (newValue) {
-      const formattedValue: any = newValue?.format("YYYY-MM-DDTHH:mm:ss");
+      const formattedValue: any = newValue?.format("YYYY-MM-DDTHH:mm:ss A");
+      console.log("formattedValue", formattedValue);
+      console.log("newValue", newValue);
+
       if (onChange) {
         onChange(formattedValue);
       } else if (setValue) {
@@ -85,14 +88,16 @@ const CustomTimePicker = (props: ICustomTimePicker) => {
       {label && <label className="inputLabel">{label}</label>}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <TimePicker
-          value={selectedValue ? dayjs(selectedValue) : null}
+          value={
+            selectedValue ? dayjs(selectedValue, "YYYY-MM-DDTHH:mm:ss A") : null
+          }
           disabled={disabled}
           disableFuture={disableFuture}
           disablePast={disablePast}
           minTime={minTime}
           maxTime={maxTime}
           onChange={handleTimeChange}
-          format={format ? format : "HH:mm"}
+          format={format ? format : "hh:mm:ss A"}
           slotProps={{
             textField: {
               fullWidth: true,

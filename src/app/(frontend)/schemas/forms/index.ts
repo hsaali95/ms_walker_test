@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import { z } from "zod";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
+dayjs.extend(customParseFormat);
 export const loginSchema = z.object({
   email: z
     .string({ required_error: "Please enter email" })
@@ -500,6 +502,138 @@ export const addTeamSchema = z.object({
 
 // Define the type of the parent schema
 
+// export const activitySchema = z
+//   .object({
+//     notes: z
+//       .string()
+//       .min(1, "Notes are required")
+//       .max(500, "Notes cannot exceed 500 characters"),
+
+//     activity_log: z
+//       .string()
+//       .min(1, "Activity log is required")
+//       .max(1000, "Activity log cannot exceed 1000 characters"),
+
+//     city: z
+//       .string()
+//       .min(1, "City must be at least 1 character long")
+//       .optional(),
+
+//     // merch_rep_id: z
+//     //   .string()
+//     //   .min(1, "Merch rep id must be at least 1 character long")
+//     //   .optional(),
+
+//     account_name: z
+//       .object(
+//         {
+//           id: z.number({ required_error: "Account ID is required" }),
+//           fullCustomerInfo: z.string({
+//             required_error: "Account Name is required",
+//           }),
+//         },
+//         {
+//           required_error: "Please select account name",
+//         }
+//       )
+//       .nullable()
+//       .refine(
+//         (data) => {
+//           if (data === null) {
+//             return false;
+//           }
+//           return (
+//             data.id !== null &&
+//             data.fullCustomerInfo.trim().length > 0 &&
+//             data.fullCustomerInfo !== null
+//           );
+//         },
+//         {
+//           message: "Please select users",
+//         }
+//       ),
+
+//     start_time: z
+//       .string({ required_error: "Please select start time" })
+//       .nonempty("Start time is required")
+//       .nullable()
+//       .refine(
+//         (value) => {
+//           if (value === null) {
+//             return false;
+//           }
+//           return dayjs(value, "YYYY-MM-DDTHH:mm:ss A", true).isValid();
+//         },
+//         {
+//           message: "Start time must be a valid date-time format",
+//         }
+//       ),
+
+//     end_time: z
+//       .string({ required_error: "Please select end time" })
+//       .nonempty("End time is required")
+//       .nullable()
+//       .refine(
+//         (value) => {
+//           if (value === null) {
+//             return false;
+//           }
+//           return dayjs(value, "YYYY-MM-DDTHH:mm:ss A", true).isValid();
+//         },
+//         {
+//           message: "End time must be a valid date-time format",
+//         }
+//       ),
+//     date: z
+//       .string({ required_error: "Please select date" })
+//       .nonempty("Date is required")
+//       .nullable()
+//       .refine(
+//         (value) => {
+//           if (value === null) {
+//             return false;
+//           }
+//           return dayjs(value, "DD/MM/YYYY", true).isValid();
+//         },
+//         {
+//           message: "Date must be a valid date format",
+//         }
+//       ),
+
+//     is_complete: z
+//       .union([z.boolean(), z.string()])
+//       .transform((val) => val === true || val === "true")
+//       .refine((val) => val === true || val === false, {
+//         message: "Active status is required",
+//       }),
+//   })
+//   .superRefine((data, ctx) => {
+//     const start = dayjs(data.start_time);
+//     const end = dayjs(data.end_time);
+
+//     // Ensure start time is before end time
+//     if (start.isAfter(end)) {
+//       ctx.addIssue?.({
+//         path: ["start_time"],
+//         message: "Start time cannot be after end time",
+//         code: "custom",
+//       });
+//     }
+
+//     // Ensure end time is at least 5 minutes after start time
+//     if (end.diff(start, "minute") < 5) {
+//       ctx.addIssue?.({
+//         path: ["end_time"],
+//         message: "End time must be at least 5 minutes after start time",
+//         code: "custom",
+//       });
+//     }
+//   });
+
+
+const timeFormat = "YYYY-MM-DDTHH:mm:ss A";
+const dateFormat = "DD/MM/YYYY";
+
 export const activitySchema = z
   .object({
     notes: z
@@ -516,11 +650,6 @@ export const activitySchema = z
       .string()
       .min(1, "City must be at least 1 character long")
       .optional(),
-
-    // merch_rep_id: z
-    //   .string()
-    //   .min(1, "Merch rep id must be at least 1 character long")
-    //   .optional(),
 
     account_name: z
       .object(
@@ -556,15 +685,8 @@ export const activitySchema = z
       .nonempty("Start time is required")
       .nullable()
       .refine(
-        (value) => {
-          if (value === null) {
-            return false;
-          }
-          return dayjs(value, "YYYY-MM-DDTHH:mm:ss", true).isValid();
-        },
-        {
-          message: "Start time must be a valid date-time format",
-        }
+        (value) => value !== null && dayjs(value, timeFormat, true).isValid(),
+        { message: `Start time must be in the format ${timeFormat}` }
       ),
 
     end_time: z
@@ -572,30 +694,17 @@ export const activitySchema = z
       .nonempty("End time is required")
       .nullable()
       .refine(
-        (value) => {
-          if (value === null) {
-            return false;
-          }
-          return dayjs(value, "YYYY-MM-DDTHH:mm:ss", true).isValid();
-        },
-        {
-          message: "End time must be a valid date-time format",
-        }
+        (value) => value !== null && dayjs(value, timeFormat, true).isValid(),
+        { message: `End time must be in the format ${timeFormat}` }
       ),
+
     date: z
       .string({ required_error: "Please select date" })
       .nonempty("Date is required")
       .nullable()
       .refine(
-        (value) => {
-          if (value === null) {
-            return false;
-          }
-          return dayjs(value, "DD/MM/YYYY", true).isValid();
-        },
-        {
-          message: "Date must be a valid date format",
-        }
+        (value) => value !== null && dayjs(value, dateFormat, true).isValid(),
+        { message: `Date must be in the format ${dateFormat}` }
       ),
 
     is_complete: z
@@ -606,25 +715,27 @@ export const activitySchema = z
       }),
   })
   .superRefine((data, ctx) => {
-    const start = dayjs(data.start_time);
-    const end = dayjs(data.end_time);
+    const start = dayjs(data.start_time, timeFormat);
+    const end = dayjs(data.end_time, timeFormat);
 
-    // Ensure start time is before end time
-    if (start.isAfter(end)) {
-      ctx.addIssue?.({
-        path: ["start_time"],
-        message: "Start time cannot be after end time",
-        code: "custom",
-      });
-    }
+    if (start.isValid() && end.isValid()) {
+      // Ensure start time is before end time
+      if (start.isAfter(end)) {
+        ctx.addIssue({
+          path: ["start_time"],
+          message: "Start time cannot be after end time",
+          code: "custom",
+        });
+      }
 
-    // Ensure end time is at least 5 minutes after start time
-    if (end.diff(start, "minute") < 5) {
-      ctx.addIssue?.({
-        path: ["end_time"],
-        message: "End time must be at least 5 minutes after start time",
-        code: "custom",
-      });
+      // Ensure end time is at least 5 minutes after start time
+      if (end.diff(start, "minute") < 5) {
+        ctx.addIssue({
+          path: ["end_time"],
+          message: "End time must be at least 5 minutes after start time",
+          code: "custom",
+        });
+      }
     }
   });
 

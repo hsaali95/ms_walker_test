@@ -146,7 +146,7 @@ const ActivityForm = () => {
               errorMessage={errors.end_time?.message as string}
               minTime={
                 getValues("start_time")
-                  ? dayjs(getValues("start_time")).add(5, "minute")
+                  ? dayjs(getValues("start_time"))
                   : undefined
               }
               disabled={getValues("start_time") ? false : true}

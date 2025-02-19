@@ -31,8 +31,14 @@ export const createActivity = createAsyncThunk(
   "activity/create",
   async (activityPayload: ICreateActivityPayload) => {
     const payload = {
-      start_time: activityPayload.start_time,
-      end_time: activityPayload.end_time,
+      start_time: moment(
+        activityPayload.start_time,
+        "YYYY-MM-DDTHH:mm:ss A"
+      ).format("YYYY-MM-DDTHH:mm:ss"),
+      end_time: moment(
+        activityPayload.end_time,
+        "YYYY-MM-DDTHH:mm:ss A"
+      ).format("YYYY-MM-DDTHH:mm:ss"),
       is_complete: activityPayload.is_complete,
       account_id: activityPayload.account_id,
       activity_log: activityPayload.activity_log,
