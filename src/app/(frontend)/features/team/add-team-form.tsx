@@ -104,7 +104,7 @@ const AddTeamModal = () => {
             />
 
             <SearchDropDown
-              label="Managers"
+              label="Manager"
               name="manager"
               options={MANAGER_DATA}
               errorMessage={errors.manager?.message as string}
