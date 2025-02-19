@@ -44,6 +44,9 @@ export const helper = {
   dateSendToDb: (data: string | any) => {
     return data ? dayjs(data).format("DD/MM/YYYY") : null;
   },
+  extractTimeFromDateAndTime: (data: string | any) => {
+    return data ? dayjs(data).format("HH:mm:ss") : null;
+  },
 };
 export async function verifyPassword(
   plainPassword: string,

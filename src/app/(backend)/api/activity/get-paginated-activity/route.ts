@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     const queryOptions: any = [];
     if (startDate && endDate) {
       queryOptions.push({
-        created_at: {
+        date: {
           [Op.between]: [
             moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment(endDate, "DD/MM/YYYY").endOf("day").toISOString(),
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       });
     } else if (startDate) {
       queryOptions.push({
-        created_at: {
+        date: {
           [Op.between]: [
             moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment().endOf("day").toISOString(),

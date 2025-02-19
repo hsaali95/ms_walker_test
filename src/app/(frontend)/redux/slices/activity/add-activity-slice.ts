@@ -2,15 +2,17 @@ import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
 import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import moment from "moment";
 
 interface ICreateActivityPayload {
-  start_time?: string;
-  end_time?: string;
+  start_time?: string | null;
+  end_time?: string | null;
   is_complete?: boolean;
   account_id?: number;
   activity_log?: string;
   notes?: string;
   merch_rep_id?: string;
+  date?: any;
 }
 
 interface ICreateActivityState {
@@ -36,6 +38,7 @@ export const createActivity = createAsyncThunk(
       activity_log: activityPayload.activity_log,
       notes: activityPayload.notes,
       merch_rep_id: activityPayload.merch_rep_id,
+      date: moment(activityPayload.date, "DD/MM/YYYY").format("YYYY-MM-DD"),
     };
 
     const response = await apiClient.request({

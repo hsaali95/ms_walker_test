@@ -582,6 +582,21 @@ export const activitySchema = z
           message: "End time must be a valid date-time format",
         }
       ),
+    date: z
+      .string({ required_error: "Please select date" })
+      .nonempty("Date is required")
+      .nullable()
+      .refine(
+        (value) => {
+          if (value === null) {
+            return false;
+          }
+          return dayjs(value, "DD/MM/YYYY", true).isValid();
+        },
+        {
+          message: "Date must be a valid date format",
+        }
+      ),
 
     is_complete: z
       .union([z.boolean(), z.string()])

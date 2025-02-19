@@ -11,7 +11,7 @@ const ActivityDataRow: React.FC<ActivityDataRowProps> = ({ data }) => {
     <>
       <TableCellWithText text={data?.id} />
       <TableCellWithText text={data?.merch_rep_id} />
-      <TableCellWithText text={helper.formatDate(data?.created_at)} />
+      <TableCellWithText text={helper.formatDate(data?.date)} />
       <TableCellWithText text={helper.formatTime(data?.start_time)} />
       <TableCellWithText text={helper.formatTime(data?.end_time)} />
       <TableCellWithText text={data?.activity_account?.customerName} />

@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     }
     if (startDate && endDate) {
       queryOptions.push({
-        created_at: {
+        date: {
           [Op.between]: [
             moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment(endDate, "DD/MM/YYYY").endOf("day").toISOString(),
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       });
     } else if (startDate) {
       queryOptions.push({
-        created_at: {
+        date: {
           [Op.between]: [
             moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment().endOf("day").toISOString(),
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
         "notes",
         "activity_log",
         "merch_rep_id",
-        "created_at",
+        "date",
       ],
       include: [
         {
@@ -112,10 +112,11 @@ export async function POST(request: Request) {
     const csvHeader = [
       "ID,Date, Start Time,End Time,Merch Rep Id,Account Name,City,Activity Log,Complete,Geo Location,Notes,Number Of Cases",
     ];
+    console.log("+++++++++++=data++++++", data);
     const csvRows = data?.map((row: any) => {
       return [
         row.id,
-        helper.formatDate(row.created_at),
+        helper.formatDate(row.date),
         helper.formatTime(row.start_time),
         helper.formatTime(row.end_time),
         row.merch_rep_id,
