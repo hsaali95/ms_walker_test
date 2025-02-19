@@ -19,7 +19,7 @@ const ActivityDataRow: React.FC<ActivityDataRowProps> = ({ data }) => {
       <TableCellWithText text={data?.activity_log} />
       <TableCellWithText text={data?.is_complete ? "Yes" : "No"} />
       <TableCellWithText text={data?.notes} />
-      <TableCellWithText text={"discuss needed"} />
+      <TableCellWithText text={"null"} />
     </>
   );
 };
