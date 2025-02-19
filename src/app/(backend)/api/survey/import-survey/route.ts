@@ -39,9 +39,9 @@ const fileUpload = async (fileUrl: string) => {
 };
 
 export async function POST(request: Request) {
+  const insertedSurveyIds = [];
   try {
     let records = [];
-    const insertedSurveyIds = [];
     try {
       records = await request.json();
     } catch {
@@ -82,10 +82,16 @@ export async function POST(request: Request) {
         },
         { returning: true, include: [{ model: SurveyFile, as: "survey_file" }] }
       );
-      insertedSurveyIds.push(survey.id);
+      insertedSurveyIds.push({
+        surveyId: survey.id,
+        recordId: record.DetailID,
+      });
     }
     return successResponse(insertedSurveyIds, "Records has been imported");
   } catch (error) {
+    console.log("============================================================");
+    console.log(insertedSurveyIds);
+    console.log("============================================================");
     console.error("Error processing request:", error);
     return errorResponse("Failed to process request", 500);
   }
