@@ -36,7 +36,7 @@ export const helper = {
     return dayjs(input).format("DD/MM/YYYY hh:mm a");
   },
   formatTime: (input: any): null | any => {
-    return dayjs(input).format("hh:mm a");
+    return input ? moment(input).format("hh:mm a") : null;
   },
   wrapInQuotes: (value: string | undefined | null) => {
     return `"${value || "-"}"`;
