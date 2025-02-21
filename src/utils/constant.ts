@@ -102,7 +102,7 @@ export const ACTIVITY_TABLE_COLUMN = [
 export const SURVEY_SORT_KEYS: any = {
   ID: "id",
   "Merch Ref Id": "merch_rep_id",
-  Date: "created_at",
+  Date: "date",
   "Start Time": "start_time",
   "End Time": "end_time",
   "Account Name": "activity_account.CUSTOMER NAME",
