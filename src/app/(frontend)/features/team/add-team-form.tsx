@@ -32,7 +32,6 @@ const AddTeamModal = () => {
     setValue,
     getValues,
     reset,
-    clearErrors,
     formState: { errors },
   } = useForm({
     reValidateMode: "onChange",
@@ -82,7 +81,7 @@ const AddTeamModal = () => {
     setList((prev: any) => prev.filter((user: any) => user.id !== id));
   };
   const closeModal = () => {
-    clearErrors();
+    reset();
     setOpenModal(false);
   };
   return (

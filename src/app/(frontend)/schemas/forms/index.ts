@@ -645,10 +645,7 @@ export const activitySchema = z
       .min(1, "Activity log is required")
       .max(1000, "Activity log cannot exceed 1000 characters"),
 
-    city: z
-      .string()
-      .min(1, "City must be at least 1 character long")
-      .optional(),
+    city: z.string().min(1, "City is required").optional(),
 
     account_name: z
       .object(
