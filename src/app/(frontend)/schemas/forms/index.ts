@@ -630,7 +630,6 @@ export const addTeamSchema = z.object({
 //     }
 //   });
 
-
 const timeFormat = "YYYY-MM-DDTHH:mm:ss A";
 const dateFormat = "DD/MM/YYYY";
 
@@ -686,7 +685,7 @@ export const activitySchema = z
       .nullable()
       .refine(
         (value) => value !== null && dayjs(value, timeFormat, true).isValid(),
-        { message: `Start time must be in the format ${timeFormat}` }
+        { message: `Start time must be in the format hh:mm am/pm` }
       ),
 
     end_time: z
@@ -695,7 +694,7 @@ export const activitySchema = z
       .nullable()
       .refine(
         (value) => value !== null && dayjs(value, timeFormat, true).isValid(),
-        { message: `End time must be in the format ${timeFormat}` }
+        { message: `End time must be in the format hh:mm am/pm` }
       ),
 
     date: z
