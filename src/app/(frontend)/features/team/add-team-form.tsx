@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomButton from "../../components/button";
 import BasicModal from "../../components/modal/basic-modal";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import CustomInput from "../../components/input";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
@@ -12,11 +12,10 @@ import { API_STATUS } from "@/utils/enums";
 import { getManager } from "../../redux/slices/managers/get-manager-slice";
 import { addTeam } from "../../redux/slices/team/add-team-slice";
 import { getusers } from "../../redux/slices/register-user/get-user-slice";
-import ActionButton from "../../components/action-buttons";
 import PagesHeader from "../../components/shared/pages-header";
-import ClearIcon from "@mui/icons-material/Clear";
 import { Toaster } from "../../components/snackbar";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
+import UsersList from "../../components/shared/selected-user-list";
 
 const AddTeamModal = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -77,7 +76,7 @@ const AddTeamModal = () => {
       setOpenModal(false);
     }
   }, [TEAM_STATUS]);
-  const onDelete = (id: number) => {
+  const onDelete = (id: number | string) => {
     setList((prev: any) => prev.filter((user: any) => user.id !== id));
   };
   const closeModal = () => {
@@ -148,58 +147,7 @@ const AddTeamModal = () => {
                 }}
               />
             </Box>
-
-            <Typography
-              component={"h6"}
-              variant="h6"
-              sx={{ fontSize: "0.8rem", fontWeight: 600, mb: 1 }}
-            >
-              Users List
-            </Typography>
-
-            <Box
-              sx={{
-                maxHeight: "100px",
-                overflowY: "auto",
-                overflowX: "hidden",
-                mb: 1,
-              }}
-            >
-              {usersList?.map((data: any, i: number) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 0.9,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#4F131F",
-                      fontSize: "0.8rem",
-                      fontWeight: 600,
-                    }}
-                  >
-                    <Box component={"span"}>{data.name}</Box>
-                    <Box component={"span"} sx={{ ml: 1 }}>
-                      {`(${data.email})`}
-                    </Box>
-                  </Typography>
-                  <ActionButton
-                    onClick={() => onDelete(data.id)}
-                    icon={<ClearIcon />}
-                    isIconButton
-                    sx={{
-                      color: "#4F131F",
-                      "& .MuiSvgIcon-root": {
-                        fontSize: "1rem",
-                      },
-                    }}
-                  />
-                </Box>
-              ))}
-            </Box>
+            <UsersList users={usersList} onDelete={onDelete} />
             <CustomButton
               loading={TEAM_STATUS === API_STATUS.PENDING}
               type="submit"
