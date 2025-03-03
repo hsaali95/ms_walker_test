@@ -6,25 +6,22 @@ import { FieldValues, useForm } from "react-hook-form";
 import CustomInput from "../../components/input";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
-import { getAccessType } from "../../redux/slices/group/access-type-slice";
-import { getusers } from "../../redux/slices/register-user/get-user-slice";
 import CustomCheckbox from "../../components/check-box";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addGroupSchema } from "../../schemas/forms";
-import { createGroup } from "../../redux/slices/group/add-group-slice";
 import { API_STATUS } from "@/utils/enums";
-import PagesHeader from "../../components/shared/pages-header";
 import { Toaster } from "../../components/snackbar";
 import UsersList from "../../components/shared/selected-user-list";
-const AddGroupModal = () => {
-  const [openModal, setOpenModal] = useState(false);
+import { editGroup } from "../../redux/slices/group/edit-group-slice";
+const EditGroupModal = ({ openModal, setOpenModal, groupData }: any) => {
   const [usersList, setList] = useState([]);
   const { data: ACCESS_TYPE_DATA } = useAppSelector(
     (state) => state.getAccessType
   );
-  console.log("usersList", usersList);
   const { data: USER_DATA } = useAppSelector((state) => state.getUsers);
-  const { status: GROUP_STATUS } = useAppSelector((state) => state.createGroup);
+  const { status: GROUP_STATUS } = useAppSelector(
+    (state) => state.getEditGroup
+  );
   const dispatch = useAppDispatch();
   const {
     register,
@@ -38,22 +35,17 @@ const AddGroupModal = () => {
     mode: "onChange",
     resolver: zodResolver(addGroupSchema),
   });
-  const handleOpenModal = () => setOpenModal(true);
   const onSubmit = async (data: FieldValues) => {
-    console.log("data", data);
     dispatch(
-      createGroup({
-        access_type_id: data.access_type.id,
-        name: data.name,
-        is_active: data.is_active,
+      editGroup({
+        access_type_id: data.access_type?.id,
+        name: data?.name,
+        is_active: data?.is_active,
         users_list: usersList,
+        id: groupData?.id, // it is group id
       })
     );
   };
-  useEffect(() => {
-    dispatch(getAccessType());
-    dispatch(getusers());
-  }, [dispatch]);
 
   const addUsers = () => {
     const email = getValues("email");
@@ -71,6 +63,19 @@ const AddGroupModal = () => {
     }
   };
   useEffect(() => {
+    if (groupData) {
+      reset({
+        name: groupData?.name || "",
+        access_type: groupData?.access_type || "",
+        is_active: groupData?.is_active || false,
+      });
+      setList(
+        groupData?.group_members?.map((data: any) => data?.users_group) || []
+      );
+    }
+  }, [groupData, reset]);
+
+  useEffect(() => {
     if (GROUP_STATUS === API_STATUS.SUCCEEDED) {
       reset();
       setList([]);
@@ -87,15 +92,8 @@ const AddGroupModal = () => {
 
   return (
     <>
-      <PagesHeader
-        title="Groups"
-        buttonTitle="Add"
-        buttonFullWidth={false}
-        onButtonClick={handleOpenModal}
-      />
-
       <div>
-        <BasicModal open={openModal} title="Add Group" closeModal={closeModal}>
+        <BasicModal open={openModal} title="Edit Group" closeModal={closeModal}>
           <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
             <CustomInput
               label="Name"
@@ -137,6 +135,12 @@ const AddGroupModal = () => {
                 label="Active"
                 register={register}
                 errorMessage={errors?.is_active?.message as string}
+                checked={getValues("is_active")} // Ensuring it's controlled
+                onChange={(e) =>
+                  setValue("is_active", e.target.checked, {
+                    shouldValidate: true,
+                  })
+                }
               />
 
               <CustomButton
@@ -154,7 +158,7 @@ const AddGroupModal = () => {
             <CustomButton
               loading={GROUP_STATUS === API_STATUS.PENDING}
               type="submit"
-              title="Submit "
+              title="Edit"
             />
           </Box>
         </BasicModal>
@@ -163,4 +167,4 @@ const AddGroupModal = () => {
   );
 };
 
-export default AddGroupModal;
+export default EditGroupModal;

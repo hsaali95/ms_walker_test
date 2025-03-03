@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "@/db/config/config";
+import Users from "./user";
 
 class GroupMembers extends Model {
   public id!: number;
@@ -52,7 +53,10 @@ GroupMembers.init(
   }
 );
 export default GroupMembers;
-
+GroupMembers.belongsTo(Users, {
+  as: "users_group",
+  foreignKey: "user_id",
+});
 // (async function syncUserTable() {
 //   try {
 //     await GroupMembers.sync({ force: true });

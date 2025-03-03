@@ -45,7 +45,16 @@ const TableCellWithText = ({
       }}
       padding={"none"}
     >
-      {isDeleteButton ? (
+      {isDeleteButton && isEditButton ? (
+        <Box display="flex" gap={1}>
+          <IconButton onClick={onEdit} sx={{ p: 0 }}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={onDelete} sx={{ p: 0 }}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      ) : isDeleteButton ? (
         <IconButton onClick={onDelete} sx={{ p: 0 }}>
           <DeleteIcon />
         </IconButton>

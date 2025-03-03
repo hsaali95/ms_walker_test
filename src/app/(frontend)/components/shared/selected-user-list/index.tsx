@@ -44,7 +44,7 @@ const UsersList: React.FC<UsersListProps> = ({
             <Typography
               sx={{ color: "#4F131F", fontSize: "0.8rem", fontWeight: 600 }}
             >
-              <Box component="span">{user.name}</Box>
+              <Box component="span">{user?.name}</Box>
               <Box component="span" sx={{ ml: 1 }}>
                 ({user.email})
               </Box>

@@ -14,6 +14,8 @@ import TableCellWithText from "../../components/tables/basic-table/table-cell-wi
 import BasicModal from "../../components/modal/basic-modal";
 import Image from "next/image";
 import CustomCarousel from "../../components/custom-slider";
+import { getUserIp } from "../../redux/slices/user-location/get-user-ip-slice";
+import { getUserLocation } from "../../redux/slices/user-location/get-user-location-slice";
 
 const SurveyConductList = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -21,12 +23,26 @@ const SurveyConductList = () => {
   const { surveyData } = useAppSelector((state) => state.survey);
   const { status: surveyStatus } = useAppSelector((state) => state.addSurvey);
   const { fileIds } = useAppSelector((state) => state.fileUploadSurvey);
+  const { data: USER_IP, status: USER_IP_STATUS } = useAppSelector(
+    (state) => state.getUserIp
+  );
   const dispatch = useAppDispatch();
 
   const submitSurvey = () => {
     dispatch(postSurvey({ surveyData: surveyData, file_id: fileIds }));
   };
-
+  useEffect(() => {
+    dispatch(getUserIp());
+  }, []);
+  useEffect(() => {
+    if (USER_IP_STATUS === API_STATUS.SUCCEEDED) {
+      dispatch(
+        getUserLocation({
+          ip: USER_IP,
+        })
+      );
+    }
+  }, [USER_IP_STATUS, USER_IP]);
   useEffect(() => {
     if (surveyStatus === API_STATUS.SUCCEEDED) {
       dispatch(deleteAllSurvey());
@@ -47,7 +63,6 @@ const SurveyConductList = () => {
         isViewButton
         onView={() => {
           setOpenModal(true);
-          console.log("data.show_image", data.show_image);
           setImageData(data.show_image);
         }}
       />

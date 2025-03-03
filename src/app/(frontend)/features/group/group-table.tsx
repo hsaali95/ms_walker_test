@@ -21,6 +21,13 @@ const GroupTable = () => {
     data: GROUP_DATA,
     status: GROUP_STATUS,
   } = useAppSelector((state) => state.getGroupPaginatedData);
+  const { status: DELETE_GROUP_STATUS } = useAppSelector(
+    (state) => state.deleteGroup
+  );
+  const { status: EDIT_GROUP_STATUS } = useAppSelector(
+    (state) => state.getEditGroup
+  );
+
   const { status: CREATE_GROUP_STATUS } = useAppSelector(
     (state) => state.createGroup
   );
@@ -50,10 +57,14 @@ const GroupTable = () => {
     dispatch(setGroupPage(0));
   };
   useEffect(() => {
-    if (CREATE_GROUP_STATUS === API_STATUS.SUCCEEDED) {
+    if (
+      CREATE_GROUP_STATUS === API_STATUS.SUCCEEDED ||
+      DELETE_GROUP_STATUS === API_STATUS.SUCCEEDED ||
+      EDIT_GROUP_STATUS === API_STATUS.SUCCEEDED
+    ) {
       getGroupData();
     }
-  }, [CREATE_GROUP_STATUS]);
+  }, [CREATE_GROUP_STATUS, DELETE_GROUP_STATUS, EDIT_GROUP_STATUS]);
 
   return (
     <>

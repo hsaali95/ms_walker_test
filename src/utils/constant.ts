@@ -14,6 +14,7 @@ export const SURVEY_IMAGE_BASE_URL =
 export const USER_PROFILE_BASE_URL =
   process.env.NEXT_PUBLIC_SUPABASE_IMAGES_URL;
 
+export const LOCATION_TOKEN = "cdfb6fdfca27e8";
 export const ACCESS_TOKEN_TIME = process.env.NEXT_PUBLIC_ACCESS_TOKEN_TIME;
 export const REFRESH_TOKEN_TIME = process.env.NEXT_PUBLIC_REFRESH_TOKEN_TIME;
 export const USER_IP_ADDRESS = "https://api.ipify.org/?format=json";
@@ -65,6 +66,7 @@ export const GROUP_TABLE_COLUMN = [
   "Access Type",
   "Member Count",
   "Is Active",
+  "Action",
 ];
 export const TEAM_TABLE_COLUMN = [
   "Team Name",
