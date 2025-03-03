@@ -11,7 +11,7 @@ interface IGroupWithMember extends Group {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    let {
+    const {
       id,
       name,
       access_type_id,
@@ -22,7 +22,7 @@ export async function PUT(request: Request) {
       name: string;
       access_type_id: number;
       is_active: boolean;
-      users_list: Number[];
+      users_list: number[];
     } = body;
     // Find the groups by IDs
     const [group, existingGroupWithName] = await Promise.all([
@@ -75,7 +75,7 @@ export async function PUT(request: Request) {
       return errorResponse("Missing or invalid required field: is_active", 400);
     }
 
-    const deletedMembers: Number[] = [];
+    const deletedMembers: number[] = [];
 
     group.group_members.map((member) => {
       const index = users_list.indexOf(member.user_id);
@@ -87,9 +87,6 @@ export async function PUT(request: Request) {
         users_list.splice(index, 1);
       }
     });
-
-    console.log(deletedMembers)
-    console.log(users_list)
 
     await Promise.all([
       //deleting removed members
