@@ -90,6 +90,8 @@ const SurveyTable = () => {
       SURVEY_STATUS === API_STATUS.SUCCEEDED
     ) {
       getSurveyTableData();
+      setBulkOptions("");
+      setListIds([])
     }
   }, [DELETE_STATUS, SURVEY_STATUS]);
   useEffect(() => {

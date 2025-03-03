@@ -16,6 +16,7 @@ export const USER_PROFILE_BASE_URL =
 
 export const ACCESS_TOKEN_TIME = process.env.NEXT_PUBLIC_ACCESS_TOKEN_TIME;
 export const REFRESH_TOKEN_TIME = process.env.NEXT_PUBLIC_REFRESH_TOKEN_TIME;
+export const USER_IP_ADDRESS = "https://api.ipify.org/?format=json";
 export const Survey_Column = [
   "Display Type",
   "Supplier Name",
@@ -87,7 +88,7 @@ export const ACTIVITY_EXPORT_OPTIONS = [{ id: 1, file_name: "Csv" }];
 
 export const ACTIVITY_TABLE_COLUMN = [
   "ID",
-  "Merch Ref Id",
+  "Merch Rep Id",
   "Date",
   "Start Time",
   "End Time",
@@ -101,7 +102,7 @@ export const ACTIVITY_TABLE_COLUMN = [
 export const SURVEY_SORT_KEYS: any = {
   ID: "id",
   "Merch Ref Id": "merch_rep_id",
-  Date: "created_at",
+  Date: "date",
   "Start Time": "start_time",
   "End Time": "end_time",
   "Account Name": "activity_account.CUSTOMER NAME",

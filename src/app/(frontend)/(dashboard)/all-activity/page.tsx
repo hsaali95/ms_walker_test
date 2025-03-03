@@ -6,6 +6,7 @@ import { setActivityCsvIdle } from "../../redux/slices/activity/download-activit
 import {
   clearActivityTableData,
   clearAllActivityFields,
+  setActivityPage,
 } from "../../redux/slices/activity/get-activity-slice";
 
 const AllActivity = () => {
@@ -15,6 +16,7 @@ const AllActivity = () => {
       dispatch(setActivityCsvIdle());
       dispatch(clearAllActivityFields());
       dispatch(clearActivityTableData());
+      dispatch(setActivityPage(0));
     };
   }, []);
   return (

@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
     // Sorting parameters
-    const sortColumn = searchParams.get("sortColumn") || "created_at";
-    const sortOrder = searchParams.get("sortOrder") || "desc";
+    const sortColumn = searchParams.get("sortColumn");
+    const sortOrder = searchParams.get("sortOrder");
 
     // Search query
     const searchQuery = searchParams.get("searchQuery");
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     const queryOptions: any = [];
     if (startDate && endDate) {
       queryOptions.push({
-        created_at: {
+        date: {
           [Op.between]: [
             moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment(endDate, "DD/MM/YYYY").endOf("day").toISOString(),
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       });
     } else if (startDate) {
       queryOptions.push({
-        created_at: {
+        date: {
           [Op.between]: [
             moment(startDate, "DD/MM/YYYY").startOf("day").toISOString(),
             moment().endOf("day").toISOString(),
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
       where: queryOptions,
       order: sortColumn
         ? sequelize.literal(`${addDoubleQuotes(sortColumn)} ${sortOrder}`)
-        : [["created_at", "desc"]],
+        : [["id", "desc"]],
       attributes: { exclude: ["deleted_at", "deleted_by"] },
       include: [
         {

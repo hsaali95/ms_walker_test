@@ -1,6 +1,6 @@
 import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Box, FormHelperText } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
@@ -11,15 +11,15 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 
-interface ICustomTimePicker {
+interface ICustomDatePicker {
   label?: string;
   name: string;
   value?: Dayjs | null;
   disabled?: boolean;
   disableFuture?: boolean;
   disablePast?: boolean;
-  minTime?: Dayjs | any;
-  maxTime?: Dayjs;
+  minDate?: Dayjs;
+  maxDate?: Dayjs;
   errorMessage?: string;
   setValue?: UseFormSetValue<FieldValues>;
   getValues?: UseFormGetValues<FieldValues>;
@@ -29,7 +29,7 @@ interface ICustomTimePicker {
   format?: string;
 }
 
-const CustomTimePicker = (props: ICustomTimePicker) => {
+const CustomDatePicker = (props: ICustomDatePicker) => {
   const {
     label,
     name,
@@ -37,8 +37,8 @@ const CustomTimePicker = (props: ICustomTimePicker) => {
     disabled,
     disableFuture,
     disablePast,
-    minTime,
-    maxTime,
+    minDate,
+    maxDate,
     onChange,
     errorMessage,
     setValue,
@@ -48,12 +48,10 @@ const CustomTimePicker = (props: ICustomTimePicker) => {
 
   const selectedValue = getValues ? getValues(name) || null : value || null;
 
-  const handleTimeChange = (newValue: Dayjs | null) => {
+  const handleDateChange = (newValue: Dayjs | null) => {
     if (newValue) {
-      const formattedValue: any = newValue?.format("YYYY-MM-DDTHH:mm:ss A");
+      const formattedValue: any = newValue?.format("DD/MM/YYYY");
       console.log("formattedValue", formattedValue);
-      console.log("newValue", newValue);
-
       if (onChange) {
         onChange(formattedValue);
       } else if (setValue) {
@@ -87,17 +85,15 @@ const CustomTimePicker = (props: ICustomTimePicker) => {
     >
       {label && <label className="inputLabel">{label}</label>}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <TimePicker
-          value={
-            selectedValue ? dayjs(selectedValue, "YYYY-MM-DDTHH:mm:ss A") : null
-          }
+        <DatePicker
+          value={selectedValue ? dayjs(selectedValue, "DD/MM/YYYY") : null}
           disabled={disabled}
           disableFuture={disableFuture}
           disablePast={disablePast}
-          minTime={minTime}
-          maxTime={maxTime}
-          onChange={handleTimeChange}
-          format={format ? format : "hh:mm:ss A"}
+          minDate={minDate}
+          maxDate={maxDate}
+          onChange={handleDateChange}
+          format={format ? format : "DD-MM-YYYY"}
           slotProps={{
             textField: {
               fullWidth: true,
@@ -136,4 +132,4 @@ const CustomTimePicker = (props: ICustomTimePicker) => {
   );
 };
 
-export default CustomTimePicker;
+export default CustomDatePicker;

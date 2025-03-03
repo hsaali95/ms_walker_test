@@ -36,13 +36,16 @@ export const helper = {
     return dayjs(input).format("DD/MM/YYYY hh:mm a");
   },
   formatTime: (input: any): null | any => {
-    return dayjs(input).format("hh:mm a");
+    return input ? moment.utc(input, "HH:mm:ss").format("hh:mm A") : null;
   },
   wrapInQuotes: (value: string | undefined | null) => {
     return `"${value || "-"}"`;
   },
   dateSendToDb: (data: string | any) => {
     return data ? dayjs(data).format("DD/MM/YYYY") : null;
+  },
+  extractTimeFromDateAndTime: (data: string | any) => {
+    return data ? dayjs(data).format("HH:mm:ss") : null;
   },
 };
 export async function verifyPassword(

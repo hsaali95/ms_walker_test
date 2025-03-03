@@ -14,8 +14,8 @@ export async function POST(request: Request) {
       activity_log,
       notes,
       merch_rep_id,
+      date,
     } = body;
-
     // Basic validation
     if (
       !start_time ||
@@ -24,7 +24,8 @@ export async function POST(request: Request) {
       !account_id ||
       !activity_log ||
       !notes ||
-      !merch_rep_id
+      !merch_rep_id ||
+      !date
     ) {
       return errorResponse(
         "Missing required fields: start_time, end_time, is_complete, account_id, activity_log, or notes",
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
       activity_log,
       notes,
       merch_rep_id,
+      date,
     });
 
     // Prepare response without sensitive or unnecessary fields

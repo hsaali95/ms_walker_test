@@ -6,6 +6,7 @@ class Activity extends Model {
   public id!: number;
   public start_time!: Date;
   public end_time!: Date;
+  public date!: Date;
   public is_complete!: boolean;
   public account_id!: number;
   public activity_log!: string;
@@ -21,11 +22,15 @@ Activity.init(
       primaryKey: true,
     },
     start_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false,
     },
     end_time: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
+    date: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     is_complete: {

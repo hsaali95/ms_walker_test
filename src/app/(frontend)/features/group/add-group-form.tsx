@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CustomButton from "../../components/button";
 import BasicModal from "../../components/modal/basic-modal";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import CustomInput from "../../components/input";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
@@ -13,10 +13,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addGroupSchema } from "../../schemas/forms";
 import { createGroup } from "../../redux/slices/group/add-group-slice";
 import { API_STATUS } from "@/utils/enums";
-import ActionButton from "../../components/action-buttons";
-import ClearIcon from "@mui/icons-material/Clear";
 import PagesHeader from "../../components/shared/pages-header";
 import { Toaster } from "../../components/snackbar";
+import UsersList from "../../components/shared/selected-user-list";
 const AddGroupModal = () => {
   const [openModal, setOpenModal] = useState(false);
   const [usersList, setList] = useState([]);
@@ -77,9 +76,14 @@ const AddGroupModal = () => {
       setOpenModal(false);
     }
   }, [GROUP_STATUS]);
-  const onDelete = (id: number) => {
+  const onDelete = (id: number | string) => {
     setList((prev: any) => prev.filter((user: any) => user.id !== id));
   };
+  const closeModal = () => {
+    reset();
+    setOpenModal(false);
+  };
+
   return (
     <>
       <PagesHeader
@@ -90,11 +94,7 @@ const AddGroupModal = () => {
       />
 
       <div>
-        <BasicModal
-          open={openModal}
-          title="Add Group"
-          closeModal={() => setOpenModal(false)}
-        >
+        <BasicModal open={openModal} title="Add Group" closeModal={closeModal}>
           <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
             <CustomInput
               label="Name"
@@ -149,57 +149,7 @@ const AddGroupModal = () => {
                 }}
               />
             </Box>
-            <Typography
-              component={"h6"}
-              variant="h6"
-              sx={{ fontSize: "0.8rem", fontWeight: 600, mb: 1 }}
-            >
-              Users List
-            </Typography>
-            <Box
-              sx={{
-                maxHeight: "100px",
-                overflowY: "auto",
-                overflowX: "hidden",
-                mb: 1,
-              }}
-            >
-              {usersList?.map((data: any, i: number) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    mb: 0.9,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#4F131F",
-                      fontSize: "0.8rem",
-                      fontWeight: 600,
-                    }}
-                  >
-                    <Box component={"span"}>{data.name}</Box>
-                    <Box component={"span"} sx={{ ml: 1 }}>
-                      {`(${data.email})`}
-                    </Box>
-                  </Typography>
-                  <ActionButton
-                    onClick={() => onDelete(data.id)}
-                    icon={<ClearIcon />}
-                    isIconButton
-                    sx={{
-                      color: "#4F131F",
-                      "& .MuiSvgIcon-root": {
-                        fontSize: "1rem",
-                      },
-                    }}
-                  />
-                </Box>
-              ))}
-            </Box>
-
+            <UsersList users={usersList} onDelete={onDelete} />
             <CustomButton
               loading={GROUP_STATUS === API_STATUS.PENDING}
               type="submit"

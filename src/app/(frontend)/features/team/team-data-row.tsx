@@ -11,7 +11,9 @@ const TeamDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
       <TableCellWithText text={data?.name} />
       <TableCellWithText text={data?.team_managers[0]?.user?.name} />
       <TableCellWithText text={data?.team_members?.length} />
-      <TableCellWithText text={`${data?.is_active}`} />
+      <TableCellWithText
+        text={`${data?.is_active ? "active" : "inactive"}`}
+      />
     </>
   );
 };

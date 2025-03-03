@@ -4,7 +4,6 @@ import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomInput from "../../components/input";
 import CustomButton from "../../components/button";
-import CustomDateTimePicker from "../../components/custome-date-time-picker";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
 import { getAllAccounts } from "../../redux/slices/account/get-account-slice";
@@ -17,6 +16,8 @@ import Grid from "@mui/material/Grid2";
 import BackdropLoader from "../../components/backdrop-loader";
 import { fetchUserData } from "../../redux/slices/auth/login-slice";
 import dayjs from "dayjs";
+import CustomTimePicker from "../../components/custome-time-picker";
+import CustomDatePicker from "../../components/customDatePicker";
 
 const ActivityForm = () => {
   const [accountId, setId] = useState<any>();
@@ -51,6 +52,7 @@ const ActivityForm = () => {
   });
 
   const onSubmit = async (data: FieldValues) => {
+    console.log(data);
     dispatch(
       createActivity({
         ...data,
@@ -101,6 +103,7 @@ const ActivityForm = () => {
   if (ACCOUNT_STATUS === API_STATUS.PENDING) {
     return <BackdropLoader />;
   }
+  console.log(getValues("end_time"));
 
   return (
     <>
@@ -116,12 +119,12 @@ const ActivityForm = () => {
               lg: 6,
             }}
           >
-            <CustomDateTimePicker
+            <CustomTimePicker
               setValue={setValue}
               getValues={getValues}
               label="Start Time"
               name="start_time"
-              maxDateTime={
+              maxTime={
                 dayjs(getValues("end_time"))
                   ? dayjs(getValues("end_time"))
                   : undefined
@@ -135,18 +138,33 @@ const ActivityForm = () => {
               lg: 6,
             }}
           >
-            <CustomDateTimePicker
+            <CustomTimePicker
               setValue={setValue}
               getValues={getValues}
               label="End Time"
               name="end_time"
               errorMessage={errors.end_time?.message as string}
-              minDateTime={
+              minTime={
                 getValues("start_time")
-                  ? dayjs(getValues("start_time")).add(5, "minute")
+                  ? dayjs(getValues("start_time"))
                   : undefined
               }
               disabled={getValues("start_time") ? false : true}
+            />
+          </Grid>
+          <Grid
+            size={{
+              xs: 12,
+              lg: 6,
+            }}
+          >
+            <CustomDatePicker
+              setValue={setValue}
+              getValues={getValues}
+              label="Date"
+              name="date"
+              errorMessage={errors.date?.message as string}
+              format="DD/MM/YYYY"
             />
           </Grid>
           <Grid
