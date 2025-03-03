@@ -8,7 +8,7 @@ import SearchDropDown from "../../components/drop-down/SearchableDropDown";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
 import CustomCheckbox from "../../components/check-box";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addGroupSchema } from "../../schemas/forms";
+import { editGroupSchema } from "../../schemas/forms";
 import { API_STATUS } from "@/utils/enums";
 import { Toaster } from "../../components/snackbar";
 import UsersList from "../../components/shared/selected-user-list";
@@ -33,7 +33,7 @@ const EditGroupModal = ({ openModal, setOpenModal, groupData }: any) => {
   } = useForm({
     reValidateMode: "onChange",
     mode: "onChange",
-    resolver: zodResolver(addGroupSchema),
+    resolver: zodResolver(editGroupSchema),
   });
   const onSubmit = async (data: FieldValues) => {
     dispatch(

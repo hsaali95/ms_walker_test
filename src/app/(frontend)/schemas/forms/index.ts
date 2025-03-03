@@ -287,6 +287,54 @@ export const addGroupSchema = z.object({
       }
     ),
 });
+export const editGroupSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(100, "Name cannot exceed 100 characters"),
+  access_type: z
+    .object(
+      {
+        id: z.number(),
+        name: z.string({ required_error: "Access type is required" }),
+      },
+      { required_error: "Please select access type" }
+    )
+    .nullable()
+    .refine(
+      (data) => {
+        if (data === null) {
+          return false;
+        }
+        return (
+          data.id !== null && data.name.trim().length > 0 && data.name !== null
+        );
+      },
+      {
+        message: "Please select access type",
+      }
+    ),
+  is_active: z
+    .union([z.boolean(), z.string()])
+    .transform((val) => val === true || val === "true")
+    .refine((val) => val === true || val === false, {
+      message: "Active status is required",
+    }),
+  email: z
+    .object(
+      {
+        id: z.number(),
+        email: z.string({
+          required_error: "At least one user must be selected",
+        }),
+      },
+      {
+        required_error: "Please select users",
+      }
+    )
+    .nullable()
+    .optional(), // Makes the email field optional
+});
 export const addTeamSchema = z.object({
   name: z
     .string()
