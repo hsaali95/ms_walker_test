@@ -1,7 +1,4 @@
 import { errorResponse, successResponse } from "@/utils/response.decorator";
-import Role from "@/db/models/role";
-import Users from "@/db/models/user";
-import env from "@/db/config/env";
 import Account from "@/db/models/account";
 import { TCustomers, transformAccount } from "@/utils/transformer";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request

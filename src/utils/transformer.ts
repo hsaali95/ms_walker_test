@@ -259,3 +259,47 @@ export const transformAccount = (customer: TCustomers) => {
     fullCustomerInfo: customer["CUSTOMER NAME"] + " - " + customer["CUST NO "],
   };
 };
+
+export type TItem = {
+  Item: string;
+  Size: string;
+  Description: string;
+  "Vendor #": number;
+  "Vendor Name": string;
+  "Brand #": string;
+  Brand_Description: string;
+  Co_id: number;
+};
+export type TSupplier = {
+  "Vendor Name": string;
+  "Vendor #": number;
+  vendor_c: string;
+  Co_id: number;
+  vendorFullInfo: string;
+  is_new: boolean;
+};
+
+export const transformItem = (item: TItem, supplier: Supplier | undefined) => {
+  return {
+    Item: item.Item,
+    Size: item.Size,
+    Description: item.Description,
+    "Brand #": item["Brand #"],
+    Brand_Description: item["Brand_Description"],
+    ItemFullInfo: item.Description + " - " + item.Item,
+    is_new: true,
+    "Vendor #": item["Vendor #"],
+    supplier_id: supplier?.id,
+    Supplier: supplier
+      ? undefined
+      : {
+          "Vendor Name": item["Vendor Name"],
+          "Vendor #": item["Vendor #"],
+          vendor_c: item["Vendor Name"] + " - " + (item["Vendor #"] || ""),
+          Co_id: item["Co_id"],
+          vendorFullInfo:
+            item["Vendor Name"] + " - " + (item["Vendor #"] || ""),
+          is_new: true,
+        },
+  };
+};
