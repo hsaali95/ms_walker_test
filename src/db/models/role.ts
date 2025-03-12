@@ -4,6 +4,7 @@ import sequelize from "@/db/config/config";
 class Role extends Model {
   public id!: number;
   public name?: string;
+  public identifier?: string;
 }
 
 Role.init(
@@ -14,6 +15,10 @@ Role.init(
       primaryKey: true,
     },
     name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    identifier: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
