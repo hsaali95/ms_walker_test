@@ -4,7 +4,6 @@ import Item from "@/db/models/item";
 import Supplier from "@/db/models/supplier";
 import Survey from "@/db/models/survey";
 import SurveyStatus from "@/db/models/survey-status";
-import { Op } from "sequelize";
 
 type SurveyDetail = {
   DetailID: number;
@@ -32,42 +31,57 @@ type SurveyDetail = {
   Rep05ID: number;
 };
 
-export const transformSurvey = async (surveyData: SurveyDetail) => {
+export const transformSurvey = async (
+  surveyData: SurveyDetail,
+  surveyStatuses: SurveyStatus[]
+) => {
   let supplierId;
-  const itemNo = surveyData.Item1Name.split(" ").pop();
-  let [item, account] = await Promise.all([
+  const itemNo = surveyData.Item1Name.toString().split(" ").pop();
+  // eslint-disable-next-line
+  let [item, account, display] = await Promise.all([
     Item.findOne({
       where: {
         Item: itemNo,
       },
     }),
-    Account.findOne({
+    Account.findOrCreate({
       where: {
-        "CUST NO": surveyData.AccountNumber,
+        custNumber: surveyData.AccountNumber || 0,
+      },
+      defaults: {
+        custNumber: surveyData.AccountNumber || 0,
+        customerName: surveyData.AccountName,
+        city: surveyData.AccountCity,
+        is_new: true,
+      },
+      returning: true,
+    }),
+    Display.findOrCreate({
+      where: {
+        display_type: surveyData.DisplayType,
       },
     }),
   ]);
 
-  if (!account) {
-    account = await Account.create({
-      "CUST NO": surveyData.AccountNumber,
-      "CUSTOMER NAME": surveyData.AccountName,
-      "CUSTOMER CITY": surveyData.AccountCity,
-    });
-  }
-  console.log(item);
   if (!item) {
     let supplier;
     if (surveyData.Supplier1Name) {
-      supplier = await Supplier.findOne({
+      [supplier] = await Supplier.findOrCreate({
         where: {
-          "Vendor Name": surveyData.Supplier1Name,
+          "Vendor Name": surveyData.Supplier1Name.toString(),
         },
+        defaults: {
+          is_new: true,
+        },
+        returning: true,
       });
     } else {
-      supplier = await Supplier.create({
-        "Vendor Name": surveyData.Supplier1Name,
-      });
+      supplier = await Supplier.create(
+        {
+          "Vendor Name": surveyData.Supplier1Name,
+        },
+        { returning: true }
+      );
     }
     item = await Item.create({
       supplier_id: supplier!.id,
@@ -78,27 +92,13 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
   } else {
     supplierId = item?.supplier_id;
   }
-  // eslint-disable-next-line
-  let [surveyStatus, display] = await Promise.all([
-    SurveyStatus.findOne({
-      where: {
-        status: {
-          [Op.iLike]: surveyData.Status,
-        },
-      },
-    }),
-    Display.findOne({
-      where: {
-        display_type: surveyData.DisplayType,
-      },
-    }),
-  ]);
 
-  if (!display) {
-    display = await Display.create({
-      display_type: surveyData.DisplayType,
-    });
-  }
+  const surveyStatus = surveyStatuses.find(
+    (surveyStatus) =>
+      surveyStatus.status.toLowerCase() == surveyData.Status.toLowerCase()
+  );
+
+  // eslint-disable-next-line
 
   return {
     other_supplier: surveyData.Other1Supplier,
@@ -106,12 +106,16 @@ export const transformSurvey = async (surveyData: SurveyDetail) => {
     number_of_cases: surveyData.Number1Cases || 0,
     display_coast: surveyData.Display1Cost.toString().replaceAll("$", "") || 0,
     notes: surveyData.notes,
-    account_id: account.id,
-    display_id: display.id,
+    account_id: account[0].id,
+    display_id: display[0].id,
     supplier_id: supplierId,
     item_id: item.id,
     survey_status_id: surveyStatus!.id,
+    DATARECORDID: surveyData.DATARECORDID || "",
     created_at: surveyData.Date,
+    is_new: true,
+    identifier: surveyData.id,
+    meta_id: surveyData.meta_id,
   } as unknown as Survey;
 };
 

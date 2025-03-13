@@ -19,6 +19,10 @@ class Survey extends Model {
   public supplier_id!: number;
   public item_id!: number;
   public survey_status_id!: number;
+  public is_new!: boolean;
+  public DATARECORDID!: string;
+  public meta_id!: string;
+  public identifier!: string;
 }
 
 Survey.init(
@@ -70,6 +74,23 @@ Survey.init(
     item_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    is_new: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: true,
+    },
+    DATARECORDID: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    meta_id: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    identifier: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
 
     created_at: {

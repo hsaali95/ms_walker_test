@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on
 // Handle POST requests for user creation
 export async function POST(request: Request) {
   try {
-    let accounts: TCustomers[] = await request.json();
+    const accounts: TCustomers[] = await request.json();
     const existingAccounts = await Account.findAll({
       attributes: ["custNumber"],
     });

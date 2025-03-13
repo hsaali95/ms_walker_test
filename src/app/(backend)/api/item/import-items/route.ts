@@ -1,6 +1,5 @@
 import { errorResponse, successResponse } from "@/utils/response.decorator";
-import Account from "@/db/models/account";
-import { TItem, transformAccount, transformItem } from "@/utils/transformer";
+import { TItem, transformItem } from "@/utils/transformer";
 import Item from "@/db/models/item";
 import Supplier from "@/db/models/supplier";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
@@ -8,7 +7,7 @@ export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on
 // Handle POST requests for user creation
 export async function POST(request: Request) {
   try {
-    let items: TItem[] = await request.json();
+    const items: TItem[] = await request.json();
     const existingItems = await Item.findAll({
       attributes: ["Item"],
     });
@@ -29,6 +28,7 @@ export async function POST(request: Request) {
           (supplier) => +supplier.dataValues["Vendor #"] == item["Vendor #"]
         );
         const transformed = transformItem(item, supplier);
+        // eslint-disable-next-line
         supplier
           ? itemsWithSupplier.push(transformed)
           : itemsWithOutSupplier.push(transformed);
