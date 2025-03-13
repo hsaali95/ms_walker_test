@@ -1,21 +1,24 @@
 "use client";
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInput from "../../components/input";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../../schemas/forms";
+import { userResetPasswordSchema } from "../../schemas/forms";
 import CustomButton from "../../components/button";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
-import { postLogin } from "../../redux/slices/auth/login-slice";
-import { API_STATUS, ROLE } from "@/utils/enums";
+import { API_STATUS } from "@/utils/enums";
 import { useRouter } from "next/navigation";
 import Ms_walker from "../../../../../public/assets/svg/ms_walker_black.svg";
 import Image from "next/image";
-const Login = () => {
+import { getUserData } from "@/utils/helper";
+import { resetUserPassword } from "../../redux/slices/auth/login-user-reset-password-slice";
+const ResetPassword = () => {
+  const [userData, setUserData] = useState<any>();
+
   const dispatch = useAppDispatch();
   const { status, data: LOGIN_USER_DATA } = useAppSelector(
-    (state) => state.login
+    (state) => state.resetLoginUserPassword
   );
   const router = useRouter();
   const {
@@ -25,35 +28,32 @@ const Login = () => {
   } = useForm({
     reValidateMode: "onChange",
     mode: "onChange",
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(userResetPasswordSchema),
   });
   const onSubmit = async (data: FieldValues) => {
-    const { email, password } = data;
+    console.log("resetdata", data);
+    const { password } = data;
     dispatch(
-      postLogin({
-        email,
-        password,
+      resetUserPassword({
+        userId: userData?.id,
+        newPassword: password,
       })
     );
   };
 
   useEffect(() => {
     if (status === API_STATUS.SUCCEEDED) {
-      console.log("LOGIN_USER_DATA", LOGIN_USER_DATA.is_new);
-      if (!LOGIN_USER_DATA.is_new) {
-        router.push("/reset-password");
-      } else {
-        if (LOGIN_USER_DATA?.role_id === ROLE.ADMIN) {
-          router.push("/all-survey");
-        } else if (LOGIN_USER_DATA?.role_id === ROLE.AGENT) {
-          router.push("/survey");
-        } else if (LOGIN_USER_DATA?.role_id === ROLE.MANAGER) {
-          router.push("/survey");
-        }
-      }
+      router.push("/login");
     }
   }, [status, router, LOGIN_USER_DATA]);
-
+  useEffect(() => {
+    getUserData()
+      .then((res) => {
+        // const role = res?.user?.role_id;
+        setUserData(res?.user);
+      })
+      .catch((err) => console.error("Error fetching user data:", err));
+  }, []);
   return (
     <Box
       display={"flex"}
@@ -80,27 +80,29 @@ const Login = () => {
         }}
       >
         <CustomInput
-          label="Email"
-          placeholder="Email"
-          name="email"
-          register={register}
-          errorMessage={errors?.email?.message as string}
-          inputStyles={{ mb: 2 }}
-        />
-        <CustomInput
           label="Password"
           placeholder="Password"
           name="password"
+          isPasswordField
           type="text"
           register={register}
           errorMessage={errors?.password?.message as string}
-          isPasswordField
           inputStyles={{ mb: 2 }}
+        />
+        <CustomInput
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          isPasswordField
+          type="text"
+          register={register}
+          inputStyles={{ mb: 2 }}
+          errorMessage={errors?.confirmPassword?.message as string}
         />
 
         <CustomButton
           type="submit"
-          title="Login"
+          title="Reset"
           loading={status === API_STATUS.PENDING}
         />
       </Box>
@@ -108,4 +110,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;
