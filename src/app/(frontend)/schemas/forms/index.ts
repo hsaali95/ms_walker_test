@@ -804,3 +804,25 @@ export const resetPasswordSchema = z
     message: "Passwords must match",
     path: ["confirmPassword"], // Point to confirmPassword for error handling
   });
+
+export const userResetPasswordSchema = z
+  .object({
+    password: z
+      .string({ required_error: "Please enter password" })
+      .min(8, "Password must be at least 8 characters long")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(
+        /[@$!%*?&]/,
+        "Password must contain at least one special character (@, $, !, %, *, ?, &)"
+      ),
+
+    confirmPassword: z
+      .string({ required_error: "Please confirm your password" })
+      .min(1, "Confirmation is required"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"], // Point to confirmPassword for error handling
+  });

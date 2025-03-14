@@ -39,21 +39,25 @@ export async function POST(request: Request) {
     // Prepare user response without password
     const userResponse = existingUser.get({ plain: true });
     delete (userResponse as any).password;
-
-    // Generate tokens
-    const accessToken = await JWTService.signAccessToken(
-      { id: userResponse.id, role_id: userResponse?.role_id },
-      ACCESS_TOKEN_TIME || ""
-    );
-    const refreshToken = await JWTService.signRefreshToken(
-      { id: userResponse.id },
-      REFRESH_TOKEN_TIME || ""
-    );
+    let accessToken: any;
+    let refreshToken: any;
+    if (existingUser.is_new) {
+      console.log("existingUser", existingUser.is_new);
+      // Generate tokens
+      accessToken = await JWTService.signAccessToken(
+        { id: userResponse.id, role_id: userResponse?.role_id },
+        ACCESS_TOKEN_TIME || ""
+      );
+      refreshToken = await JWTService.signRefreshToken(
+        { id: userResponse.id },
+        REFRESH_TOKEN_TIME || ""
+      );
+    }
 
     // Set tokens in cookies
     const tokens: any = {
-      accessToken,
-      refreshToken,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
       user: userResponse,
     };
 
@@ -62,7 +66,9 @@ export async function POST(request: Request) {
         ...userResponse,
         tokens,
       },
-      "User logged in successfully"
+      existingUser.is_new
+        ? "User logged in successfully"
+        : "Please reset your password before logging in."
     );
     return await setCookie("session", tokens, res);
   } catch (error: any) {

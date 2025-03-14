@@ -12,6 +12,10 @@ class Activity extends Model {
   public activity_log!: string;
   public notes!: string;
   public merch_rep_id!: string;
+  public GeoLocation!: string;
+  public FormId!: number;
+  public DATARECORDID!: string;
+  public NumberOfCases!: number;
 }
 
 Activity.init(
@@ -23,15 +27,15 @@ Activity.init(
     },
     start_time: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     end_time: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     date: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
+      allowNull: true,
     },
     is_complete: {
       type: DataTypes.BOOLEAN,
@@ -43,15 +47,36 @@ Activity.init(
     },
     activity_log: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     notes: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     merch_rep_id: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
+    },
+    GeoLocation: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    FormId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    DATARECORDID: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    NumberOfCases: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    is_import: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     },
     created_at: {
       type: DataTypes.DATE,
