@@ -36,8 +36,8 @@ export async function GET(request: Request) {
 
     // Manager-specific filtering
     const forManager =
-      userData?.payload?.id && userData?.payload?.role_id === 3 // Role ID 3 corresponds to manager
-        ? { user_id: userData?.payload?.id }
+      userData?.id && userData?.role_id === 3 // Role ID 3 corresponds to manager
+        ? { user_id: userData?.id }
         : undefined;
 
     // Fetch teams with pagination and associations
