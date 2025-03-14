@@ -45,9 +45,7 @@ export async function GET(request: NextRequest) {
     const userData: any = await JWTService.verifyAccessToken(token || "");
 
     const managerId =
-      userData?.id && userData?.role_id === 3
-        ? userData?.id
-        : undefined;
+      userData?.id && userData?.role_id === 3 ? userData?.id : undefined;
     if (managerId) {
       // Fetch all teams and members assigned to the provided manager_id
       teamData = await Team.findAll({
@@ -55,20 +53,19 @@ export async function GET(request: NextRequest) {
         include: [
           {
             model: TeamManagers,
-            separate: true,
             as: "team_managers",
             attributes: ["user_id"],
             where: { user_id: managerId ? managerId : null },
+            required: true
           },
           {
             model: TeamMembers,
-            separate: true,
             as: "team_members",
+            required: true,
             attributes: ["user_id"],
           },
         ],
       });
-
       userIds = teamData?.flatMap((team: any) =>
         team.team_members?.map((member: any) => member.user_id)
       );
