@@ -1,9 +1,11 @@
+import { TTeam } from "@/app/(backend)/api/team/import-teams/route";
 import Account from "@/db/models/account";
 import Display from "@/db/models/display";
 import Item from "@/db/models/item";
 import Supplier from "@/db/models/supplier";
 import Survey from "@/db/models/survey";
 import SurveyStatus from "@/db/models/survey-status";
+import Team from "@/db/models/teams";
 
 type SurveyDetail = {
   DetailID: number;
@@ -62,7 +64,6 @@ export const transformSurvey = async (
       },
     }),
   ]);
-
   if (!item) {
     let supplier;
     if (surveyData.Supplier1Name) {
@@ -90,20 +91,22 @@ export const transformSurvey = async (
     });
     supplierId = supplier!.id;
   } else {
-    supplierId = item?.supplier_id;
+    supplierId = item?.dataValues.supplier_id;
   }
 
   const surveyStatus = surveyStatuses.find(
     (surveyStatus) =>
       surveyStatus.status.toLowerCase() == surveyData.Status.toLowerCase()
   );
-
   // eslint-disable-next-line
 
   return {
     other_supplier: surveyData.Other1Supplier,
     other_item: surveyData.Other1Item,
-    number_of_cases: surveyData.Number1Cases || 0,
+    number_of_cases:
+      !surveyData.Number1Cases || isNaN(surveyData.Number1Cases)
+        ? 0
+        : surveyData.Number1Cases,
     display_coast: surveyData.Display1Cost.toString().replaceAll("$", "") || 0,
     notes: surveyData.notes,
     account_id: account[0].id,
@@ -305,5 +308,20 @@ export const transformItem = (item: TItem, supplier: Supplier | undefined) => {
             item["Vendor Name"] + " - " + (item["Vendor #"] || ""),
           is_new: true,
         },
+  };
+};
+
+export const transformTeam = (
+  team: Partial<TTeam>,
+  userIds: number[],
+  managerId: number
+) => {
+  return {
+    name: team.GroupName,
+    is_active: true,
+    created_at: team.GroupCreationTime?.$date,
+    team_members: userIds.map((userId) => ({ user_id: userId })),
+    team_managers: [{ user_id: managerId }],
+    identifier: team._id?.$oid || "",
   };
 };

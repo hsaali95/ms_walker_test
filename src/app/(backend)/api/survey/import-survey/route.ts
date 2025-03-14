@@ -98,7 +98,7 @@ export async function POST() {
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
         let filePayload = null;
-        if (record.id > 24255) {
+        if (record.id > 26295) {
           filePayload = await fileUpload(baseUrl + image);
         }
         // Save the file information to the database
