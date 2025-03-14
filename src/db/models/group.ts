@@ -6,8 +6,11 @@ import GroupMembers from "./group-members";
 class Group extends Model {
   public id!: number;
   public name!: string;
+  public identifier!: string;
   public access_type_id!: number;
   public is_active!: boolean;
+  public is_new!: boolean;
+  public is_delete!: boolean;
 }
 
 Group.init(
@@ -22,15 +25,27 @@ Group.init(
       allowNull: false,
       unique: true,
     },
+    identifier: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
+    },
     access_type_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     is_active: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
-
+    is_new: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    is_delete: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
