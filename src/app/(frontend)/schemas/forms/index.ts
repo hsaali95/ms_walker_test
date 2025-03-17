@@ -402,6 +402,59 @@ export const addTeamSchema = z.object({
       }
     ),
 });
+export const editTeamSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .max(100, "Name cannot exceed 100 characters"),
+
+  is_active: z
+    .union([z.boolean(), z.string()])
+    .transform((val) => val === true || val === "true")
+    .refine((val) => val === true || val === false, {
+      message: "Active status is required",
+    }),
+  email: z
+    .object(
+      {
+        id: z.number(),
+        email: z.string({
+          required_error: "At least one user must be selected",
+        }),
+      },
+      {
+        required_error: "Please select users",
+      }
+    )
+    .nullable()
+    .optional(),
+  manager: z
+    .object(
+      {
+        id: z.number(),
+        email: z.string({
+          required_error: "Please select manager",
+        }),
+      },
+      { required_error: "Please select manager" }
+    )
+    .nullable()
+    .refine(
+      (data) => {
+        if (data === null) {
+          return false;
+        }
+        return (
+          data.id !== null &&
+          data.email.trim().length > 0 &&
+          data.email !== null
+        );
+      },
+      {
+        message: "Please select users",
+      }
+    ),
+});
 
 // export const activitySchema = z.object({
 //   notes: z

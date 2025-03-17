@@ -73,6 +73,7 @@ export const TEAM_TABLE_COLUMN = [
   "Managers",
   "Member Count",
   "Is Active",
+  "Action",
 ];
 
 export const BULK_OPERATION = [

@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "@/db/config/config";
+import Users from "./user";
 
 class TeamMembers extends Model {
   public id!: number;
@@ -53,6 +54,10 @@ TeamMembers.init(
 );
 
 export default TeamMembers;
+TeamMembers.belongsTo(Users, {
+  as: "teams_group",
+  foreignKey: "user_id",
+});
 
 // (async function syncUserTable() {
 //   try {

@@ -26,6 +26,12 @@ const TeamTable = () => {
     (state) => state.createTeam
   );
   const { page, pageSize } = teamPaginationInfo;
+  const { status: EDIT_TEAM_STATUS } = useAppSelector(
+    (state) => state.geteditTeamSlice
+  );
+  const { status: DELETE_TEAM_STATUS } = useAppSelector(
+    (state) => state.getDeleteTeam
+  );
 
   const dispatch = useAppDispatch();
 
@@ -51,10 +57,14 @@ const TeamTable = () => {
     dispatch(setTeamPage(0));
   };
   useEffect(() => {
-    if (CREATED_TEAM_STATUS === API_STATUS.SUCCEEDED) {
+    if (
+      CREATED_TEAM_STATUS === API_STATUS.SUCCEEDED ||
+      EDIT_TEAM_STATUS === API_STATUS.SUCCEEDED ||
+      DELETE_TEAM_STATUS === API_STATUS.SUCCEEDED
+    ) {
       getTeamData();
     }
-  }, [CREATED_TEAM_STATUS]);
+  }, [CREATED_TEAM_STATUS, EDIT_TEAM_STATUS, DELETE_TEAM_STATUS]);
 
   return (
     <>
