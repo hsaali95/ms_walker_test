@@ -4,6 +4,7 @@ import pg from "pg";
 const sequelize = new Sequelize(
   process.env.POSTGRESQL_CONNECTION_STRING || "",
   {
+    logging: true,
     dialect: "postgres" /* 'postgres' */,
     dialectModule: pg,
     schema: "public",

@@ -3,7 +3,7 @@ import sequelize from "@/db/config/config";
 
 class SurveyStatus extends Model {
   public id!: number; // Primary key
-  public Status!: string;
+  public status!: string;
 }
 
 SurveyStatus.init(

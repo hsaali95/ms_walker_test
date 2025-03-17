@@ -9,6 +9,8 @@ class Users extends Model {
   public name?: string;
   public image?: string;
   public role_id?: number;
+  public is_new?: boolean;
+  public identifier?: string;
   public fullNameWithEmail?: string; // Define the virtual attribute type
 }
 
@@ -39,6 +41,15 @@ Users.init(
     image: {
       type: DataTypes.STRING(255),
       allowNull: false,
+    },
+    identifier: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    is_new: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: true,
     },
     created_at: {
       type: DataTypes.DATE,

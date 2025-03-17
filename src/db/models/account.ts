@@ -72,6 +72,7 @@ class Account extends Model {
   public jobTitle!: string | null;
   public dellDay!: string | null;
   public fullCustomerInfo!: string;
+  public isNew!: boolean;
 }
 
 Account.init(
@@ -163,6 +164,11 @@ Account.init(
     dellDay: { type: DataTypes.STRING(50), field: "DEL DAY" },
     fullCustomerInfo: {
       type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    isNew: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
       allowNull: true,
     },
     created_at: {

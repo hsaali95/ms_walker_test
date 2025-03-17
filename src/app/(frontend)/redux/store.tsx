@@ -32,6 +32,9 @@ import downloadActivityCsvSlice from "./slices/activity/download-activity-csv-fi
 import getUserIpSlice from "./slices/user-location/get-user-ip-slice";
 import editGroupSlice from "./slices/group/edit-group-slice";
 import deleteGroupSlice from "./slices/group/delete-group-slice";
+import resetLoginPasswordSlice from "./slices/auth/login-user-reset-password-slice";
+import deleteTeamSlice from "./slices/team/delete-team-slice";
+import editTeamSlice from "./slices/team/edit-team-slice";
 export const store = configureStore({
   reducer: {
     login: loginSlice,
@@ -67,6 +70,9 @@ export const store = configureStore({
     getUserIp: getUserIpSlice,
     getEditGroup: editGroupSlice,
     deleteGroup: deleteGroupSlice,
+    resetLoginUserPassword: resetLoginPasswordSlice,
+    getDeleteTeam: deleteTeamSlice,
+    geteditTeamSlice: editTeamSlice,
   },
 });
 

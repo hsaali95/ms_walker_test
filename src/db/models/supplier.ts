@@ -8,6 +8,7 @@ class Supplier extends Model {
   public vendorC!: string;
   public Co_id!: string;
   public vendorFullInfo!: string;
+  public is_new!: boolean;
 }
 
 Supplier.init(
@@ -39,6 +40,11 @@ Supplier.init(
     },
     vendorFullInfo: {
       type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    is_new: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
       allowNull: true,
     },
     created_at: {

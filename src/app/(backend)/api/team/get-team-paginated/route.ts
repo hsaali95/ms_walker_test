@@ -62,6 +62,13 @@ export async function GET(request: Request) {
           model: TeamMembers,
           as: "team_members",
           separate: true,
+          include: [
+            {
+              model: Users,
+              as: "teams_group",
+              attributes: ["id", "fullNameWithEmail", "name", "email"],
+            },
+          ],
         },
       ],
       order: [["id", "desc"]],

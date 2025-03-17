@@ -136,7 +136,7 @@ export async function middleware(request: NextRequest) {
     return new NextResponse(null, {
       status: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*",  // Allow all origins
+        "Access-Control-Allow-Origin": "*", // Allow all origins
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": "true",
@@ -148,8 +148,14 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith("/api")) {
     const response = NextResponse.next();
     response.headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
-    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    response.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    response.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
     response.headers.set("Access-Control-Allow-Credentials", "true");
     return response;
   }
@@ -165,8 +171,8 @@ export async function middleware(request: NextRequest) {
     console.error("Error parsing user cookie:", error);
   }
 
-  const isPublicPath = path === "/login" || path === "/signup";
-
+  const isPublicPath =
+    path === "/login" || path === "/signup" || path === "/reset-password";
   if (!path.startsWith("/api")) {
     if (isPublicPath && session_accessToken) {
       return NextResponse.redirect(new URL("/survey", request.url));
@@ -185,10 +191,16 @@ export async function middleware(request: NextRequest) {
           "/activity",
           "/team",
           "/group",
-          "/all-activity"
+          "/all-activity",
         ],
         [ROLE.AGENT]: ["/survey", "/activity", "/all-activity"],
-        [ROLE.MANAGER]: ["/survey", "/all-survey", "/team", "/activity", "/all-activity"],
+        [ROLE.MANAGER]: [
+          "/survey",
+          "/all-survey",
+          "/team",
+          "/activity",
+          "/all-activity",
+        ],
       };
 
       if (roleRoutes[user.role_id]?.includes(path)) {
@@ -229,6 +241,7 @@ export const config = {
     "/survey",
     "/all-survey",
     "/login",
+    "/reset-password",
     "/register-user",
     "/activity",
     "/team",
@@ -237,4 +250,3 @@ export const config = {
     "/api/:path*",
   ],
 };
-

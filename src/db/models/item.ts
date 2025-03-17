@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "@/db/config/config";
+import Supplier from "./supplier";
 
 class Item extends Model {
   public id!: number; // Primary key
@@ -11,6 +12,7 @@ class Item extends Model {
   public Brand_Description!: string;
   public supplier_id!: number;
   public ItemFullInfo!: string;
+  public is_new!: boolean;
 }
 
 Item.init(
@@ -51,6 +53,11 @@ Item.init(
     },
     ItemFullInfo: {
       type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    is_new: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
       allowNull: true,
     },
 
@@ -95,6 +102,15 @@ Item.init(
 );
 
 export default Item;
+
+// Item.hasOne(Supplier, {
+//   foreignKey: "supplier_id",
+// });
+
+Item.belongsTo(Supplier, {
+  foreignKey: "supplier_id",
+  as: "Supplier",
+});
 
 // (async function syncUserTable() {
 //   try {
