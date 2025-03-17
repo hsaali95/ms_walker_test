@@ -40,7 +40,7 @@ const Login = () => {
   useEffect(() => {
     if (status === API_STATUS.SUCCEEDED) {
       console.log("LOGIN_USER_DATA", LOGIN_USER_DATA.is_new);
-      if (!LOGIN_USER_DATA.is_new) {
+      if (LOGIN_USER_DATA.is_new) {
         router.push("/reset-password");
       } else {
         if (LOGIN_USER_DATA?.role_id === ROLE.ADMIN) {

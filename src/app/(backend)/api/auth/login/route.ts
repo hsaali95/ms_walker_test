@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     delete (userResponse as any).password;
     let accessToken: any;
     let refreshToken: any;
-    if (existingUser.is_new) {
+    if (!existingUser.is_new) {
       console.log("existingUser", existingUser.is_new);
       // Generate tokens
       accessToken = await JWTService.signAccessToken(
