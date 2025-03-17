@@ -3,7 +3,6 @@ import Role from "@/db/models/role";
 import Users from "@/db/models/user";
 import env from "@/db/config/env";
 import { Op } from "sequelize";
-import { ROLE } from "@/utils/enums";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 type TBody = {
@@ -18,7 +17,7 @@ type TBody = {
 // Handle POST requests for user creation
 export async function POST(request: Request) {
   try {
-    let newUsers = await request.json();
+    const newUsers = await request.json();
     const existingUsers = await Users.findAll({
       where: {
         email: {

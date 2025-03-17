@@ -1,11 +1,11 @@
 import { TTeam } from "@/app/(backend)/api/team/import-teams/route";
+import AccessType from "@/db/models/access-type";
 import Account from "@/db/models/account";
 import Display from "@/db/models/display";
 import Item from "@/db/models/item";
 import Supplier from "@/db/models/supplier";
 import Survey from "@/db/models/survey";
 import SurveyStatus from "@/db/models/survey-status";
-import Team from "@/db/models/teams";
 
 type SurveyDetail = {
   DetailID: number;
@@ -322,6 +322,20 @@ export const transformTeam = (
     created_at: team.GroupCreationTime?.$date,
     team_members: userIds.map((userId) => ({ user_id: userId })),
     team_managers: [{ user_id: managerId }],
+    identifier: team._id?.$oid || "",
+  };
+};
+
+export const transformGroup = (
+  team: Partial<TTeam>,
+  userIds: number[],
+  access_type:Partial<AccessType>) => {
+  return {
+    name: team.GroupName,
+    is_active: true,
+    created_at: team.GroupCreationTime?.$date,
+    group_members: userIds.map((userId) => ({ user_id: userId })),
+    access_type_id:access_type ? access_type.id : null ,
     identifier: team._id?.$oid || "",
   };
 };

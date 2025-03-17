@@ -1,9 +1,10 @@
 import env from "@/db/config/env";
-import Team from "@/db/models/teams";
+import AccessType from "@/db/models/access-type";
+import Group from "@/db/models/group";
 import Users from "@/db/models/user";
 import { ROLE } from "@/utils/enums";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
-import { transformTeam } from "@/utils/transformer";
+import { transformGroup } from "@/utils/transformer";
 import { promises as fs } from "fs";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
@@ -30,7 +31,7 @@ export async function POST() {
         "utf8"
       );
       records = JSON.parse(file).filter(
-        (record: TTeam) => record.Teams === true
+        (record: TTeam) => record.Teams === false
       );
     } catch {
       return errorResponse("Records is required", 404);
@@ -38,6 +39,9 @@ export async function POST() {
     const users = await Users.findAll({
       attributes: ["id", "email"],
     });
+    const accesstypes = await AccessType.findAll({
+      attributes: ["id", "name"]
+    })
     const teams: number[] = [];
     for (let i = 0; i < records.length; i++) {
       const record = records[i];
@@ -62,21 +66,13 @@ export async function POST() {
         users.push(...newUsers);
         exited_users.push(...newUsers.map((user) => user.id));
       }
-
-      let manager = users.find(
-        (db_user) => db_user.email.toLowerCase() == record.Manager.toLowerCase()
-      );
-
-      if (!manager) {
-        manager = (
-          await createUsers([record.Manager.toLowerCase()], ROLE.MANAGER)
-        )[0];
-        users.push(manager);
-      }
-      const team = await Team.create(
-        transformTeam(record, exited_users, manager.id),
+      const accesstype = accesstypes.find(acc => acc.name?.toLowerCase() === record.AccessType.toLowerCase())!
+     const group = transformGroup(record, exited_users,accesstype );
+ 
+      const team = await Group.create(
+        group,
         {
-          include: ["team_members", "team_managers"],
+          include: [ "group_members"],
           returning: true,
         }
       );
