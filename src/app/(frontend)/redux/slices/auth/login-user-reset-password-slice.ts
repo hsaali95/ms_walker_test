@@ -37,7 +37,11 @@ export const resetUserPassword = createAsyncThunk(
 export const resetLoginPasswordSlice = createSlice({
   name: "resetPassword",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserResetIdle: (state) => {
+      state.status = API_STATUS.IDLE;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(resetUserPassword.pending, (state) => {
@@ -53,5 +57,6 @@ export const resetLoginPasswordSlice = createSlice({
       });
   },
 });
+export const { setUserResetIdle } = resetLoginPasswordSlice.actions;
 
 export default resetLoginPasswordSlice.reducer;

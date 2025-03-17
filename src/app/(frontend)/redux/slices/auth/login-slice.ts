@@ -51,7 +51,11 @@ export const postLogin = createAsyncThunk(
 export const loginSlice = createSlice({
   name: "user/login",
   initialState,
-  reducers: {},
+  reducers: {
+    setLoginIdle: (state) => {
+      state.status = API_STATUS.IDLE;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postLogin.pending, (state) => {
@@ -70,5 +74,6 @@ export const loginSlice = createSlice({
       });
   },
 });
+export const { setLoginIdle } = loginSlice.actions;
 
 export default loginSlice.reducer;

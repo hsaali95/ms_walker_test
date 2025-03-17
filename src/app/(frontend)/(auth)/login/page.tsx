@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../schemas/forms";
 import CustomButton from "../../components/button";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
-import { postLogin } from "../../redux/slices/auth/login-slice";
+import { postLogin, setLoginIdle } from "../../redux/slices/auth/login-slice";
 import { API_STATUS, ROLE } from "@/utils/enums";
 import { useRouter } from "next/navigation";
 import Ms_walker from "../../../../../public/assets/svg/ms_walker_black.svg";
@@ -53,6 +53,12 @@ const Login = () => {
       }
     }
   }, [status, router, LOGIN_USER_DATA]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setLoginIdle());
+    };
+  }, []);
 
   return (
     <Box
