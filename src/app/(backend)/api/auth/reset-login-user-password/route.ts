@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const hashedPassword = await hashPassword(newPassword);
 
     // Update the user's password
-    await user.update({ password: hashedPassword, is_new: true });
+    await user.update({ password: hashedPassword, is_new: false });
 
     return successResponse(null, "Password reset successfully");
   } catch (error: any) {

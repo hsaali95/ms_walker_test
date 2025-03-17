@@ -66,7 +66,7 @@ export async function POST(request: Request) {
         ...userResponse,
         tokens,
       },
-      existingUser.is_new
+      !existingUser.is_new
         ? "User logged in successfully"
         : "Please reset your password before logging in."
     );
