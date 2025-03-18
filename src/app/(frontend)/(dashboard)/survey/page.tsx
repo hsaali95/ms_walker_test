@@ -11,6 +11,7 @@ import { clearAccountByIdData } from "../../redux/slices/account/get-account-by-
 import { clearSupplier } from "../../redux/slices/supplier/get-supplier-slice";
 import { clearDisplayType } from "../../redux/slices/display/get-display-type-slice";
 import { clearItem } from "../../redux/slices/item/get-item-slice";
+import { setSurveyFileStatus } from "../../redux/slices/survey/file-upload-slice";
 
 const Survey = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const Survey = () => {
       dispatch(clearSupplier());
       dispatch(clearDisplayType());
       dispatch(clearItem());
+      dispatch(setSurveyFileStatus());
     };
   }, [dispatch]);
   return (

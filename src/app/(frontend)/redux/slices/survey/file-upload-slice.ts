@@ -60,6 +60,9 @@ export const fileUploadSlice = createSlice({
     surveyProgress: (state, action) => {
       state.uploadProgress = action.payload;
     },
+    setSurveyFileStatus: (state) => {
+      state.status = API_STATUS.IDLE;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -76,7 +79,11 @@ export const fileUploadSlice = createSlice({
       });
   },
 });
-export const { setFileIds, removeFileIds, surveyProgress } =
-  fileUploadSlice.actions;
+export const {
+  setFileIds,
+  removeFileIds,
+  surveyProgress,
+  setSurveyFileStatus,
+} = fileUploadSlice.actions;
 
 export default fileUploadSlice.reducer;
