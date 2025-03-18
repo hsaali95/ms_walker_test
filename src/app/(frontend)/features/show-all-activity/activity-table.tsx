@@ -221,6 +221,7 @@ const ActivityTable = () => {
             value={startDate}
             onChange={sendStartDate}
             format={"DD/MM/YYYY"}
+            maxDate={dayjs(endDate)}
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 6, md: 4 }}>
