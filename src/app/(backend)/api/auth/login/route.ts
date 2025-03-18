@@ -53,7 +53,9 @@ export async function POST(request: Request) {
         REFRESH_TOKEN_TIME || ""
       );
     }
-
+    if (![1, 2, 3].includes(userResponse.role_id)) {
+      return errorResponse("You are not allowed to login", 401);
+    }
     // Set tokens in cookies
     const tokens: any = {
       accessToken: accessToken,
