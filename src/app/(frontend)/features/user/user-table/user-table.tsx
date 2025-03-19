@@ -24,6 +24,9 @@ const UserTable = () => {
   const { status: REGISTER_USER_STATUS } = useAppSelector(
     (state) => state.registerUser
   );
+  const { status: DELETE_USER_STATUS } = useAppSelector(
+    (state) => state.deleteUser
+  );
   const { page, pageSize } = userPaginationInfo;
 
   const dispatch = useAppDispatch();
@@ -50,10 +53,13 @@ const UserTable = () => {
     dispatch(setUserPage(0));
   };
   useEffect(() => {
-    if (REGISTER_USER_STATUS === API_STATUS.SUCCEEDED) {
+    if (
+      REGISTER_USER_STATUS === API_STATUS.SUCCEEDED ||
+      DELETE_USER_STATUS === API_STATUS.SUCCEEDED
+    ) {
       getUserData();
     }
-  }, [REGISTER_USER_STATUS]);
+  }, [REGISTER_USER_STATUS, DELETE_USER_STATUS]);
   return (
     <>
       <TableHeading title="User Table" />

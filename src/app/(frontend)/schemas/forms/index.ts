@@ -175,9 +175,9 @@ export const registerUserSchema = z
       .regex(/^[A-Za-z ]+$/, "Name must contain only letters and spaces")
       .trim(),
 
-    image: z
-      .string({ required_error: "Image is required" })
-      .min(3, "Image is required"),
+    // image: z
+    //   .string({ required_error: "Image is required" })
+    //   .min(3, "Image is required"),
 
     email: z
       .string({ required_error: "Please enter email" })

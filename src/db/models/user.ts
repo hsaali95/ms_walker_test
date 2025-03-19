@@ -32,7 +32,7 @@ Users.init(
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      unique: true,
+      // unique: true,
     },
     role_id: {
       type: DataTypes.INTEGER,
@@ -48,7 +48,7 @@ Users.init(
     },
     is_new: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      defaultValue: true,
       allowNull: true,
     },
     created_at: {

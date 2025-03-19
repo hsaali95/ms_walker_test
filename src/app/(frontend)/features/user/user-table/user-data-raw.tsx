@@ -13,6 +13,7 @@ import CustomButton from "@/app/(frontend)/components/button";
 import { resetPassword } from "@/app/(frontend)/redux/slices/register-user/user-reset-password-slice";
 import { API_STATUS } from "@/utils/enums";
 import TableCellWithText from "@/app/(frontend)/components/tables/medium-table/table-cell-with-text";
+import { deleteUser } from "@/app/(frontend)/redux/slices/register-user/delete-user-slice";
 
 interface IUserDataRaw {
   data: any;
@@ -21,8 +22,13 @@ interface IUserDataRaw {
 const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [userId, setUserId] = useState<number | null>(null);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+
   const { status: RESET_PASSWORD_STATUS } = useAppSelector(
     (state) => state.resetPassword
+  );
+  const { status: DELETE_USER_STATUS } = useAppSelector(
+    (state) => state.deleteUser
   );
   const dispatch = useAppDispatch();
 
@@ -50,6 +56,14 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
       setOpenModal(false);
     }
   }, [RESET_PASSWORD_STATUS]);
+  useEffect(() => {
+    if (DELETE_USER_STATUS === API_STATUS.SUCCEEDED) {
+      setDeleteModal(false);
+    }
+  }, [DELETE_USER_STATUS]);
+  const closeDeleteModal = () => {
+    setDeleteModal(false);
+  };
   return (
     <>
       <TableCellWithText text={data?.name} />
@@ -57,9 +71,14 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
       <TableCellWithText text={data?.role?.name} />
       <TableCellWithText
         isEditButton
+        isDeleteButton
         onEdit={() => {
           setOpenModal(true);
           setUserId(data?.id);
+        }}
+        onDelete={() => {
+          setDeleteModal(true);
+          setUserId(data.id);
         }}
       />
       <BasicModal
@@ -102,6 +121,20 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
           />
         </Box>
       </BasicModal>
+      <BasicModal
+        open={deleteModal}
+        cancelModal={closeDeleteModal}
+        isDialogActions
+        deleteLoading={API_STATUS.PENDING === DELETE_USER_STATUS}
+        onDelete={() =>
+          dispatch(
+            deleteUser({
+              userId: userId,
+            })
+          )
+        }
+        modalMessage={"Are you sure you want delete this user?"}
+      />
     </>
   );
 };
