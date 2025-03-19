@@ -760,12 +760,18 @@ export const activitySchema = z
     notes: z
       .string()
       .min(1, "Notes are required")
-      .max(500, "Notes cannot exceed 500 characters"),
+      .max(500, "Notes cannot exceed 500 characters")
+      .refine((val) => val.trim().length > 0, {
+        message: "Notes cannot be empty or contain only spaces",
+      }),
 
     activity_log: z
       .string()
       .min(1, "Activity log is required")
-      .max(1000, "Activity log cannot exceed 1000 characters"),
+      .max(1000, "Activity log cannot exceed 1000 characters")
+      .refine((val) => val.trim().length > 0, {
+        message: "Activity log cannot be empty or contain only spaces",
+      }),
 
     city: z.string().min(1, "City is required").optional(),
 
