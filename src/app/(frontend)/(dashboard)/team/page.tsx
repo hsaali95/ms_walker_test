@@ -5,7 +5,10 @@ import TeamTable from "../../features/team/team-table";
 import { useAppDispatch } from "../../hooks/redux-hook";
 import { clearUsers } from "../../redux/slices/register-user/get-user-slice";
 import { clearManager } from "../../redux/slices/managers/get-manager-slice";
-import { clearTeamTableData } from "../../redux/slices/team/get-paginated-team-slice";
+import {
+  clearTeamTableData,
+  setTeamPage,
+} from "../../redux/slices/team/get-paginated-team-slice";
 
 const Team = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +17,7 @@ const Team = () => {
       dispatch(clearUsers());
       dispatch(clearManager());
       dispatch(clearTeamTableData());
+      dispatch(setTeamPage(0));
     };
   }, [dispatch]);
   return (

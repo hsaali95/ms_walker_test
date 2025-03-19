@@ -4,7 +4,10 @@ import AddUserForm from "../../features/user/add-user-form";
 import UserTable from "../../features/user/user-table/user-table";
 import { useAppDispatch } from "../../hooks/redux-hook";
 import { clearRoles } from "../../redux/slices/roles/get-role-slice";
-import { clearUserTableData } from "../../redux/slices/register-user/get-all-user-slice";
+import {
+  clearUserTableData,
+  setUserPage,
+} from "../../redux/slices/register-user/get-all-user-slice";
 
 const RegisterUser = () => {
   const dispatch = useAppDispatch();
@@ -12,6 +15,7 @@ const RegisterUser = () => {
     return () => {
       dispatch(clearRoles());
       dispatch(clearUserTableData());
+      dispatch(setUserPage(0));
     };
   }, [dispatch]);
   return (
