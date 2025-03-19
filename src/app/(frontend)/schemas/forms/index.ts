@@ -108,7 +108,12 @@ export const addSurveySchema = z.object({
         message: "Please select supplier name",
       }
     ),
-  other_supplier: z.string().nonempty("Other Supplier is required"),
+  other_supplier: z
+    .string()
+    .nonempty("Other Supplier is required")
+    .refine((val) => val.trim().length > 0, {
+      message: "Other Supplier cannot be empty or contain only spaces",
+    }),
   item_name: z
     .object(
       {
@@ -133,8 +138,18 @@ export const addSurveySchema = z.object({
         message: "Please select item name",
       }
     ),
-  other_item: z.string().nonempty("Other Item is required"),
-  notes: z.string().nonempty("Notes are required"),
+  other_item: z
+    .string()
+    .nonempty("Other Item is required")
+    .refine((val) => val.trim().length > 0, {
+      message: "Other Item cannot be empty or contain only spaces",
+    }),
+  notes: z
+    .string()
+    .nonempty("Notes are required")
+    .refine((val) => val.trim().length > 0, {
+      message: "Notes cannot be empty or contain only spaces",
+    }),
   image: z
     .string({ required_error: "Image is required" })
     .min(3, "Image is required"),
@@ -229,7 +244,10 @@ export const addGroupSchema = z.object({
   name: z
     .string()
     .min(1, "Name is required")
-    .max(100, "Name cannot exceed 100 characters"),
+    .max(100, "Name cannot exceed 100 characters")
+    .refine((val) => val.trim().length > 0, {
+      message: "Name cannot be empty or contain only spaces",
+    }),
   access_type: z
     .object(
       {
@@ -339,7 +357,10 @@ export const addTeamSchema = z.object({
   name: z
     .string()
     .min(1, "Name is required")
-    .max(100, "Name cannot exceed 100 characters"),
+    .max(100, "Name cannot exceed 100 characters")
+    .refine((val) => val.trim().length > 0, {
+      message: "Name cannot be empty or contain only spaces",
+    }),
 
   is_active: z
     .union([z.boolean(), z.string()])
