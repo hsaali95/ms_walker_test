@@ -7,6 +7,7 @@ import {
   clearActivityTableData,
   clearAllActivityFields,
   setActivityPage,
+  setActivityRowsPerPage,
 } from "../../redux/slices/activity/get-activity-slice";
 
 const AllActivity = () => {
@@ -17,6 +18,7 @@ const AllActivity = () => {
       dispatch(clearAllActivityFields());
       dispatch(clearActivityTableData());
       dispatch(setActivityPage(0));
+      dispatch(setActivityRowsPerPage(10));
     };
   }, []);
   return (

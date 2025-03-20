@@ -7,6 +7,7 @@ import { clearRoles } from "../../redux/slices/roles/get-role-slice";
 import {
   clearUserTableData,
   setUserPage,
+  setUserRowsPerPage,
 } from "../../redux/slices/register-user/get-all-user-slice";
 
 const RegisterUser = () => {
@@ -16,6 +17,7 @@ const RegisterUser = () => {
       dispatch(clearRoles());
       dispatch(clearUserTableData());
       dispatch(setUserPage(0));
+      dispatch(setUserRowsPerPage(10));
     };
   }, [dispatch]);
   return (

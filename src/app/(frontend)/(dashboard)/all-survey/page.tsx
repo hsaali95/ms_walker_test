@@ -6,6 +6,7 @@ import {
   clearAllSurveyFields,
   clearSurveyTableData,
   setSurveyPage,
+  setSurveyRowsPerPage,
 } from "../../redux/slices/survey/get-survey-slice";
 import { setCsvIdle } from "../../redux/slices/survey/download-file-slice";
 import { setPdfIdle } from "../../redux/slices/survey/download-file-pdf-slice";
@@ -19,6 +20,7 @@ const AllSurvey = () => {
       dispatch(setCsvIdle());
       dispatch(setPdfIdle());
       dispatch(setSurveyPage(0));
+      dispatch(setSurveyRowsPerPage(10));
     };
   }, [dispatch]);
   return (

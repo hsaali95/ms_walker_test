@@ -8,6 +8,7 @@ import { clearManager } from "../../redux/slices/managers/get-manager-slice";
 import {
   clearTeamTableData,
   setTeamPage,
+  setTeamRowsPerPage,
 } from "../../redux/slices/team/get-paginated-team-slice";
 
 const Team = () => {
@@ -18,6 +19,7 @@ const Team = () => {
       dispatch(clearManager());
       dispatch(clearTeamTableData());
       dispatch(setTeamPage(0));
+      dispatch(setTeamRowsPerPage(10));
     };
   }, [dispatch]);
   return (
