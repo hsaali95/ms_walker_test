@@ -12,6 +12,9 @@ type TBody = {
   Email: string;
   UserName: string;
   Roles: string;
+  FirstName: string;
+  LastName: string;
+  Name: string;
 };
 
 // Handle POST requests for user creation
@@ -33,7 +36,6 @@ export async function POST(request: Request) {
     const usersToCreate: any = [];
 
     newUsers.map((user: TBody) => {
-    
       if (
         !existingUsers.find(
           (usr) => usr.email.toLowerCase() == user.Email.toLowerCase()
@@ -58,6 +60,36 @@ export async function POST(request: Request) {
     const users = await Users.bulkCreate(usersToCreate);
 
     return successResponse(users, "Users importes successfully");
+  } catch (error: any) {
+    console.error("Error import users:", error);
+    return errorResponse("Failed to import users", 500);
+  }
+}
+
+// Handle POST requests for user creation
+export async function PUT(request: Request) {
+  try {
+    const users = await request.json();
+    for (let i = 0; i < users.length; i++) {
+      const user: TBody = users[i];
+      if (user.FirstName || user.LastName || user.Name) {
+        await Users.update(
+          {
+            name: user.FirstName || user.Name || user.Email.split("@")[0],
+            last_name: user.LastName || "",
+          },
+          {
+            where: {
+              email: {
+                [Op.iLike]: user.Email.toLowerCase(),
+              },
+            },
+          }
+        );
+      }
+    }
+
+    return successResponse({}, "All users updated successfully");
   } catch (error: any) {
     console.error("Error import users:", error);
     return errorResponse("Failed to import users", 500);
