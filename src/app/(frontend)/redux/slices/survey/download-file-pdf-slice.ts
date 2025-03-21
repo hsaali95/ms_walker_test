@@ -33,6 +33,7 @@ export const downloadFilePdf = createAsyncThunk(
         // url: `survey/get-survey-pdf`,
         url: `survey/service`,
         method: "post",
+        responseType: "blob",
         data: payload || {}, // Send the payload if provided, otherwise send an empty object
         onUploadProgress: (progressEvent: any) => {
           const progress = Math.round(
@@ -44,7 +45,8 @@ export const downloadFilePdf = createAsyncThunk(
     });
 
     // Process the response using the response handler
-    const data = responseHandler(response);
+    const data = response.data;
+    
     return data;
   }
 );

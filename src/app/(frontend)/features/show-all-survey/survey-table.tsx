@@ -39,6 +39,7 @@ import CircularProgressWithLabel from "../../components/circular-progress-bar";
 import CustomButton from "../../components/button";
 import dayjs from "dayjs";
 import { helper } from "@/utils/helper";
+import moment from "moment";
 const SurveyTable = () => {
   const [listIds, setListIds] = useState<any>([]);
   const [exportType, setExportType] = useState<any>("");
@@ -91,7 +92,7 @@ const SurveyTable = () => {
     ) {
       getSurveyTableData();
       setBulkOptions("");
-      setListIds([])
+      setListIds([]);
     }
   }, [DELETE_STATUS, SURVEY_STATUS]);
   useEffect(() => {
@@ -108,14 +109,22 @@ const SurveyTable = () => {
   }, [FILE_STATUS, FILE_LINK]);
   useEffect(() => {
     if (FILE_PDF_STATUS === API_STATUS.SUCCEEDED) {
-      const filePath = PDF_FILE_LINK?.filePath;
-      if (filePath) {
-        // Open the file in a new tab for download
-        const downloadLink = document.createElement("a");
-        downloadLink.href = `${filePath}`;
-        downloadLink.target = "_blank"; // Open in a new tab
-        downloadLink.click();
-      }
+
+      const pdfBlob = new Blob([PDF_FILE_LINK], { type: "application/pdf" });
+
+      // Create a temporary URL for the blob
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Create a hidden <a> element to trigger the download
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = `export-surveys-${moment().format("YYYY-MM-DD HH-mm-ss")}.pdf`; // Set filename
+      document.body.appendChild(link);
+      link.click(); // Start the download
+      document.body.removeChild(link); // Clean up
+
+      // Free memory
+      URL.revokeObjectURL(pdfUrl);
     }
   }, [PDF_FILE_LINK, FILE_PDF_STATUS]);
   const getSurveyTableData = () => {
