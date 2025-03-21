@@ -46,7 +46,7 @@ const UserTable = () => {
   const {
     data: FILE_LINK,
     status: FILE_STATUS,
-    uploadProgress: CSV_UPLOAD_PROGRESS,
+    // uploadProgress: CSV_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.userCsv);
   const { page, pageSize } = userPaginationInfo;
   const { sortColumn, sortOrder } = userSortingInfo;

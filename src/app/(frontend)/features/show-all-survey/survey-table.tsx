@@ -48,12 +48,12 @@ const SurveyTable = () => {
   const {
     data: FILE_LINK,
     status: FILE_STATUS,
-    uploadProgress: CSV_UPLOAD_PROGRESS,
+    // uploadProgress: CSV_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.surveyFileDownload);
   const {
     data: PDF_FILE_LINK,
     status: FILE_PDF_STATUS,
-    uploadProgress: PDF_UPLOAD_PROGRESS,
+    // uploadProgress: PDF_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.downloadSurveyPdf);
   const { status: DELETE_STATUS } = useAppSelector(
     (state) => state.deleteSurvey
