@@ -65,6 +65,8 @@ export const USER_TABLE_COLUMNS = [
   "Last Name",
   "Email",
   "Role",
+  "Group",
+  "Team",
   "Action",
 ];
 export const GROUP_TABLE_COLUMN = [

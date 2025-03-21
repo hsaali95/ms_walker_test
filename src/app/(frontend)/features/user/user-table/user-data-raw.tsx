@@ -23,7 +23,6 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [userId, setUserId] = useState<number | null>(null);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-
   const { status: RESET_PASSWORD_STATUS } = useAppSelector(
     (state) => state.resetPassword
   );
@@ -70,6 +69,33 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
       <TableCellWithText text={data?.last_name} />
       <TableCellWithText text={data?.email} />
       <TableCellWithText text={data?.role?.name} />
+      <TableCellWithText
+        text={
+          data?.users_groups?.length
+            ? data?.users_groups
+                .map((group: any) => group?.group_memebrs_with_group?.name)
+                .filter(Boolean)
+                .join(" | ")
+            : "-"
+        }
+      />
+      <TableCellWithText
+        text={
+          data?.users_teams?.length || data?.users_team_manager
+            ? [
+                ...data.users_teams?.map(
+                  (team: any) => team?.team_memebrs_with_team?.name
+                ),
+                ...data.users_team_manager?.map(
+                  (team: any) => team.team_manager_with_team?.name
+                ),
+              ]
+                .filter(Boolean) // Remove null/undefined values
+                .filter((value, index, self) => self.indexOf(value) === index) // Deduplicate
+                .join("|")
+            : "-"
+        }
+      />
       <TableCellWithText
         isEditButton
         isDeleteButton

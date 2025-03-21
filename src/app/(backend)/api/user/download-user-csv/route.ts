@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     }
 
     const uniqueFileName = `activity_${uuidv4()}.csv`;
-    const csvHeader = "FirstName,LastName,Email,Role,Group,Team";
+    const csvHeader = "FirstName,LastName,Email,Group,Team,Role";
     const csvRows = data.map((row: any) => {
       const groupNames = row.users_groups
         .map((group: any) => group.group_memebrs_with_group?.name)
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
         .filter((value, index, self) => self.indexOf(value) === index) // Deduplicate
         .join("|");
 
-      return `${row.name},${row.last_name},${row.email},${row.role?.name || ""},${groupNames},${teamNames}`;
+      return `${row.name},${row.last_name},${row.email},${groupNames},${teamNames},${row.role?.name || ""}`;
     });
 
     const csvContent = [csvHeader, ...csvRows].join("\n");

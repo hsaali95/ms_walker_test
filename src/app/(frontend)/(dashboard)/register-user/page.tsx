@@ -9,6 +9,7 @@ import {
   setUserPage,
   setUserRowsPerPage,
 } from "../../redux/slices/register-user/get-all-user-slice";
+import { setUserCsvIdle } from "../../redux/slices/register-user/download-user-csv-slice";
 
 const RegisterUser = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ const RegisterUser = () => {
       dispatch(clearUserTableData());
       dispatch(setUserPage(0));
       dispatch(setUserRowsPerPage(10));
+      dispatch(setUserCsvIdle());
     };
   }, [dispatch]);
   return (

@@ -4,6 +4,11 @@ import { errorResponse, successResponse } from "@/utils/response.decorator";
 import { Op } from "sequelize";
 import { NextRequest } from "next/server";
 import sequelize from "@/db/config/config";
+import TeamMembers from "@/db/models/team-members";
+import Team from "@/db/models/teams";
+import TeamManagers from "@/db/models/team-managers";
+import GroupMembers from "@/db/models/group-members";
+import Group from "@/db/models/group";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 // Handle GET requests for fetching paginated users
@@ -46,6 +51,45 @@ export async function GET(request: NextRequest) {
           model: Role,
           as: "role",
           attributes: ["id", "name"], // Include only necessary fields
+        },
+        {
+          model: TeamMembers,
+          as: "users_teams",
+          attributes: ["team_id"],
+          separate: true,
+          include: [
+            {
+              model: Team,
+              as: "team_memebrs_with_team",
+              attributes: ["name"],
+            },
+          ],
+        },
+        {
+          model: TeamManagers,
+          as: "users_team_manager",
+          attributes: ["team_id"],
+          separate: true,
+          include: [
+            {
+              model: Team,
+              as: "team_manager_with_team",
+              attributes: ["name"],
+            },
+          ],
+        },
+        {
+          model: GroupMembers,
+          as: "users_groups",
+          attributes: ["group_id"],
+          separate: true,
+          include: [
+            {
+              model: Group,
+              as: "group_memebrs_with_group",
+              attributes: ["name"],
+            },
+          ],
         },
       ],
     });

@@ -34,6 +34,7 @@ const TableCellWithText = ({
   onEdit,
   isEditButton,
 }: ITableCellWithText) => {
+  console.log("body", text);
   return (
     <TableCell
       variant="body"
