@@ -26,7 +26,7 @@ import SearchDropDown from "@/app/(frontend)/components/drop-down/SearchableDrop
 import CustomButton from "@/app/(frontend)/components/button";
 import { Toaster } from "@/app/(frontend)/components/snackbar";
 import { downloadUserCsv } from "@/app/(frontend)/redux/slices/register-user/download-user-csv-slice";
-import CircularProgressWithLabel from "@/app/(frontend)/components/circular-progress-bar";
+import BackdropSpinner from "@/app/(frontend)/components/backdrop-spinner";
 
 const UserTable = () => {
   const [listIds, setListIds] = useState<any>([]);
@@ -204,9 +204,7 @@ const UserTable = () => {
           </TableRow>
         ))}
       />
-      {FILE_STATUS === API_STATUS.PENDING && (
-        <CircularProgressWithLabel value={CSV_UPLOAD_PROGRESS} />
-      )}
+      {FILE_STATUS === API_STATUS.PENDING && <BackdropSpinner />}
     </>
   );
 };
