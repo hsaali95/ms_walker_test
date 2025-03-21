@@ -113,7 +113,7 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
       </Box>
       <Box sx={{ display: { xs: "block", md: "none" } }}>
         <UserMenu
-          userName={userData?.name}
+          userName={userData?.name + " " + (userData?.last_name || "")}
           avatarSrc={`${USER_PROFILE_BASE_URL}${userData?.image}`}
           email={userData?.email}
           onLogout={handleLogout}
@@ -194,7 +194,7 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
 
           <Box sx={{ display: { xs: "none", md: "block" } }}>
             <UserMenu
-              userName={userData?.name}
+              userName={userData?.name + " " + (userData?.last_name || "")}
               avatarSrc={`${USER_PROFILE_BASE_URL}${userData?.image}`}
               email={userData?.email}
               onLogout={handleLogout}
