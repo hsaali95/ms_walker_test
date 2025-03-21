@@ -82,6 +82,10 @@ Group.hasMany(GroupMembers, {
   foreignKey: "group_id",
   as: "group_members",
 });
+GroupMembers.belongsTo(Group, {
+  as: "group_memebrs_with_group",
+  foreignKey: "group_id",
+});
 
 export default Group;
 

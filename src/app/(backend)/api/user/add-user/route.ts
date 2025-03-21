@@ -7,12 +7,12 @@ export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password, name, role_id, image } = body;
+    const { email, password, name, role_id, image, last_name } = body;
 
     // Basic validation
-    if (!email || !password || !role_id || !name || !image) {
+    if (!email || !password || !role_id || !name || !image || !last_name) {
       return errorResponse(
-        "Missing required fields: email, password, name, or role_id",
+        "Missing required fields: email, password,first name ,last name, or role_id",
         400
       );
     }
@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       name,
       role_id,
       image,
+      last_name,
     });
 
     // Prepare user response without password

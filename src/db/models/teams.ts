@@ -63,6 +63,14 @@ Team.hasMany(TeamMembers, {
   foreignKey: "team_id",
   as: "team_members",
 });
+TeamMembers.belongsTo(Team, {
+  as: "team_memebrs_with_team",
+  foreignKey: "team_id",
+});
+TeamManagers.belongsTo(Team, {
+  as: "team_manager_with_team",
+  foreignKey: "team_id",
+});
 export default Team;
 
 // (async function syncUserTable() {
