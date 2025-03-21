@@ -113,9 +113,9 @@ export async function POST(request: Request) {
       "ID,Date, Start Time,End Time,Merch Rep Id,Account Name,City,Activity Log,Complete,Geo Location,Notes,Number Of Cases",
     ];
     console.log("+++++++++++=data++++++", data);
-    const csvRows = data?.map((row: any) => {
+    const csvRows = data?.map((row: any, index: number) => {
       return [
-        helper.wrapInQuotes(row.id),
+        helper.wrapInQuotes(`${index + 1}`),
         helper.wrapInQuotes(helper.formatDate(row.date)),
         helper.wrapInQuotes(helper.formatTime(row.start_time)),
         helper.wrapInQuotes(helper.formatTime(row.end_time)),
