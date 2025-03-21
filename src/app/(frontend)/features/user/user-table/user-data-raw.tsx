@@ -67,6 +67,7 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
   return (
     <>
       <TableCellWithText text={data?.name} />
+      <TableCellWithText text={data?.last_name} />
       <TableCellWithText text={data?.email} />
       <TableCellWithText text={data?.role?.name} />
       <TableCellWithText

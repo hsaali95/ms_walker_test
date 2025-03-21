@@ -58,6 +58,11 @@ TeamManagers.belongsTo(Users, {
   foreignKey: "user_id",
   as: "user",
 });
+Users.hasMany(TeamManagers, {
+  as: "users_team_manager",
+  sourceKey: "id",
+  foreignKey: "user_id",
+});
 
 // (async function syncUserTable() {
 //   try {

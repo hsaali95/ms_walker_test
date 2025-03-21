@@ -9,6 +9,7 @@ interface IRegister {
   password: string;
   role_id: number;
   image: string | any;
+  last_name: string;
 }
 
 interface IPostRegister {
@@ -32,6 +33,7 @@ export const registerUser = createAsyncThunk(
       password: registerPayload.password,
       role_id: registerPayload.role_id,
       image: registerPayload.image,
+      last_name: registerPayload.last_name,
     };
     const response = await apiClient.request({
       config: {

@@ -36,6 +36,7 @@ import resetLoginPasswordSlice from "./slices/auth/login-user-reset-password-sli
 import deleteTeamSlice from "./slices/team/delete-team-slice";
 import editTeamSlice from "./slices/team/edit-team-slice";
 import deleteUserSlice from "./slices/register-user/delete-user-slice";
+import downloadUserCsvSlice from "./slices/register-user/download-user-csv-slice";
 export const store = configureStore({
   reducer: {
     login: loginSlice,
@@ -75,6 +76,7 @@ export const store = configureStore({
     getDeleteTeam: deleteTeamSlice,
     geteditTeamSlice: editTeamSlice,
     deleteUser: deleteUserSlice,
+    userCsv: downloadUserCsvSlice,
   },
 });
 

@@ -170,9 +170,14 @@ export const addSurveySchema = z.object({
 export const registerUserSchema = z
   .object({
     username: z
-      .string({ required_error: "Please enter name" })
-      .min(3, "Name must be at least 3 characters long")
-      .regex(/^[A-Za-z ]+$/, "Name must contain only letters and spaces")
+      .string({ required_error: "Please enter first name" })
+      .min(3, "First name must be at least 3 characters long")
+      .regex(/^[A-Za-z ]+$/, "First name must contain only letters and spaces")
+      .trim(),
+    lastname: z
+      .string({ required_error: "Please enter last name" })
+      .min(3, "Last name must be at least 3 characters long")
+      .regex(/^[A-Za-z ]+$/, "Last name must contain only letters and spaces")
       .trim(),
 
     // image: z

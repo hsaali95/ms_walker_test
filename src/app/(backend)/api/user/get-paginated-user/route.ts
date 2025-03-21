@@ -3,6 +3,7 @@ import Role from "@/db/models/role";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
 import { Op } from "sequelize";
 import { NextRequest } from "next/server";
+import sequelize from "@/db/config/config";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
 // Handle GET requests for fetching paginated users
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * recordsPerPage;
 
     // Sorting parameters
-    const sortColumn = searchParams.get("sortColumn") || "created_at";
+    const sortColumn = searchParams.get("sortColumn");
     const sortOrder = searchParams.get("sortOrder") || "desc";
 
     // Search query
@@ -36,7 +37,9 @@ export async function GET(request: NextRequest) {
       limit: recordsPerPage,
       offset,
       where: whereConditions,
-      order: [[sortColumn, sortOrder]],
+      order: sortColumn
+        ? sequelize.literal(`${addDoubleQuotes(sortColumn)} ${sortOrder}`)
+        : [["created_at", "desc"]],
       attributes: { exclude: ["password", "deleted_at", "deleted_by"] },
       include: [
         {
@@ -52,4 +55,10 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching users:", error);
     return errorResponse("Failed to fetch users", 500);
   }
+}
+function addDoubleQuotes(input: string) {
+  return input
+    .split(".")
+    ?.map((value) => `"${value}"`)
+    .join(".");
 }

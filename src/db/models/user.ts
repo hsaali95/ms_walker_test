@@ -7,6 +7,7 @@ class Users extends Model {
   public email!: string;
   public password?: string;
   public name?: string;
+  public last_name?: string;
   public image?: string;
   public role_id?: number;
   public is_new?: boolean;
@@ -24,6 +25,10 @@ Users.init(
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING(255),
@@ -87,6 +92,7 @@ Users.init(
 );
 
 Users.belongsTo(Role, { foreignKey: "role_id", as: "role" });
+
 export default Users;
 
 // (async function syncUserTable() {

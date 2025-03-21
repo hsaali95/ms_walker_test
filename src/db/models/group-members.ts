@@ -57,6 +57,14 @@ GroupMembers.belongsTo(Users, {
   as: "users_group",
   foreignKey: "user_id",
 });
+
+Users.hasMany(GroupMembers, {
+  as: "users_groups",
+  sourceKey: "id",
+  foreignKey: "user_id",
+});
+
+
 // (async function syncUserTable() {
 //   try {
 //     await GroupMembers.sync({ force: true });

@@ -62,6 +62,7 @@ const AddUserForm = () => {
         password: data.password,
         role_id: data?.name?.id,
         image: `${USER_PROFILE_IMAGE_DATA?.filePath}`,
+        last_name: data.lastname,
       })
     );
   };
@@ -98,11 +99,25 @@ const AddUserForm = () => {
             }}
           >
             <CustomInput
-              label="Username"
-              placeholder="Name"
+              label="First Name"
+              placeholder="First Name"
               name="username"
               register={register}
               errorMessage={errors?.username?.message as string}
+            />
+          </Grid>
+          <Grid
+            size={{
+              xs: 12,
+              lg: 6,
+            }}
+          >
+            <CustomInput
+              label="Last Name"
+              placeholder="Last Name"
+              name="lastname"
+              register={register}
+              errorMessage={errors?.lastname?.message as string}
             />
           </Grid>
           <Grid

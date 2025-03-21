@@ -60,7 +60,13 @@ export const Survey_Sort_Keys: any = {
   Status: "survey_status.status",
 };
 
-export const USER_TABLE_COLUMNS = ["Name", "Email", "Role", "Action"];
+export const USER_TABLE_COLUMNS = [
+  "First Name",
+  "Last Name",
+  "Email",
+  "Role",
+  "Action",
+];
 export const GROUP_TABLE_COLUMN = [
   "Group Name",
   "Access Type",
@@ -88,6 +94,7 @@ export const EXPORT_OPTIONS = [
   { id: 2, file_name: "Pdf" },
 ];
 export const ACTIVITY_EXPORT_OPTIONS = [{ id: 1, file_name: "Csv" }];
+export const USER_EXPORT_OPTIONS = [{ id: 1, file_name: "Csv" }];
 
 export const ACTIVITY_TABLE_COLUMN = [
   "ID",
@@ -114,6 +121,12 @@ export const SURVEY_SORT_KEYS: any = {
   Complete: "is_complete",
   Notes: "notes",
   "Number of Cases": "",
+};
+export const USER_SORT_KEYS: any = {
+  Email: "email",
+  "First Name": "name",
+  "Last Name": "last_name",
+  Role: "role.name",
 };
 
 export const base64OfLogo =
