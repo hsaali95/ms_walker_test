@@ -94,7 +94,6 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
       .then((res) => {
         const role = res?.user?.role_id;
         setUserData(res?.user);
-        console.log(res?.user)
         if (role === ROLE.ADMIN) setNavigationList(ADMIN_PATHS);
         else if (role === ROLE.AGENT) setNavigationList(SALES_REF_PATHS);
         else if (role === ROLE.MANAGER) setNavigationList(MANAGER_PATHS);
