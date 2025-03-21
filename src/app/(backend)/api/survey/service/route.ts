@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { successResponse, errorResponse } from "@/utils/response.decorator";
+import { errorResponse } from "@/utils/response.decorator";
 import Account from "@/db/models/account";
 import Display from "@/db/models/display";
 import Item from "@/db/models/item";
@@ -13,6 +13,7 @@ import fs from "fs";
 import path from "path";
 import { Op } from "sequelize";
 import moment from "moment";
+import axios from "axios";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -196,8 +197,9 @@ export async function POST(request: Request) {
 
     const apiUrl =
       process.env.NODE_ENV === "production"
-        ? "https://mswalkerpdf-production.up.railway.app/api/v1/survey/survey-pdf"
+        ? "https://arabdrill.rigpro.app/pdf/api/v1/survey/survey-pdf"
         : "http://localhost:3001/api/v1/survey/survey-pdf";
+
 
     const payload = {
       startDate,
@@ -207,30 +209,37 @@ export async function POST(request: Request) {
       MsWalkerLogoBase64,
       data,
     };
-    let apiResponse: any;
-    let apiResult: any;
+
     try {
-      apiResponse = await fetch(apiUrl, {
-        method: "POST",
+      const data = await axios.post(apiUrl, payload, {
+        timeout: 1500000000,
+        responseType: "stream",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
       });
 
-      apiResult = await apiResponse.json();
-    } catch {
+      // Convert Axios stream to a Web ReadableStream
+      const stream = new ReadableStream({
+        start(controller) {
+          data.data.on("data", (chunk: Buffer) => controller.enqueue(chunk));
+          data.data.on("end", () => controller.close());
+          data.data.on("error", (err: Error) => controller.error(err));
+        },
+      });
+      // Set response headers for streaming the PDF
+      return new Response(stream, {
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": 'inline; filename="streamed-document.pdf"',
+        },
+      });
+    } catch (error) {
+      console.log(error);
       return errorResponse("Something went wrong", 500);
     }
 
-    if (!apiResponse?.ok) {
-      throw new Error(`API request failed: ${apiResult.message}`);
-    }
 
-    return successResponse(
-      { filePath: apiResult?.publicUrlData?.publicUrl },
-      "PDF file has been created and uploaded"
-    );
   } catch (error) {
     console.error("Error processing request:", error);
     return errorResponse("Failed to process request", 500);

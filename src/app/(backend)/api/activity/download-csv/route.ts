@@ -115,18 +115,18 @@ export async function POST(request: Request) {
     console.log("+++++++++++=data++++++", data);
     const csvRows = data?.map((row: any) => {
       return [
-        row.id,
-        helper.formatDate(row.date),
-        helper.formatTime(row.start_time),
-        helper.formatTime(row.end_time),
-        row.merch_rep_id,
-        row?.activity_account?.customerName,
-        row?.activity_account?.city,
-        row?.activity_log,
-        row?.is_complete,
-        row?.location,
-        row?.notes,
-        row?.number_of_cases || 0,
+        helper.wrapInQuotes(row.id),
+        helper.wrapInQuotes(helper.formatDate(row.date)),
+        helper.wrapInQuotes(helper.formatTime(row.start_time)),
+        helper.wrapInQuotes(helper.formatTime(row.end_time)),
+        helper.wrapInQuotes(row.merch_rep_id),
+        helper.wrapInQuotes(row?.activity_account?.customerName),
+        helper.wrapInQuotes(row?.activity_account?.city),
+        helper.wrapInQuotes(row?.activity_log),
+        helper.wrapInQuotes(row?.is_complete),
+        helper.wrapInQuotes(row?.location),
+        helper.wrapInQuotes(row?.notes),
+        helper.wrapInQuotes(row?.number_of_cases || 0),
       ].join(",");
     });
     const csvContent = csvHeader.concat(csvRows).join("\n");

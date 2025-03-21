@@ -1,6 +1,5 @@
 import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
-import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // Define an interface for the file download
@@ -33,6 +32,7 @@ export const downloadFilePdf = createAsyncThunk(
         // url: `survey/get-survey-pdf`,
         url: `survey/service`,
         method: "post",
+        responseType: "blob",
         data: payload || {}, // Send the payload if provided, otherwise send an empty object
         onUploadProgress: (progressEvent: any) => {
           const progress = Math.round(
@@ -44,7 +44,8 @@ export const downloadFilePdf = createAsyncThunk(
     });
 
     // Process the response using the response handler
-    const data = responseHandler(response);
+    const data = response.data;
+    
     return data;
   }
 );

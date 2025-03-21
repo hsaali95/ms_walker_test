@@ -72,6 +72,10 @@ Users.init(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    last_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     fullNameWithEmail: {
       type: DataTypes.VIRTUAL, // Define as a virtual field
       get() {
