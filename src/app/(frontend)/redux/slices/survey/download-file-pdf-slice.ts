@@ -1,6 +1,5 @@
 import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
-import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // Define an interface for the file download
