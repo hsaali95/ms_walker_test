@@ -35,11 +35,11 @@ import { downloadFilePdf } from "../../redux/slices/survey/download-file-pdf-sli
 import CustomCheckbox from "../../components/check-box";
 import PagesHeader from "../../components/shared/pages-header";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
-import CircularProgressWithLabel from "../../components/circular-progress-bar";
 import CustomButton from "../../components/button";
 import dayjs from "dayjs";
 import { helper } from "@/utils/helper";
 import moment from "moment";
+import BackdropSpinner from "../../components/backdrop-spinner";
 const SurveyTable = () => {
   const [listIds, setListIds] = useState<any>([]);
   const [exportType, setExportType] = useState<any>("");
@@ -48,12 +48,12 @@ const SurveyTable = () => {
   const {
     data: FILE_LINK,
     status: FILE_STATUS,
-    uploadProgress: CSV_UPLOAD_PROGRESS,
+    // uploadProgress: CSV_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.surveyFileDownload);
   const {
     data: PDF_FILE_LINK,
     status: FILE_PDF_STATUS,
-    uploadProgress: PDF_UPLOAD_PROGRESS,
+    // uploadProgress: PDF_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.downloadSurveyPdf);
   const { status: DELETE_STATUS } = useAppSelector(
     (state) => state.deleteSurvey
@@ -109,7 +109,6 @@ const SurveyTable = () => {
   }, [FILE_STATUS, FILE_LINK]);
   useEffect(() => {
     if (FILE_PDF_STATUS === API_STATUS.SUCCEEDED) {
-
       const pdfBlob = new Blob([PDF_FILE_LINK], { type: "application/pdf" });
 
       // Create a temporary URL for the blob
@@ -326,7 +325,6 @@ const SurveyTable = () => {
             onChange={sendStartDate}
             format={"DD/MM/YYYY"}
             maxDate={dayjs(endDate)}
-
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 6, md: 4 }}>
@@ -409,12 +407,8 @@ const SurveyTable = () => {
         handleSortChange={handleSortChange}
         onSelectAllClick={selectAll}
       />
-      {FILE_STATUS === API_STATUS.PENDING && (
-        <CircularProgressWithLabel value={CSV_UPLOAD_PROGRESS} />
-      )}
-      {FILE_PDF_STATUS === API_STATUS.PENDING && (
-        <CircularProgressWithLabel value={PDF_UPLOAD_PROGRESS} />
-      )}
+      {FILE_STATUS === API_STATUS.PENDING && <BackdropSpinner />}
+      {FILE_PDF_STATUS === API_STATUS.PENDING && <BackdropSpinner />}
     </>
   );
 };
