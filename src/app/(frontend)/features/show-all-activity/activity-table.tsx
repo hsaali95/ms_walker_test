@@ -17,7 +17,6 @@ import { API_STATUS } from "@/utils/enums";
 import CustomCheckbox from "../../components/check-box";
 import PagesHeader from "../../components/shared/pages-header";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
-import CircularProgressWithLabel from "../../components/circular-progress-bar";
 import CustomButton from "../../components/button";
 import ActivityDataRow from "./activity-data-row";
 import {
@@ -36,6 +35,7 @@ import { downloadActivityCsv } from "../../redux/slices/activity/download-activi
 import dayjs from "dayjs";
 import { Toaster } from "../../components/snackbar";
 import { helper } from "@/utils/helper";
+import BackdropSpinner from "../../components/backdrop-spinner";
 const ActivityTable = () => {
   const [listIds, setListIds] = useState<any>([]);
   console.log("listIds", listIds);
@@ -44,7 +44,7 @@ const ActivityTable = () => {
   const {
     data: FILE_LINK,
     status: FILE_STATUS,
-    uploadProgress: CSV_UPLOAD_PROGRESS,
+    // uploadProgress: CSV_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.getActivityCsv);
 
   const {
@@ -291,9 +291,7 @@ const ActivityTable = () => {
         handleSortChange={handleSortChange}
         onSelectAllClick={selectAll}
       />
-      {FILE_STATUS === API_STATUS.PENDING && (
-        <CircularProgressWithLabel value={CSV_UPLOAD_PROGRESS} />
-      )}
+      {FILE_STATUS === API_STATUS.PENDING && <BackdropSpinner />}
     </>
   );
 };
