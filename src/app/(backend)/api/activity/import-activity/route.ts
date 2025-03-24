@@ -70,6 +70,7 @@
 import Account from "@/db/models/account";
 import Activity from "@/db/models/activity";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
+import { Op } from "sequelize";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -98,26 +99,29 @@ export async function POST(request: Request) {
     // console.log("************insertRecordIds************", insertRecordIds);
 
     // Fetch all accounts at once
-    const allAccounts = await Account.findAll({
-      attributes: ["id", "customerName"],
-    });
-    const accountMap = new Map(
-      allAccounts.map((acc) => [acc.customerName, acc.id])
-    );
+
     for (const item of body) {
       if (!insertRecordIds.includes(String(item.DATARECORDID))) continue;
-
-      const accountId = accountMap.get(item.AccountName);
-      //   console.log("accountMap", accountMap);
-      //   console.log("accountId", accountId);
-      console.log("item.ActivityLog", item.ActivityLog);
       let isAccountExist;
-      if (accountId) {
-        isAccountExist = await Account.findOne({
-          where: { customerName: item.AccountName },
+      if (item.AccountName) {
+        [isAccountExist] = await Account.findOrCreate({
+          where: {
+            customerName: {
+              [Op.iLike]: item.AccountName,
+            },
+          },
+          defaults: {
+            city: item.city,
+            customerName: item.AccountName,
+          },
+        });
+      } else {
+        isAccountExist = await Account.create({
+          city: item.City,
+          customerName: item.AccountName,
         });
       }
-      console.log("isAccountExist", isAccountExist);
+
       if (isAccountExist) {
         insertActivity.push({
           date: item.Date ? item.Date.split("T")[0] : null,
@@ -130,13 +134,12 @@ export async function POST(request: Request) {
           FormId: item.FormId,
           GeoLocation: item.GeoLocation || null,
           notes: item.Notes || null,
-          NumberOfCases: item.NumberOfCases || null,
+          NumberOfCases: item.NumberOfCases === "NULL" || item.NumberOfCases === "null" ? null : item.NumberOfCases ,
           account_id: isAccountExist.id,
           is_import: true,
         });
       }
     }
-    console.log("insertActivity", insertActivity);
     if (insertActivity.length) {
       await Activity.bulkCreate(insertActivity, { returning: true });
       return successResponse({}, "Activity created successfully");
