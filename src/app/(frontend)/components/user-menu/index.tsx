@@ -45,7 +45,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <Tooltip title={email}>
           <IconButton sx={{ p: 0 }} onClick={handleOpenMenu}>
             <Avatar
-              alt={userName}
+              alt={userName || ""}
               src={avatarSrc}
               sx={{
                 border: "2px solid #4F131F",
@@ -58,7 +58,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 fontWeight: 600,
               }}
             >
-              {userName}
+              {userName || ""}
             </Typography>
           </IconButton>
         </Tooltip>
