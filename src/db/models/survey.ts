@@ -6,6 +6,7 @@ import Item from "./item";
 import Supplier from "./supplier";
 import SurveyStatus from "./survey-status";
 import SurveyFile from "./survey-file";
+import Users from "./user";
 
 class Survey extends Model {
   public id!: number; // Primary key
@@ -175,6 +176,10 @@ Survey.belongsTo(SurveyStatus, {
 Survey.hasMany(SurveyFile, {
   foreignKey: "survey_id",
   as: "survey_file",
+});
+Survey.belongsTo(Users, {
+  foreignKey: "created_by",
+  as: "user",
 });
 
 SurveyFile.belongsTo(Survey, { foreignKey: "survey_id" });

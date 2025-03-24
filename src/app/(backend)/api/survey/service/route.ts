@@ -14,6 +14,7 @@ import path from "path";
 import { Op } from "sequelize";
 import moment from "moment";
 import axios from "axios";
+import Users from "@/db/models/user";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -138,6 +139,7 @@ export async function POST(request: Request) {
           "supplier_id",
           "item_id",
           "survey_status_id",
+          "created_by",
         ],
       },
       include: [
@@ -167,6 +169,11 @@ export async function POST(request: Request) {
           attributes: { exclude: notRequiredOption },
         },
         {
+          model: Users,
+          as: "user",
+          attributes: ["email"],
+        },
+        {
           model: SurveyFile,
           as: "survey_file",
           attributes: { exclude: notRequiredOption },
@@ -184,6 +191,7 @@ export async function POST(request: Request) {
       return errorResponse("Data not found", 500);
     }
 
+
     // Generate a unique filename for the PDF
     const uniqueFileName = `surveys_${uuidv4()}.pdf`;
     const logoPath = path.resolve(
@@ -199,7 +207,6 @@ export async function POST(request: Request) {
       process.env.NODE_ENV === "production"
         ? "https://arabdrill.rigpro.app/pdf/api/v1/survey/survey-pdf"
         : "http://localhost:3001/api/v1/survey/survey-pdf";
-
 
     const payload = {
       startDate,
@@ -238,8 +245,6 @@ export async function POST(request: Request) {
       console.log(error);
       return errorResponse("Something went wrong", 500);
     }
-
-
   } catch (error) {
     console.error("Error processing request:", error);
     return errorResponse("Failed to process request", 500);
