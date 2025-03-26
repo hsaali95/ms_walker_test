@@ -1,6 +1,6 @@
+import { Toaster } from "@/app/(frontend)/components/snackbar";
 import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
-import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // Define an interface for the CSV download
@@ -28,11 +28,15 @@ interface DownloadActivityCsvPayload {
 // Create an async thunk to download the CSV file
 export const downloadActivityCsv = createAsyncThunk(
   "download/activitycsv",
-  async (payload: DownloadActivityCsvPayload = {}, { dispatch }) => {
+  async (
+    payload: DownloadActivityCsvPayload = {},
+    { dispatch, rejectWithValue }
+  ) => {
     // Call the API to download the CSV file with the POST method and optional payload
     const response = await apiClient.request({
       config: {
         url: `activity/download-csv`,
+        responseType: "blob",
         method: "post",
         data: payload || {}, // Send the payload if provided, otherwise send an empty object
         onUploadProgress: (progressEvent: any) => {
@@ -45,7 +49,13 @@ export const downloadActivityCsv = createAsyncThunk(
     });
 
     // Process the response using the response handler
-    const data = responseHandler(response);
+    // const data = responseHandler(response);
+    const data = response.data;
+
+    if (!data.size) {
+      Toaster("error", "Records not found!");
+      return rejectWithValue("Records not found!");
+    }
     return data;
   }
 );
@@ -72,7 +82,7 @@ export const downloadActivityCsvSlice = createSlice({
         state.status = API_STATUS.SUCCEEDED;
       })
       .addCase(downloadActivityCsv.rejected, (state, action) => {
-        state.error = action.error.message;
+        state.error = action.payload;
         state.status = API_STATUS.REJECTED;
       });
   },
