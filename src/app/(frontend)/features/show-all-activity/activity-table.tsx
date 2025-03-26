@@ -17,7 +17,6 @@ import { API_STATUS } from "@/utils/enums";
 import CustomCheckbox from "../../components/check-box";
 import PagesHeader from "../../components/shared/pages-header";
 import SearchDropDown from "../../components/drop-down/SearchableDropDown";
-import CircularProgressWithLabel from "../../components/circular-progress-bar";
 import CustomButton from "../../components/button";
 import ActivityDataRow from "./activity-data-row";
 import {
@@ -45,7 +44,7 @@ const ActivityTable = () => {
   const {
     data: FILE_LINK,
     status: FILE_STATUS,
-    uploadProgress: CSV_UPLOAD_PROGRESS,
+    // uploadProgress: CSV_UPLOAD_PROGRESS,
   } = useAppSelector((state) => state.getActivityCsv);
 
   const {
@@ -308,9 +307,7 @@ const ActivityTable = () => {
         handleSortChange={handleSortChange}
         onSelectAllClick={selectAll}
       />
-      {FILE_STATUS === API_STATUS.PENDING && (
-        <CircularProgressWithLabel value={CSV_UPLOAD_PROGRESS} />
-      )}
+      {FILE_STATUS === API_STATUS.PENDING && <BackdropSpinner />}
     </>
   );
 };
