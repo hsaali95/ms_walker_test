@@ -17,6 +17,34 @@ Display.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    supplier_name: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    item_name: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    no_of_cases: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    display_cost: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    images: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    notes: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    rename_display_cost: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,

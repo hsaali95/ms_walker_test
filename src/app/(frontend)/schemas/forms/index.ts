@@ -161,9 +161,9 @@ export const addSurveySchema = z.object({
     }),
   display_coast: z
     .string()
-    .nonempty("Display Coast is required")
+    .nonempty("Required")
     .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-      message: "Display Coast must be a non-negative number",
+      message: "Value must be a non-negative number",
     }),
 });
 

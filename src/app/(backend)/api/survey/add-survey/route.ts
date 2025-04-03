@@ -34,13 +34,13 @@ export async function POST(request: Request) {
     const requiredFields = [
       // "other_supplier",
       // "other_item",
-      "number_of_cases",
-      "display_coast",
-      "notes",
-      "account_id",
+      // "number_of_cases",
+      // "display_coast",
+      // "notes",
+      // "account_id",
       "display_id",
-      "supplier_id",
-      "item_id",
+      // "supplier_id",
+      // "item_id",
     ];
 
     // Validate each object in the array

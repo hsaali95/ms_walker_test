@@ -24,6 +24,7 @@ interface ISearchDropDown {
   disabled?: boolean;
   onClear?: any;
   isOnClear?: boolean;
+  isVisible?: boolean;
 }
 
 const ITEMS_PER_LOAD = 10; // Load 10 items at a time
@@ -60,7 +61,9 @@ const SearchDropDown = (props: ISearchDropDown) => {
     });
   };
 
-  return (
+  const visibility =
+    typeof props?.isVisible == "boolean" ? props?.isVisible : true;
+  return visibility ? (
     <Box
       sx={{
         "& .dropDownLabel": {
@@ -117,6 +120,7 @@ const SearchDropDown = (props: ISearchDropDown) => {
             shouldValidate: true,
           });
         }}
+        
         ListboxProps={{
           ref: listboxRef,
           onScroll: handleScroll,
@@ -133,6 +137,8 @@ const SearchDropDown = (props: ISearchDropDown) => {
         {props.errorMessage}
       </FormHelperText>
     </Box>
+  ) : (
+    ""
   );
 };
 

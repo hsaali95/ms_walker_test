@@ -45,36 +45,36 @@ Survey.init(
     },
     number_of_cases: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     display_coast: {
       type: DataTypes.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
     notes: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     survey_status_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 5,
     },
     account_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     display_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     supplier_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     item_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
     is_new: {
       type: DataTypes.BOOLEAN,

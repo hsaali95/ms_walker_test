@@ -22,6 +22,7 @@ interface ICustomInput {
       endAdornment?: React.ReactNode;
     };
   };
+  isVisible?: boolean;
   isPasswordField?: boolean;
 }
 
@@ -32,8 +33,9 @@ const CustomInput = (props: ICustomInput) => {
   const register = props.register && props.register(props?.name || "");
   const inputType =
     props.isPasswordField && !showPassword ? "password" : props.type || "text";
-
-  return (
+  const visibility =
+    typeof props?.isVisible == "boolean" ? props?.isVisible : true;
+  return visibility ? (
     <Box
       sx={{
         "& .inputLabel": {
@@ -89,6 +91,8 @@ const CustomInput = (props: ICustomInput) => {
         {props.errorMessage}
       </FormHelperText>
     </Box>
+  ) : (
+    ""
   );
 };
 

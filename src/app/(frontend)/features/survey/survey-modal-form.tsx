@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BasicModal from "../../components/modal/basic-modal";
 import CustomInput from "../../components/input";
 import { Box, Typography } from "@mui/material";
@@ -31,6 +31,7 @@ interface IModalForm {
 
 const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
   const [filePathArray, setPaths] = useState<any>([]);
+  const [selectedDisplayType, setSelectedDisplayType] = useState<any>([]);
   const [showSlider, setShowSlider] = useState<boolean>(false);
   const {
     register,
@@ -42,7 +43,24 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
   } = useForm({
     reValidateMode: "onChange",
     mode: "onChange",
-    resolver: zodResolver(addSurveySchema),
+    resolver: zodResolver(
+      selectedDisplayType
+        ? addSurveySchema.omit({
+            supplier_name: selectedDisplayType?.supplier_name
+              ? undefined
+              : true,
+            item_name: selectedDisplayType?.item_name ? undefined : true,
+            number_of_cases: selectedDisplayType?.no_of_cases
+              ? undefined
+              : true,
+            display_coast: selectedDisplayType?.display_cost ? undefined : true,
+            notes: selectedDisplayType?.notes ? undefined : true,
+            image: selectedDisplayType?.images ? undefined : true,
+          })
+        : addSurveySchema
+    ),
+
+    shouldUnregister: true,
   });
   const { data: Display_Data } = useAppSelector((state) => state.getDisplay);
   const { data: Item_Data } = useAppSelector((state) => state.getItem);
@@ -80,6 +98,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
     reset(); // Reset the form fields after submission
     setPaths([]);
     dispatch(removeFileIds());
+    setSelectedDisplayType(null);
   };
   useEffect(() => {
     dispatch(getDisplayType());
@@ -110,6 +129,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
       dispatch(getItem(supplierId));
     }
   }, [getValues("supplier_name")]);
+
   return (
     <div>
       <BasicModal
@@ -119,6 +139,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
           setOpenModal(false);
           setPaths([]);
           setShowSlider(false);
+          setSelectedDisplayType(null);
           reset();
         }}
       >
@@ -156,7 +177,10 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
             </CustomCarousel>
           </Box>
         ) : (
-          <Box component={"form"} onSubmit={handleSubmit(onSubmit)}>
+          <Box
+            component={"form"}
+            onSubmit={handleSubmit(onSubmit, (error) => console.log(error))}
+          >
             <SearchDropDown
               label="Display Type"
               name="display_type"
@@ -166,7 +190,9 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
               getValues={getValues}
               size="medium"
               displayKey={"display_type"}
+              onChange={(value) => setSelectedDisplayType(value)}
             />
+
             <SearchDropDown
               label="Supplier Name"
               name="supplier_name"
@@ -174,6 +200,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
               errorMessage={errors.supplier_name?.message as string}
               setValue={setValue}
               getValues={getValues}
+              isVisible={selectedDisplayType?.supplier_name}
               size="medium"
               displayKey={"vendorFullInfo"}
             />
@@ -187,6 +214,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
               getValues={getValues}
               size="medium"
               displayKey={"ItemFullInfo"}
+              isVisible={selectedDisplayType?.item_name}
               disabled={!getValues("supplier_name")}
             />
             {/* <CustomInput
@@ -213,15 +241,25 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
               register={register}
               errorMessage={errors?.number_of_cases?.message as string}
               inputStyles={{ mb: 0 }}
+              isVisible={selectedDisplayType?.no_of_cases}
               type="number"
             />
             <CustomInput
-              label="Display Cost"
-              placeholder="Display Cost"
+              label={
+                selectedDisplayType?.rename_display_cost
+                  ? selectedDisplayType?.rename_display_cost
+                  : "Display Cost"
+              }
+              placeholder={
+                selectedDisplayType?.rename_display_cost
+                  ? selectedDisplayType?.rename_display_cost
+                  : "Display Cost"
+              }
               name="display_coast"
               register={register}
               errorMessage={errors?.display_coast?.message as string}
               inputStyles={{ mb: 0 }}
+              isVisible={selectedDisplayType?.display_cost}
               type="number"
             />
 
@@ -231,38 +269,48 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
               name="notes"
               register={register}
               errorMessage={errors?.notes?.message as string}
+              isVisible={selectedDisplayType?.notes}
               inputStyles={{ mb: 1 }}
             />
-            <Typography
-              sx={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "#2F0911",
-                textAlign: "right",
-              }}
-            >{` Upload Images Count:${filePathArray.length}`}</Typography>
-            {filePathArray.length ? (
-              <CustomButton
-                variant="outlined"
-                title="View Images"
-                onClick={() => setShowSlider(!showSlider)}
-              />
-            ) : null}
 
-            <FileUpload
-              fullWidth={true}
-              onChange={handleFileUpload}
-              errorMessage={errors?.image?.message as string}
-              fileStyles={{ mb: 1.5, mt: 1.5 }}
-              acceptType="image/png, image/jpeg"
-            />
-            {fileUploadStatus === API_STATUS.PENDING && (
-              <CircularProgressWithLabel value={uploadProgress} />
+            {selectedDisplayType?.images ? (
+              <>
+                <Typography
+                  sx={{
+                    fontSize: "0.8rem",
+                    fontWeight: 600,
+                    color: "#2F0911",
+                    textAlign: "right",
+                  }}
+                >{` Upload Images Count:${filePathArray.length}`}</Typography>
+                {filePathArray.length ? (
+                  <CustomButton
+                    variant="outlined"
+                    title="View Images"
+                    onClick={() => setShowSlider(!showSlider)}
+                  />
+                ) : null}
+
+                <FileUpload
+                  fullWidth={true}
+                  onChange={handleFileUpload}
+                  errorMessage={errors?.image?.message as string}
+                  fileStyles={{ mb: 1.5, mt: 1.5 }}
+                  acceptType="image/png, image/jpeg"
+                />
+                {fileUploadStatus === API_STATUS.PENDING && (
+                  <CircularProgressWithLabel value={uploadProgress} />
+                )}
+              </>
+            ) : (
+              ""
             )}
+
             <CustomButton
               loading={fileUploadStatus === API_STATUS.PENDING}
               type="submit"
               title="Add"
+              // onClick={() => console.log(errors)}
             />
           </Box>
         )}
