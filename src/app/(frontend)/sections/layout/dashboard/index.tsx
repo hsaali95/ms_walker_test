@@ -57,6 +57,12 @@ const SALES_REF_PATHS: NavigationItem[] = [
   { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
   { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
+const MOBILE_ONLY_PATHS: NavigationItem[] = [
+  { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
+  { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
+  { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
+  { segment: "login", title: "Logout", icon: <LogoutIcon /> },
+];
 
 const MANAGER_PATHS: NavigationItem[] = [
   { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
@@ -96,6 +102,8 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
         setUserData(res?.user);
         if (role === ROLE.ADMIN) setNavigationList(ADMIN_PATHS);
         else if (role === ROLE.AGENT) setNavigationList(SALES_REF_PATHS);
+        else if (role === ROLE.MOBILE_ONLY)
+          setNavigationList(MOBILE_ONLY_PATHS);
         else if (role === ROLE.MANAGER) setNavigationList(MANAGER_PATHS);
       })
       .catch((err) => console.error("Error fetching user data:", err));
@@ -113,7 +121,7 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
       </Box>
       <Box sx={{ display: { xs: "block", md: "none" } }}>
         <UserMenu
-          userName={(userData?.name ) + " " + (userData?.last_name || "")}
+          userName={userData?.name + " " + (userData?.last_name || "")}
           avatarSrc={`${USER_PROFILE_BASE_URL}${userData?.image}`}
           email={userData?.email}
           onLogout={handleLogout}
@@ -194,7 +202,9 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
 
           <Box sx={{ display: { xs: "none", md: "block" } }}>
             <UserMenu
-              userName={(userData?.name || "") + " " + (userData?.last_name || "")}
+              userName={
+                (userData?.name || "") + " " + (userData?.last_name || "")
+              }
               avatarSrc={`${USER_PROFILE_BASE_URL}${userData?.image}`}
               email={userData?.email}
               onLogout={handleLogout}

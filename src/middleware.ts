@@ -194,6 +194,7 @@ export async function middleware(request: NextRequest) {
           "/all-activity",
         ],
         [ROLE.AGENT]: ["/survey", "/activity", "/all-activity"],
+        [ROLE.MOBILE_ONLY]: ["/survey", "/activity", "/all-activity"],
         [ROLE.MANAGER]: [
           "/survey",
           "/all-survey",

@@ -45,9 +45,14 @@ const Login = () => {
       } else {
         if (LOGIN_USER_DATA?.role_id === ROLE.ADMIN) {
           router.push("/all-survey");
-        } else if (LOGIN_USER_DATA?.role_id === ROLE.AGENT) {
+        }
+         else if (LOGIN_USER_DATA?.role_id === ROLE.AGENT) {
           router.push("/survey");
-        } else if (LOGIN_USER_DATA?.role_id === ROLE.MANAGER) {
+        }
+         else if (LOGIN_USER_DATA?.role_id === ROLE.MOBILE_ONLY) {
+          router.push("/survey");
+        }
+         else if (LOGIN_USER_DATA?.role_id === ROLE.MANAGER) {
           router.push("/survey");
         }
       }

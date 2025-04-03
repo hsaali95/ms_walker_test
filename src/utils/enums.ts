@@ -17,4 +17,5 @@ export enum ROLE {
   ADMIN = 1,
   AGENT = 2,
   MANAGER = 3,
+  MOBILE_ONLY = 7,
 }
