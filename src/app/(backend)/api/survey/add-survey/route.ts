@@ -32,8 +32,8 @@ export async function POST(request: Request) {
 
     // Required fields for validation
     const requiredFields = [
-      "other_supplier",
-      "other_item",
+      // "other_supplier",
+      // "other_item",
       "number_of_cases",
       "display_coast",
       "notes",

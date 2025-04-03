@@ -53,9 +53,9 @@ const SurveyConductList = () => {
     <>
       <TableCellWithText text={data?.display_type_show_name} />
       <TableCellWithText text={data?.supplier_show_name} />
-      <TableCellWithText text={data?.other_supplier} />
+      {/* <TableCellWithText text={data?.other_supplier} /> */}
       <TableCellWithText text={data?.item_show_name} />
-      <TableCellWithText text={data?.other_item} />
+      {/* <TableCellWithText text={data?.other_item} /> */}
       <TableCellWithText text={data?.number_of_cases} />
       <TableCellWithText text={data?.display_coast} />
       <TableCellWithText

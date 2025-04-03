@@ -28,8 +28,8 @@ const SurveyDataRow: React.FC<SurveyDataRowProps> = ({ data }) => {
       <TableCellWithText text={data?.account?.city} />
       <TableCellWithText text={data?.display?.display_type} />
       <TableCellWithText text={data?.display_coast} />
-      <TableCellWithText text={data?.other_supplier} />
-      <TableCellWithText text={data?.other_item} />
+      {/* <TableCellWithText text={data?.other_supplier} /> */}
+      {/* <TableCellWithText text={data?.other_item} /> */}
       <TableCellWithText text={data?.number_of_cases} />
       <TableCellWithText text={data?.notes} />
       <TableCellWithText text={data?.survey_status?.status} />

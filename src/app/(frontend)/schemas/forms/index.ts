@@ -108,12 +108,12 @@ export const addSurveySchema = z.object({
         message: "Please select supplier name",
       }
     ),
-  other_supplier: z
-    .string()
-    .nonempty("Other Supplier is required")
-    .refine((val) => val.trim().length > 0, {
-      message: "Other Supplier cannot be empty or contain only spaces",
-    }),
+  // other_supplier: z
+  //   .string()
+  //   .nonempty("Other Supplier is required")
+  //   .refine((val) => val.trim().length > 0, {
+  //     message: "Other Supplier cannot be empty or contain only spaces",
+  //   }),
   item_name: z
     .object(
       {
@@ -138,12 +138,12 @@ export const addSurveySchema = z.object({
         message: "Please select item name",
       }
     ),
-  other_item: z
-    .string()
-    .nonempty("Other Item is required")
-    .refine((val) => val.trim().length > 0, {
-      message: "Other Item cannot be empty or contain only spaces",
-    }),
+  // other_item: z
+  //   .string()
+  //   .nonempty("Other Item is required")
+  //   .refine((val) => val.trim().length > 0, {
+  //     message: "Other Item cannot be empty or contain only spaces",
+  //   }),
   notes: z
     .string()
     .nonempty("Notes are required")

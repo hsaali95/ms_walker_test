@@ -36,12 +36,12 @@ Survey.init(
 
     other_supplier: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
 
     other_item: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     number_of_cases: {
       type: DataTypes.INTEGER,

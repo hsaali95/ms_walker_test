@@ -189,23 +189,23 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
               displayKey={"ItemFullInfo"}
               disabled={!getValues("supplier_name")}
             />
-            <CustomInput
+            {/* <CustomInput
               label="Other Supplier"
               placeholder="Other Supplier"
               name="other_supplier"
               register={register}
               errorMessage={errors?.other_supplier?.message as string}
               inputStyles={{ mb: 0 }}
-            />
+            /> */}
 
-            <CustomInput
+            {/* <CustomInput
               label="Other Item"
               placeholder="Other Item"
               name="other_item"
               register={register}
               errorMessage={errors?.other_item?.message as string}
               inputStyles={{ mb: 0 }}
-            />
+            /> */}
             <CustomInput
               label="Number of Cases"
               placeholder="Number of Cases"
