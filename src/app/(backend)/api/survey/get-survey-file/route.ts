@@ -199,13 +199,16 @@ export async function POST(request: Request) {
 
     // Prepare the CSV data as a string
     const csvHeader = [
-      "ID,Other Supplier,Other Item,Number of cases,Display Cost,Notes,Account Name,Account Number,City,Display Type,Item Name,Supplier Name,Status,Image",
+      "ID,Number of cases,Display Cost,Notes,Account Name,Account Number,City,Display Type,Item Name,Supplier Name,Status,Image",
     ];
+    // const csvHeader = [
+    //   "ID,Other Supplier,Other Item,Number of cases,Display Cost,Notes,Account Name,Account Number,City,Display Type,Item Name,Supplier Name,Status,Image",
+    // ];
     const csvRows = data.map((row: any) => {
       return [
         helper.wrapInQuotes(row.id),
-        helper.wrapInQuotes(row.other_supplier),
-        helper.wrapInQuotes(row.other_item),
+        // helper.wrapInQuotes(row.other_supplier),
+        // helper.wrapInQuotes(row.other_item),
         helper.wrapInQuotes(row.number_of_cases),
         helper.wrapInQuotes(row.display_coast),
         helper.wrapInQuotes(row.notes),
