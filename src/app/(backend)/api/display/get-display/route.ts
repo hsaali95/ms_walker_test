@@ -2,7 +2,6 @@ import AccessType from "@/db/models/access-type";
 import Display from "@/db/models/display";
 import Group from "@/db/models/group";
 import GroupMembers from "@/db/models/group-members";
-import JWTService from "@/services/jwt/jwt-services";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
 import { NextRequest } from "next/server";
 import { Op, Sequelize } from "sequelize";
