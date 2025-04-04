@@ -160,7 +160,7 @@ const UserDataRaw: React.FC<IUserDataRaw> = ({ data }) => {
             })
           )
         }
-        modalMessage={"Are you sure you want delete this user?"}
+        modalMessage={"Are you sure you want to delete this user?"}
       />
     </>
   );
