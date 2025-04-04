@@ -63,7 +63,7 @@ const TeamDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
             })
           )
         }
-        modalMessage={"Are you sure you want delete this team?"}
+        modalMessage={"Are you sure you want to delete this team?"}
       />
     </>
   );
