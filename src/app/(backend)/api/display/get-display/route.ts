@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
           attributes: [],
           where: {
             name: {
-              [Op.in]: ["Sales", "Merchandiser"],
+              [Op.in]: ["Sales", "Merchandising"],
             },
           },
         },
