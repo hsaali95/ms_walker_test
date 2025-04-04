@@ -62,16 +62,25 @@ export async function GET(request: NextRequest) {
       ],
       raw: true,
     })) as unknown as any;
-    
+
     // eslint-disable-next-line
     let queryOptions: { [key: string]: any } = {};
 
     const accessTypes = userAssignedGroups[0].group_access_type_id;
     if (accessTypes && accessTypes.length) {
       queryOptions.where = {
-        group_access_type_id: {
-          [Op.in]: accessTypes,
-        },
+        [Op.or]: [
+          {
+            group_access_type_id: {
+              [Op.in]: accessTypes,
+            },
+          },
+          {
+            group_access_type_id: {
+              [Op.eq]: null,
+            },
+          },
+        ],
       };
     }
 
