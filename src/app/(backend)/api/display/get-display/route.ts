@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     // Fetch all displays from the database
 
     // Retrieve cookies from the request headers
-    let token: string | null = null;
+    let user: any | null = null;
 
     if (cookieHeader) {
       const cookies = Object.fromEntries(
@@ -24,11 +24,8 @@ export async function GET(request: NextRequest) {
           return [key, value];
         })
       );
-      token = cookies["session_accessToken"];
+      user = JSON.parse(decodeURIComponent(cookies["user"]));
     }
-    const userIdForAccessTypes: any = await JWTService.verifyAccessToken(
-      token || ""
-    );
 
     const userAssignedGroups = (await Group.findAll({
       attributes: [
@@ -55,7 +52,7 @@ export async function GET(request: NextRequest) {
           model: GroupMembers,
           as: "group_members",
           where: {
-            user_id: userIdForAccessTypes.id,
+            user_id: user?.id,
           },
           attributes: [],
         },
