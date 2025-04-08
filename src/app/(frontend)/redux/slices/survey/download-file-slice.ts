@@ -1,6 +1,6 @@
+import { Toaster } from "@/app/(frontend)/components/snackbar";
 import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
-import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // Define an interface for the file download
@@ -28,13 +28,14 @@ export const downloadFile = createAsyncThunk(
       endDate?: any; // Adjust type as per your requirements
       searchQuery?: any;
     } = {},
-    { dispatch }
+    { dispatch, rejectWithValue }
   ) => {
     // Call the API to download the file with the POST method and optional payload
     const response = await apiClient.request({
       config: {
         url: `survey/get-survey-file`,
         method: "post",
+        responseType: "blob",
         data: payload || {}, // Send the payload if provided, otherwise send an empty object
         onUploadProgress: (progressEvent: any) => {
           const progress = Math.round(
@@ -46,7 +47,14 @@ export const downloadFile = createAsyncThunk(
     });
 
     // Process the response using the response handler
-    const data = responseHandler(response);
+    // const data = responseHandler(response);
+    // return data;
+    const data = response.data;
+
+    if (!data.size) {
+      Toaster("error", "Records not found!");
+      return rejectWithValue("Records not found!");
+    }
     return data;
   }
 );
