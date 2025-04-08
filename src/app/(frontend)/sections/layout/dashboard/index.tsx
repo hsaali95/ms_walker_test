@@ -55,8 +55,8 @@ const ADMIN_PATHS: NavigationItem[] = [
   { segment: "register-user", title: "Register User", icon: <PersonAddIcon /> },
   { segment: "group", title: "Group", icon: <Groups3Icon /> },
   { segment: "team", title: "Team", icon: <Diversity3Icon /> },
-  { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
-  { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
+  // { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
+  // { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
   { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
