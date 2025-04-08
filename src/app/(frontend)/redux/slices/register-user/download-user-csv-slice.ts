@@ -1,6 +1,6 @@
+import { Toaster } from "@/app/(frontend)/components/snackbar";
 import { apiClient } from "@/services/http/http-clients";
 import { API_STATUS } from "@/utils/enums";
-import { responseHandler } from "@/utils/response-handler";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // Define an interface for the CSV download
@@ -28,11 +28,15 @@ interface DownloadUserCsvPayload {
 // Async thunk to download user CSV file
 export const downloadUserCsv = createAsyncThunk(
   "download/usercsv",
-  async (payload: DownloadUserCsvPayload = {}, { dispatch }) => {
+  async (
+    payload: DownloadUserCsvPayload = {},
+    { dispatch, rejectWithValue }
+  ) => {
     const response = await apiClient.request({
       config: {
         url: `user/download-user-csv`,
         method: "post",
+        responseType: "blob",
         data: payload || {},
         onUploadProgress: (progressEvent: any) => {
           const progress = Math.round(
@@ -43,7 +47,14 @@ export const downloadUserCsv = createAsyncThunk(
       },
     });
 
-    const data = responseHandler(response);
+    // const data = responseHandler(response);
+    // return data;
+    const data = response.data;
+
+    if (!data.size) {
+      Toaster("error", "Records not found!");
+      return rejectWithValue("Records not found!");
+    }
     return data;
   }
 );

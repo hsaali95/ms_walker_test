@@ -27,6 +27,7 @@ import CustomButton from "@/app/(frontend)/components/button";
 import { Toaster } from "@/app/(frontend)/components/snackbar";
 import { downloadUserCsv } from "@/app/(frontend)/redux/slices/register-user/download-user-csv-slice";
 import BackdropSpinner from "@/app/(frontend)/components/backdrop-spinner";
+import moment from "moment";
 
 const UserTable = () => {
   const [listIds, setListIds] = useState<any>([]);
@@ -139,14 +140,29 @@ const UserTable = () => {
   }, [REGISTER_USER_STATUS, DELETE_USER_STATUS]);
   useEffect(() => {
     if (FILE_STATUS === API_STATUS.SUCCEEDED) {
-      const filePath = FILE_LINK?.filePath;
-      if (filePath) {
-        // Open the file in a new tab for download
-        const downloadLink = document.createElement("a");
-        downloadLink.href = `${filePath}`;
-        downloadLink.target = "_blank"; // Open in a new tab
-        downloadLink.click();
-      }
+      // const filePath = FILE_LINK?.filePath;
+      // if (filePath) {
+      //   // Open the file in a new tab for download
+      //   const downloadLink = document.createElement("a");
+      //   downloadLink.href = `${filePath}`;
+      //   downloadLink.target = "_blank"; // Open in a new tab
+      //   downloadLink.click();
+      // }
+       const csvBlob = new Blob([FILE_LINK], { type: "text/csv" });
+      
+            // Create a temporary URL for the blob
+            const csvUrl = URL.createObjectURL(csvBlob);
+      
+            // Create a hidden <a> element to trigger the download
+            const link = document.createElement("a");
+            link.href = csvUrl;
+            link.download = `export-users-${moment().format("YYYY-MM-DD HH-mm-ss")}.csv`; // Set filename
+            document.body.appendChild(link);
+            link.click(); // Start the download
+            document.body.removeChild(link); // Clean up
+      
+            // Free memory
+            URL.revokeObjectURL(csvUrl);
     }
   }, [FILE_STATUS, FILE_LINK]);
   return (
