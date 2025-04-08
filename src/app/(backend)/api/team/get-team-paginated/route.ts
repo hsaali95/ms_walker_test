@@ -2,7 +2,6 @@ import TeamManagers from "@/db/models/team-managers";
 import TeamMembers from "@/db/models/team-members";
 import Team from "@/db/models/teams";
 import Users from "@/db/models/user";
-import JWTService from "@/services/jwt/jwt-services";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -11,7 +10,7 @@ export async function GET(request: Request) {
   const cookieHeader = request.headers.get("cookie");
   try {
     // Retrieve cookies from the request headers
-    let token: string | null = null;
+    let user: any | null = null;
 
     if (cookieHeader) {
       // Parse cookies to extract the token
@@ -21,11 +20,10 @@ export async function GET(request: Request) {
           return [key, value];
         })
       );
-      token = cookies["session_accessToken"]; // Replace "session_accessToken" with your cookie's name
+      user = JSON.parse(decodeURIComponent(cookies["user"]));
     }
-
+    console.log("*******************user***************************", user);
     // Verify the access token
-    const userData: any = await JWTService.verifyAccessToken(token || "");
 
     const { searchParams } = new URL(request.url);
 
@@ -36,8 +34,8 @@ export async function GET(request: Request) {
 
     // Manager-specific filtering
     const forManager =
-      userData?.id && userData?.role_id === 3 // Role ID 3 corresponds to manager
-        ? { user_id: userData?.id }
+      user?.id && user?.role_id === 3 // Role ID 3 corresponds to manager
+        ? { user_id: user?.id }
         : undefined;
 
     // Fetch teams with pagination and associations
