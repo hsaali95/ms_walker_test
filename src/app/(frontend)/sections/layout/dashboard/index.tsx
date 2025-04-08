@@ -45,7 +45,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const UserContext = createContext<{
+const UserDataContext = createContext<{
   userData: User | null;
 }>({ userData: null });
 
@@ -173,7 +173,7 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <UserContext.Provider value={{ userData }}>
+    <UserDataContext.Provider value={{ userData }}>
       <Box sx={{ display: { sm: "flex" } }}>
         <AppBar
           position="fixed"
@@ -284,10 +284,10 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
           {children}
         </Box>
       </Box>
-    </UserContext.Provider>
+    </UserDataContext.Provider>
   );
 };
 // Custom hook to use the context
-export const userContext = () => useContext(UserContext);
+export const UserContext = () => useContext(UserDataContext);
 
 export default ResponsiveDrawer;

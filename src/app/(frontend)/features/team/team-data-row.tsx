@@ -5,14 +5,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
 import { API_STATUS, ROLE } from "@/utils/enums";
 import BasicModal from "../../components/modal/basic-modal";
 import { deleteTeam } from "../../redux/slices/team/delete-team-slice";
-import { userContext } from "../../sections/layout/dashboard";
+import { UserContext } from "../../sections/layout/dashboard";
 
 interface IGroupDataRaw {
   data: any;
 }
 
 const TeamDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
-  const { userData } = userContext();
+  const { userData } = UserContext();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [teamData, setTeamData] = useState<any>({});
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
