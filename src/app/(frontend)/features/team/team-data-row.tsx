@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import TableCellWithText from "../../components/tables/medium-table/table-cell-with-text";
 import EditTeamModal from "./edit-team-form";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux-hook";
-import { API_STATUS } from "@/utils/enums";
+import { API_STATUS, ROLE } from "@/utils/enums";
 import BasicModal from "../../components/modal/basic-modal";
 import { deleteTeam } from "../../redux/slices/team/delete-team-slice";
+import { userContext } from "../../sections/layout/dashboard";
 
 interface IGroupDataRaw {
   data: any;
 }
 
 const TeamDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
+  const { userData } = userContext();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [teamData, setTeamData] = useState<any>({});
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -28,6 +30,10 @@ const TeamDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
       setDeleteModal(false);
     }
   }, [TEAM_STATUS]);
+
+  //hide deleted button for the manager
+  const isDeleteButton = userData?.role_id != ROLE.MANAGER;
+
   return (
     <>
       <TableCellWithText text={data?.name} />
@@ -36,7 +42,7 @@ const TeamDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
       <TableCellWithText text={`${data?.is_active ? "active" : "inactive"}`} />
       <TableCellWithText
         isEditButton
-        isDeleteButton
+        isDeleteButton={isDeleteButton}
         onEdit={() => {
           setOpenModal(true);
           setTeamData(data);

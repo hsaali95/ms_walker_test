@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -35,10 +35,19 @@ interface NavigationItem {
   icon: React.ReactNode;
 }
 
+interface User {
+  role_id: number;
+  name: string;
+  email: string;
+}
 interface Props {
   window?: () => Window;
   children: React.ReactNode;
 }
+
+const UserContext = createContext<{
+  userData: User | null;
+}>({ userData: null });
 
 const ADMIN_PATHS: NavigationItem[] = [
   { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
@@ -164,117 +173,121 @@ const ResponsiveDrawer: React.FC<Props> = ({ window, children }) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: { sm: "flex" } }}>
-      <AppBar
-        position="fixed"
-        elevation={0}
-        sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
-          background: { xs: "#4F131F", md: "none" },
-          borderRadius: { md: "30px" },
-        }}
-      >
-        <Toolbar
+    <UserContext.Provider value={{ userData }}>
+      <Box sx={{ display: { sm: "flex" } }}>
+        <AppBar
+          position="fixed"
+          elevation={0}
           sx={{
-            display: "flex",
-            justifyContent: { xs: "space-between", md: "flex-end" },
-            p: 0,
+            width: { md: `calc(100% - ${drawerWidth}px)` },
+            ml: { md: `${drawerWidth}px` },
+            background: { xs: "#4F131F", md: "none" },
+            borderRadius: { md: "30px" },
           }}
-          disableGutters
         >
-          <Box sx={{ pl: 1, display: { md: "none" } }}>
-            <Image
-              objectFit="cover"
-              src={Ms_walker}
-              alt={"Ms_walker"}
-              style={{ width: "100%" }}
-            />
-          </Box>
-          <IconButton
-            color="inherit"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: "none" } }}
+          <Toolbar
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "space-between", md: "flex-end" },
+              p: 0,
+            }}
+            disableGutters
           >
-            <MenuIcon sx={{ color: "#fff" }} />
-          </IconButton>
+            <Box sx={{ pl: 1, display: { md: "none" } }}>
+              <Image
+                objectFit="cover"
+                src={Ms_walker}
+                alt={"Ms_walker"}
+                style={{ width: "100%" }}
+              />
+            </Box>
+            <IconButton
+              color="inherit"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { md: "none" } }}
+            >
+              <MenuIcon sx={{ color: "#fff" }} />
+            </IconButton>
 
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <UserMenu
-              userName={
-                (userData?.name || "") + " " + (userData?.last_name || "")
-              }
-              avatarSrc={`${USER_PROFILE_BASE_URL}${userData?.image}`}
-              email={userData?.email}
-              onLogout={handleLogout}
-            />
-          </Box>
-        </Toolbar>
-      </AppBar>
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <UserMenu
+                userName={
+                  (userData?.name || "") + " " + (userData?.last_name || "")
+                }
+                avatarSrc={`${USER_PROFILE_BASE_URL}${userData?.image}`}
+                email={userData?.email}
+                onLogout={handleLogout}
+              />
+            </Box>
+          </Toolbar>
+        </AppBar>
 
-      <Box
-        component="nav"
-        sx={{
-          width: { md: drawerWidth },
-          flexShrink: { md: 0 },
-          "& .MuiPaper-root": {
-            borderRadius: "30px !important",
-          },
-        }}
-        aria-label="mailbox folders"
-      >
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
+        <Box
+          component="nav"
           sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              background: "#4F131F",
+            width: { md: drawerWidth },
+            flexShrink: { md: 0 },
+            "& .MuiPaper-root": {
+              borderRadius: "30px !important",
             },
           }}
+          aria-label="mailbox folders"
         >
-          {drawerContent}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", md: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              background: "#4F131F",
-              left: "5px",
-              top: "5px",
-              height: "98%",
-            },
-          }}
-          open
-        >
-          {drawerContent}
-        </Drawer>
-      </Box>
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{ keepMounted: true }}
+            sx={{
+              display: { xs: "block", md: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+                background: "#4F131F",
+              },
+            }}
+          >
+            {drawerContent}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", md: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+                background: "#4F131F",
+                left: "5px",
+                top: "5px",
+                height: "98%",
+              },
+            }}
+            open
+          >
+            {drawerContent}
+          </Drawer>
+        </Box>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          px: 3,
-          pt: { xs: 6, md: 2, xl: 4 },
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          overflowX: "hidden !important",
-        }}
-      >
-        <Toolbar disableGutters />
-        {children}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            px: 3,
+            pt: { xs: 6, md: 2, xl: 4 },
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            overflowX: "hidden !important",
+          }}
+        >
+          <Toolbar disableGutters />
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </UserContext.Provider>
   );
 };
+// Custom hook to use the context
+export const userContext = () => useContext(UserContext);
 
 export default ResponsiveDrawer;
