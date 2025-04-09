@@ -7,6 +7,12 @@ const sequelize = new Sequelize(
     logging: true,
     dialect: "postgres" /* 'postgres' */,
     dialectModule: pg,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     schema: "public",
     pool: {
       max: 2,
