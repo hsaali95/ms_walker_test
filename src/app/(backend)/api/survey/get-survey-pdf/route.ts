@@ -277,8 +277,8 @@
 //   }
 // }
 
-import { v4 as uuidv4 } from "uuid";
-import { successResponse, errorResponse } from "@/utils/response.decorator";
+// import { v4 as uuidv4 } from "uuid";
+import { errorResponse } from "@/utils/response.decorator";
 import Account from "@/db/models/account";
 import Display from "@/db/models/display";
 import Item from "@/db/models/item";
@@ -288,7 +288,7 @@ import Survey from "@/db/models/survey";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
 import { SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
-import supabase from "@/utils/supabase-client";
+// import supabase from "@/utils/supabase-client";
 import fs from "fs";
 import path from "path";
 import moment from "moment";
@@ -367,7 +367,7 @@ export async function POST(request: Request) {
     });
 
     // Generate a unique filename for the PDF
-    const uniqueFileName = `surveys_${uuidv4()}.pdf`;
+    // const uniqueFileName = `surveys_${uuidv4()}.pdf`;
     const logoPath = path.resolve(
       process.cwd(),
       "public/assets/images/ms_walker_logo.png"
@@ -497,7 +497,9 @@ export async function POST(request: Request) {
       browser = await puppeteerCore.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath("/var/task/.next/server/app/(backend)/api/survey/bin"),
+        executablePath: await chromium.executablePath(
+          "/var/task/.next/server/app/(backend)/api/survey/bin"
+        ),
         headless: true,
       });
     } else {
@@ -510,34 +512,34 @@ export async function POST(request: Request) {
 
     const page = await browser?.newPage();
     await page.setContent(htmlContent, { waitUntil: "domcontentloaded" });
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-    });
+    // const pdfBuffer = await page.pdf({
+    //   format: "A4",
+    //   printBackground: true,
+    // });
     await browser.close();
 
     // Upload the PDF to Supabase
-    const { error: uploadError } = await supabase.storage
-      .from("mas-walker-file")
-      .upload(uniqueFileName, pdfBuffer, { contentType: "application/pdf" });
+    // const { error: uploadError } = await supabase.storage
+    //   .from("mas-walker-file")
+    //   .upload(uniqueFileName, pdfBuffer, { contentType: "application/pdf" });
 
-    if (uploadError) {
-      throw new Error("Failed to upload file to Supabase");
-    }
+    // if (uploadError) {
+    //   throw new Error("Failed to upload file to Supabase");
+    // }
 
     // Get public URL
-    const { data: publicUrlData } = supabase.storage
-      .from("mas-walker-file")
-      .getPublicUrl(uniqueFileName);
+    // const { data: publicUrlData } = supabase.storage
+    //   .from("mas-walker-file")
+    //   .getPublicUrl(uniqueFileName);
 
-    if (!publicUrlData || !publicUrlData.publicUrl) {
-      throw new Error("Failed to generate public URL for the uploaded file");
-    }
+    // if (!publicUrlData || !publicUrlData.publicUrl) {
+    //   throw new Error("Failed to generate public URL for the uploaded file");
+    // }
 
-    return successResponse(
-      { filePath: publicUrlData.publicUrl },
-      "PDF file has been created and uploaded"
-    );
+    // return successResponse(
+    //   { filePath: publicUrlData.publicUrl },
+    //   "PDF file has been created and uploaded"
+    // );
   } catch (error) {
     console.error("Error processing request:", error);
     return errorResponse("Failed to process request", 500);

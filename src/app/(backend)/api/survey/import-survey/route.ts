@@ -2,7 +2,7 @@ import { successResponse, errorResponse } from "@/utils/response.decorator";
 import Survey from "@/db/models/survey";
 import SurveyFile from "@/db/models/survey-file";
 import File from "@/db/models/file";
-import supabase, { getContentType } from "@/utils/supabase-client";
+// import supabase, { getContentType } from "@/utils/supabase-client";
 import { transformSurvey } from "@/utils/transformer";
 import { promises as fs } from "fs";
 import Users from "@/db/models/user";
@@ -20,27 +20,27 @@ const fileUpload = async (fileUrl: string) => {
   const isImage = blob.type.startsWith("image/");
   if (isImage) {
     // const bucketName = process.env.SUPABASE_BUCKET_NAME!; // Replace with your actual Supabase bucket name from .env
-    const bucketName = "mas-walker-file";
+    // const bucketName = "mas-walker-file";
     const file_name = fileUrl.split("/").pop();
     // Create a unique file name using the original file name
     const filePath = `${Date.now()}-${file_name}`;
 
     // Dynamically determine content type based on file extension
-    const fileExtension = file_name!.split(".").pop()?.toLowerCase();
-    const contentType = getContentType(fileExtension);
+    // const fileExtension = file_name!.split(".").pop()?.toLowerCase();
+    // const contentType = getContentType(fileExtension);
 
     // Upload the decoded file to Supabase storage
-    const { error } = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, blob, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: contentType, // Dynamic content type
-      });
+    // const { error } = await supabase.storage
+    //   .from(bucketName)
+    //   .upload(filePath, blob, {
+    //     cacheControl: "3600",
+    //     upsert: false,
+    //     contentType: contentType, // Dynamic content type
+    //   });
 
-    if (error) {
-      throw error;
-    }
+    // if (error) {
+    //   throw error;
+    // }
     return { path: filePath, name: file_name };
   } else {
     return null;

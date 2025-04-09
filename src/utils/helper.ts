@@ -76,3 +76,5 @@ export function formatImageLinks(surveyFiles: any, imageBaseUrl: any) {
   }
   return helper.wrapInQuotes("-");
 }
+
+
