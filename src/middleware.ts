@@ -123,7 +123,6 @@ import JWTService from "./services/jwt/jwt-services";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-
   // CORS Configuration (Allow All Origins)
   // const allowedOrigins = ["*"]; // Allow all origins
   // const origin = request.headers.get("origin") || "";
@@ -171,9 +170,12 @@ export async function middleware(request: NextRequest) {
     console.error("Error parsing user cookie:", error);
   }
 
-  const isPublicPath =
+  const isPublicPath: any =
     path === "/login" || path === "/signup" || path === "/reset-password";
   if (!path.startsWith("/api")) {
+    if (path === "/") {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
     if (isPublicPath && session_accessToken) {
       return NextResponse.redirect(new URL("/survey", request.url));
     }
@@ -247,6 +249,7 @@ export async function middleware(request: NextRequest) {
 // Configuration to exclude certain paths
 export const config = {
   matcher: [
+    "/",
     "/survey",
     "/all-survey",
     "/login",
