@@ -11,11 +11,11 @@ export const CSV_BASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 export const SURVEY_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_S3_IMAGES_URL;
 export const USER_PROFILE_BASE_URL = process.env.NEXT_PUBLIC_S3_IMAGES_URL;
-export const SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
-export const ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
-export const AWS_END_POINT = process.env.AWS_END_POINT;
-export const REGION = process.env.AWS_REGION;
-export const BUCKET = process.env.AWS_BUCKET;
+export const SECRET_ACCESS_KEY = process.env.SECRET_ACCESS_KEY;
+export const ACCESS_KEY_ID = process.env.ACCESS_KEY_ID;
+export const S3_END_POINT = process.env.S3_END_POINT;
+export const REGION = process.env.REGION;
+export const BUCKET = process.env.BUCKET;
 
 export const LOCATION_TOKEN = "cdfb6fdfca27e8";
 export const ACCESS_TOKEN_TIME = process.env.NEXT_PUBLIC_ACCESS_TOKEN_TIME;
