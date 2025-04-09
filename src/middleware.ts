@@ -188,19 +188,27 @@ export async function middleware(request: NextRequest) {
           "/survey",
           "/all-survey",
           "/register-user",
-          // "/activity",
           "/team",
           "/group",
-          // "/all-activity",
+          "/activity",
+          "/all-activity",
         ],
-        [ROLE.AGENT]: ["/survey", "/activity", "/all-activity"],
-        [ROLE.MOBILE_ONLY]: ["/survey", "/activity", "/all-activity"],
+        [ROLE.AGENT]: [
+          "/survey",
+          // "/activity",
+          // "/all-activity"
+        ],
+        [ROLE.MOBILE_ONLY]: [
+          "/survey",
+          // "/activity",
+          // "/all-activity"
+        ],
         [ROLE.MANAGER]: [
           "/survey",
           "/all-survey",
           "/team",
-          "/activity",
-          "/all-activity",
+          // "/activity",
+          // "/all-activity",
         ],
       };
 
