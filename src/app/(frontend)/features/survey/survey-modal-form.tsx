@@ -24,6 +24,7 @@ import CustomCarousel from "../../components/custom-slider";
 import Image from "next/image";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ActionButton from "../../components/action-buttons";
+import { SURVEY_IMAGE_BASE_URL } from "@/utils/constant";
 interface IModalForm {
   openModal: any;
   setOpenModal: any;
@@ -118,7 +119,10 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
       setValue("image", `${file_Data?.filePath}`, { shouldValidate: true });
       dispatch(setFileIds(Number(file_Data?.id)));
       setPaths((prev: any) => {
-        return [...prev, `${file_Data?.publicUrlData}`];
+        return [
+          ...prev,
+          `${SURVEY_IMAGE_BASE_URL + "/" + file_Data?.filePath}`,
+        ];
       });
     }
   }, [fileUploadStatus]);
