@@ -57,6 +57,7 @@
     "uuid": "^11.0.3",
     "zod": "^3.24.1"
   },
+  "author": "aftab umer <aftab.umer@softvira.com>",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/js-cookie": "^3.0.6",
