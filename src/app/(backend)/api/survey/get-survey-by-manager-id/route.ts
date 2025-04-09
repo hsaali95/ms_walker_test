@@ -11,7 +11,6 @@ import Item from "@/db/models/item"; // Assuming Item is defined
 import Supplier from "@/db/models/supplier"; // Assuming Supplier is defined
 import SurveyStatus from "@/db/models/survey-status"; // Assuming SurveyStatus is defined
 import { NextRequest } from "next/server";
-import JWTService from "@/services/jwt/jwt-services";
 import moment from "moment";
 import { Op, Sequelize } from "sequelize";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
@@ -28,7 +27,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // Retrieve cookies from the request headers
-    let token: string | null = null;
+    let user: any | null = null;
 
     if (cookieHeader) {
       const cookies = Object.fromEntries(
@@ -37,15 +36,13 @@ export async function GET(request: NextRequest) {
           return [key, value];
         })
       );
-      token = cookies["session_accessToken"];
+      user = JSON.parse(decodeURIComponent(cookies["user"]));
     }
     let teamData;
     let userIds;
     // Verify the access token
-    const userData: any = await JWTService.verifyAccessToken(token || "");
 
-    const managerId =
-      userData?.id && userData?.role_id === 3 ? userData?.id : undefined;
+    const managerId = user?.id && user?.role_id === 3 ? user?.id : undefined;
     if (managerId) {
       // Fetch all teams and members assigned to the provided manager_id
       teamData = await Team.findAll({
@@ -56,7 +53,7 @@ export async function GET(request: NextRequest) {
             as: "team_managers",
             attributes: ["user_id"],
             where: { user_id: managerId ? managerId : null },
-            required: true
+            required: true,
           },
           {
             model: TeamMembers,
