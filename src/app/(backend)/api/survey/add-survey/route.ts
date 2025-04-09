@@ -1,6 +1,5 @@
 import Survey from "@/db/models/survey";
 import SurveyFile from "@/db/models/survey-file";
-import JWTService from "@/services/jwt/jwt-services";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -8,7 +7,7 @@ export async function POST(request: Request) {
   try {
     // Retrieve cookies from the request headers
     const cookieHeader = request.headers.get("cookie");
-    let token: string | null = null;
+    let user: any | null = null;
 
     if (cookieHeader) {
       // Parse cookies to get the token
@@ -18,10 +17,10 @@ export async function POST(request: Request) {
           return [key, value];
         })
       );
-      token = cookies["session_accessToken"]; // Replace "token" with your cookie's name
+      user = JSON.parse(decodeURIComponent(cookies["user"]));
     }
 
-    const userId: any = await JWTService.verifyAccessToken(token || "");
+    // const userId: any = await JWTService.verifyAccessToken(token || "");
     const body = await request.json();
     const { surveyData } = body;
 
@@ -58,7 +57,7 @@ export async function POST(request: Request) {
         {
           ...surveyData[j],
 
-          created_by: userId?.payload?.id, //add sales ref id here
+          created_by: user?.id, //add sales ref id here
         },
         { returning: true }
       );
