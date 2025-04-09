@@ -1,7 +1,8 @@
-import { Buffer } from "buffer";
 import { errorResponse, successResponse } from "@/utils/response.decorator";
+import client from "@/db/config/AWS";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { BUCKET } from "@/utils/constant";
 import File from "@/db/models/file";
-import supabase, { getContentType } from "@/utils/supabase-client";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -21,33 +22,19 @@ export const POST = async (req: Request) => {
       );
     }
 
-    // Decode the base64 string to binary data
-    const fileBuffer = Buffer.from(base64, "base64");
-    const bucketName = "mas-walker-file";
-
     // Create a unique file name using the original file name
     const filePath = `${Date.now()}-${file_name}`;
 
-    // Get content type dynamically
-    const contentType = getContentType(fileExtension);
+    const buffer = Buffer.from(base64.split(",").pop(), "base64");
 
-    // Upload the decoded file to Supabase storage
-    const { error } = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, fileBuffer, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: contentType,
-      });
-
-    if (error) {
-      throw error;
-    }
-
-    // Generate a public URL for the uploaded file
-    const { data: publicUrlData } = supabase.storage
-      .from(bucketName)
-      .getPublicUrl(filePath);
+    await client.send(
+      new PutObjectCommand({
+        ACL: "public-read",
+        Bucket: BUCKET,
+        Key: "survey-images/" + filePath,
+        Body: buffer,
+      })
+    );
 
     // Save the file information to the database
     const createdFile = await File.create({
@@ -59,7 +46,6 @@ export const POST = async (req: Request) => {
       {
         filePath: createdFile.path,
         id: createdFile.id,
-        publicUrlData: publicUrlData?.publicUrl,
       },
       "File uploaded successfully"
     );

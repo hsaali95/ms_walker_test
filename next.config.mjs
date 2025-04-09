@@ -8,7 +8,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "adteqwnkqoxbzkxyfzkq.supabase.co",
+        hostname: "mswalker-uploads.s3.us-west-1.amazonaws.com",
         port: "",
         pathname: "/**", // Allow all paths under the domain
       },
