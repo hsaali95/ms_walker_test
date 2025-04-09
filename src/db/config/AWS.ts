@@ -1,7 +1,7 @@
 import {
   ACCESS_KEY_ID,
   SECRET_ACCESS_KEY,
-  AWS_END_POINT,
+  S3_END_POINT,
   REGION,
 } from "@/utils/constant";
 
@@ -14,7 +14,7 @@ const credentials: any = {
 
 const client = new S3Client({
   region: REGION,
-  endpoint: AWS_END_POINT,
+  endpoint: S3_END_POINT,
   credentials,
 });
 

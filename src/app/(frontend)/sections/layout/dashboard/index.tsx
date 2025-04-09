@@ -55,21 +55,21 @@ const ADMIN_PATHS: NavigationItem[] = [
   { segment: "register-user", title: "Register User", icon: <PersonAddIcon /> },
   { segment: "group", title: "Group", icon: <Groups3Icon /> },
   { segment: "team", title: "Team", icon: <Diversity3Icon /> },
-  // { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
-  // { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
+  { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
+  { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
   { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
 const SALES_REF_PATHS: NavigationItem[] = [
   { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
-  { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
-  { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
+  // { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
+  // { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
   { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 const MOBILE_ONLY_PATHS: NavigationItem[] = [
   { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
-  { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
-  { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
+  // { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
+  // { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
   { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
@@ -77,8 +77,8 @@ const MANAGER_PATHS: NavigationItem[] = [
   { segment: "survey", title: "Add Survey", icon: <NoteAltIcon /> },
   { segment: "all-survey", title: "All Survey", icon: <PostAddIcon /> },
   { segment: "team", title: "Team", icon: <Diversity3Icon /> },
-  { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
-  { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
+  // { segment: "activity", title: "Add Activity", icon: <NoteIcon /> },
+  // { segment: "all-activity", title: "All Activity", icon: <NoteAddIcon /> },
   { segment: "login", title: "Logout", icon: <LogoutIcon /> },
 ];
 
