@@ -121,7 +121,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
       setPaths((prev: any) => {
         return [
           ...prev,
-          `${SURVEY_IMAGE_BASE_URL + "/" + file_Data?.filePath}`,
+          `${SURVEY_IMAGE_BASE_URL + file_Data?.filePath}`,
         ];
       });
     }
