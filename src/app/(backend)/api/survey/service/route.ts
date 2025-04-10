@@ -219,7 +219,7 @@ export async function POST(request: Request) {
 
     try {
       const data = await axios.post(apiUrl, payload, {
-        timeout: 1500000000,
+        // timeout: ,
         responseType: "stream",
         headers: {
           "Content-Type": "application/json",
