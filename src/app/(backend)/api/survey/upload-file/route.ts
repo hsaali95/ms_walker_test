@@ -5,6 +5,13 @@ import { BUCKET } from "@/utils/constant";
 import File from "@/db/models/file";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
+export const routeSegmentConfig = {
+  api: {
+    bodyParser: {
+      sizeLimit: "50mb", // Allow up to 20MB of data
+    },
+  },
+};
 
 export const POST = async (req: Request) => {
   try {
