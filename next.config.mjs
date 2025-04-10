@@ -18,7 +18,9 @@ const nextConfig = {
 
   output: "standalone",
   experimental: {
-    serverActions: true,
+    serverActions: {
+      bodySizeLimit: "50mb",
+    },
     serverComponentsExternalPackages: ["sequelize"],
   },
 
