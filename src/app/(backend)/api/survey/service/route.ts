@@ -191,7 +191,6 @@ export async function POST(request: Request) {
       return errorResponse("Data not found", 500);
     }
 
-
     // Generate a unique filename for the PDF
     const uniqueFileName = `surveys_${uuidv4()}.pdf`;
     const logoPath = path.resolve(
@@ -203,10 +202,7 @@ export async function POST(request: Request) {
     // Upload the PDF to Supabase
     // Make a POST request to the external API after generating the HTML
 
-    const apiUrl =
-      process.env.NODE_ENV === "production"
-        ? "https://arabdrill.rigpro.app/pdf/api/v1/survey/survey-pdf"
-        : "http://localhost:3001/api/v1/survey/survey-pdf";
+    const apiUrl = "http://localhost:3001/api/v1/survey/survey-pdf";
 
     const payload = {
       startDate,
