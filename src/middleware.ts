@@ -156,7 +156,7 @@ export async function middleware(request: NextRequest) {
       "Content-Type, Authorization"
     );
     response.headers.set("Access-Control-Allow-Credentials", "true");
-    return response;
+    // return response;
   }
 
   // ====================== Authentication & Role-based Authorization ======================
@@ -221,7 +221,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
-
   // API Authentication
   if (path.startsWith("/api/auth")) {
     return NextResponse.next();
@@ -235,8 +234,14 @@ export async function middleware(request: NextRequest) {
     try {
       const token: any =
         await JWTService.verifyAccessToken(session_accessToken);
-      if (token?.payload?.id) {
+      console.log(
+        "**************88Enter*****************************************",
+        token
+      );
+      if (token?.id) {
         return NextResponse.next();
+      } else {
+        return errorResponse("Session has expired", 401);
       }
     } catch {
       return errorResponse("Unauthorized", 401);

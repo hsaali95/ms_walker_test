@@ -18,8 +18,8 @@ export const REGION = process.env.AWS_REGION;
 export const BUCKET = process.env.AWS_BUCKET;
 
 export const LOCATION_TOKEN = "cdfb6fdfca27e8";
-export const ACCESS_TOKEN_TIME = process.env.NEXT_PUBLIC_ACCESS_TOKEN_TIME;
-export const REFRESH_TOKEN_TIME = process.env.NEXT_PUBLIC_REFRESH_TOKEN_TIME;
+export const ACCESS_TOKEN_TIME = process.env.ACCESS_TOKEN_TIME;
+export const REFRESH_TOKEN_TIME = process.env.REFRESH_TOKEN_TIME;
 export const USER_IP_ADDRESS = "https://api.ipify.org/?format=json";
 export const Survey_Column = [
   "Display Type",

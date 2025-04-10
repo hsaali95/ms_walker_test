@@ -42,12 +42,14 @@ export async function POST(request: Request) {
     let accessToken: any;
     let refreshToken: any;
     if (!existingUser.is_new) {
-      console.log("existingUser", existingUser.is_new);
+      console.log("****************Login******************", ACCESS_TOKEN_TIME);
       // Generate tokens
       accessToken = await JWTService.signAccessToken(
         { id: userResponse.id, role_id: userResponse?.role_id },
         ACCESS_TOKEN_TIME || ""
+        // "12h"
       );
+      console.log("****************Login******************", ACCESS_TOKEN_TIME);
       refreshToken = await JWTService.signRefreshToken(
         { id: userResponse.id },
         REFRESH_TOKEN_TIME || ""
