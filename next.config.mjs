@@ -9,16 +9,18 @@ const nextConfig = {
     REFRESH_TOKEN_TIME: process.env.REFRESH_TOKEN_TIME,
     NEXT_PUBLIC_REACT_APP_BASE_URL: process.env.NEXT_PUBLIC_REACT_APP_BASE_URL,
     NEXT_PUBLIC_S3_IMAGES_URL: process.env.NEXT_PUBLIC_S3_IMAGES_URL,
-    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
-    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
-    AWS_REGION: process.env.AWS_REGION,
-    AWS_BUCKET: process.env.AWS_BUCKET,
-    AWS_END_POINT: process.env.AWS_END_POINT,
+    SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
+    ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
+    REGION: process.env.REGION,
+    BUCKET: process.env.BUCKET,
+    S3_END_POINT: process.env.S3_END_POINT,
   },
 
   output: "standalone",
   experimental: {
-    serverActions: true,
+    serverActions: {
+      bodySizeLimit: "50mb",
+    },
     serverComponentsExternalPackages: ["sequelize"],
   },
 
