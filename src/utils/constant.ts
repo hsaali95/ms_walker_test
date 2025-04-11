@@ -81,7 +81,7 @@ export const GROUP_TABLE_COLUMN = [
 ];
 export const TEAM_TABLE_COLUMN = [
   "Team Name",
-  "Managers",
+  "Manager",
   "Member Count",
   "Status",
   "Action",
