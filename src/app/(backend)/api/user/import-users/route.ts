@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       attributes: ["id", "name", "identifier"],
     });
     const usersToCreate: any = [];
-
+    const updatePromise: any = [];
     newUsers.map((user: TBody) => {
       if (
         !existingUsers.find(
@@ -55,12 +55,36 @@ export async function POST(request: Request) {
           identifier: user.Id,
           is_new: true,
         });
+      } else {
+        updatePromise.push(() =>
+          Users.update(
+            {
+              name: user.FirstName || user.Name || user.Email.split("@")[0],
+              last_name: user.LastName || "",
+            },
+            {
+              where: {
+                email: {
+                  [Op.iLike]: user.Email.toLowerCase(),
+                },
+              },
+            }
+          )
+        );
       }
     });
 
     const users = await Users.bulkCreate(usersToCreate);
-
-    return successResponse(users, "Users importes successfully");
+    const updatedUsers = await Promise.all(
+      updatePromise.map((fn: any) => fn())
+    );
+    return successResponse(
+      {
+        createdUsers: users.length,
+        updatedUsers: updatedUsers.length,
+      },
+      "Users importes successfully"
+    );
   } catch (error: any) {
     console.error("Error import users:", error);
     return errorResponse("Failed to import users", 500);
