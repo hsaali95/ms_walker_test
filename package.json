@@ -25,6 +25,7 @@
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
+    "browser-image-compression": "^2.0.2",
     "browsers": "^1.0.2",
     "chrome": "^0.1.0",
     "cross-env": "^7.0.3",
@@ -68,6 +69,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.21",
+    "js-image-compressor": "^2.0.0",
     "typescript": "^5.7.2"
   }
 }

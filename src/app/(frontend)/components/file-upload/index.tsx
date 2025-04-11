@@ -34,7 +34,6 @@ const FileUpload = ({
   fileStyles,
   fullWidth = false, // Default value is false
 }: IFileUpload) => {
-
   const handleFileUpload = async (event: any) => {
     // Get the selected file from the event
     const file = event.target.files?.[0];
@@ -42,7 +41,9 @@ const FileUpload = ({
       try {
         // Convert the file to base64
         const base64 = await helper.convertFileToBase64(file);
-        onChange(base64, file.name);
+        const compressedBase64 = await helper.getCompressedBase64(file);
+
+        onChange(base64, file.name, compressedBase64);
       } catch (error) {
         console.error("Error converting file to base64:", error);
       }

@@ -106,10 +106,14 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
     dispatch(getSupplier());
   }, [dispatch]);
 
-  const handleFileUpload = async (event: any, filename: string) => {
+  const handleFileUpload = async (
+    event: any,
+    filename: string,
+    compressedBase64: string
+  ) => {
     dispatch(
       postUploadFile({
-        base64: event.split(",")[1],
+        base64: compressedBase64.split(",")[1],
         file_name: filename,
       })
     );

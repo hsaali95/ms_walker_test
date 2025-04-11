@@ -6,6 +6,9 @@ import { getCookies } from "./cookies";
 import client from "@/db/config/AWS";
 import fs from "fs";
 import { ObjectCannedACL, PutObjectCommand } from "@aws-sdk/client-s3";
+import imageCompression from "browser-image-compression";
+import axios from "axios";
+
 export const hashPassword = (plainText: string): Promise<string> => {
   return bcrypt.hash(plainText, saltRounds);
 };
@@ -28,6 +31,41 @@ export const helper = {
       reader.onerror = (error) => reject(error);
       reader.readAsDataURL(file);
     });
+  },
+
+  getCompressedBase64: async (file: File): Promise<string> => {
+    const imageFile = file;
+
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    const compressedFile = await imageCompression(imageFile, options);
+
+    const base64 = await helper.convertFileToBase64(compressedFile);
+    return base64;
+  },
+  getCompressedBase64FromFileUrl: async (
+    url: string,
+    filename: string
+  ): Promise<string> => {
+    let image = await axios.get(url, {
+      responseType: "arraybuffer",
+    });
+    let returnedB64 = Buffer.from(image.data).toString("base64");
+    const imageFile = await imageCompression.getFilefromDataUrl(
+      returnedB64,
+      filename
+    );
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    const compressedFile = await imageCompression(imageFile, options);
+    const base64 = await helper.convertFileToBase64(compressedFile);
+    return base64;
   },
   getFormattedTime: () => {
     return moment().format("DD/MM/YYYY hh:mm a");
