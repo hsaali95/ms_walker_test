@@ -417,6 +417,7 @@ export const addTeamSchema = z.object({
         if (data === null) {
           return false;
         }
+        
         return (
           data.id !== null &&
           data.email.trim().length > 0 &&
