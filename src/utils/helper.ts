@@ -71,13 +71,19 @@ export const helper = {
     return moment().format("DD/MM/YYYY hh:mm a");
   },
   formatDate: (input: any): null | any => {
-    return dayjs(input).format("DD/MM/YYYY");
+    if (input) {
+      return dayjs(input).format("DD/MM/YYYY");
+    }
+    return null;
   },
   formatDateTime: (input: any): null | any => {
     return dayjs(input).format("DD/MM/YYYY hh:mm a");
   },
   formatTime: (input: any): null | any => {
-    return input ? moment.utc(input, "HH:mm:ss").format("hh:mm A") : null;
+    if (input) {
+      return input ? moment.utc(input, "HH:mm:ss").format("hh:mm A") : null;
+    }
+    return null;
   },
   wrapInQuotes: (value: string | undefined | null) => {
     return `"${value || "-"}"`;

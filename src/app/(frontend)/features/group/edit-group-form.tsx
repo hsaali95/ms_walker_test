@@ -36,6 +36,10 @@ const EditGroupModal = ({ openModal, setOpenModal, groupData }: any) => {
     resolver: zodResolver(editGroupSchema),
   });
   const onSubmit = async (data: FieldValues) => {
+    if (!usersList.length) {
+      Toaster("info", "One user at least must be in the user list", 1);
+      return;
+    }
     dispatch(
       editGroup({
         access_type_id: data.access_type?.id,

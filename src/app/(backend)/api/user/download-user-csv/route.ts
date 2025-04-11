@@ -60,7 +60,7 @@ async function* generateUserData(queryOptions: any) {
     ],
   });
 
-  const header = "FirstName,LastName,Email,Group,Team,Role\n";
+  const header = "First Name,Last Name,Email,Group,Team,Role\n";
   yield header;
 
   for (const row of data) {
