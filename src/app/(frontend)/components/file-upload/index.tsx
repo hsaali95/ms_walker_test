@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { helper } from "@/utils/helper";
 import { Box, FormHelperText } from "@mui/material";
+import { Toaster } from "../snackbar";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -42,9 +43,10 @@ const FileUpload = ({
         // Convert the file to base64
         const base64 = await helper.convertFileToBase64(file);
         const compressedBase64 = await helper.getCompressedBase64(file);
-
+        console.log("check file name ", file.name);
         onChange(base64, file.name, compressedBase64);
       } catch (error) {
+        Toaster("error", "Invalid file type");
         console.error("Error converting file to base64:", error);
       }
     } else {

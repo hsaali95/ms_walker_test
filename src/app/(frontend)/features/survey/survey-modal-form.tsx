@@ -304,7 +304,7 @@ const SurveyModalForm = ({ openModal, setOpenModal }: IModalForm) => {
                   onChange={handleFileUpload}
                   errorMessage={errors?.image?.message as string}
                   fileStyles={{ mb: 1.5, mt: 1.5 }}
-                  acceptType="image/png, image/jpeg"
+                  acceptType="image/png, image/jpeg image/jpg image/webp"
                 />
                 {fileUploadStatus === API_STATUS.PENDING && (
                   <CircularProgressWithLabel value={uploadProgress} />
