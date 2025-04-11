@@ -76,14 +76,14 @@ export const GROUP_TABLE_COLUMN = [
   "Group Name",
   "Access Type",
   "Member Count",
-  "Is Active",
+  "Status",
   "Action",
 ];
 export const TEAM_TABLE_COLUMN = [
   "Team Name",
   "Managers",
   "Member Count",
-  "Is Active",
+  "Status",
   "Action",
 ];
 
