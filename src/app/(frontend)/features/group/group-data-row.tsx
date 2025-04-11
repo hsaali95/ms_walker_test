@@ -30,7 +30,7 @@ const GroupDataRaw: React.FC<IGroupDataRaw> = ({ data }) => {
       <TableCellWithText text={data?.name} />
       <TableCellWithText text={data?.access_type?.name} />
       <TableCellWithText text={data?.group_members?.length} />
-      <TableCellWithText text={`${data?.is_active ? "active" : "inactive"}`} />
+      <TableCellWithText text={`${data?.is_active ? "Active" : "Inactive"}`} />
       <TableCellWithText
         isEditButton
         isDeleteButton
