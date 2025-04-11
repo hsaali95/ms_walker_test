@@ -1,18 +1,20 @@
 import { Sequelize } from "sequelize";
 import pg from "pg";
-
+const isProduction = process.env.NODE_ENV === "production";
 const sequelize = new Sequelize(
   process.env.POSTGRESQL_CONNECTION_STRING || "",
   {
     logging: true,
     dialect: "postgres" /* 'postgres' */,
     dialectModule: pg,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
+    ...(isProduction && {
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
       },
-    },
+    }),
     schema: "public",
     pool: {
       max: 2,
