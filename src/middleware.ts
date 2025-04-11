@@ -120,6 +120,7 @@ import type { NextRequest } from "next/server";
 import { ROLE } from "./utils/enums";
 import { errorResponse } from "./utils/response.decorator";
 import JWTService from "./services/jwt/jwt-services";
+import { importDataRoutes } from "./utils/constant";
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -160,9 +161,19 @@ export async function middleware(request: NextRequest) {
   }
 
   // ====================== Authentication & Role-based Authorization ======================
-  const session_accessToken = request.cookies.get("session_accessToken")?.value;
+  let session_accessToken = request.cookies.get("session_accessToken")?.value;
   const userCookie = request.cookies.get("user")?.value;
   let user: any;
+
+  if (importDataRoutes.find((route) => route === path)) {
+    const authorization_token = request.headers.get("Authorization");
+   
+    if (!authorization_token) {
+      return errorResponse("Session has expired", 401);
+    }
+    
+    session_accessToken = authorization_token || undefined;
+  }
 
   try {
     user = userCookie ? JSON.parse(userCookie) : null;

@@ -44,7 +44,8 @@ export async function POST(request: Request) {
         usersToCreate.push({
           email: user.Email.toLowerCase(),
           password: env.DEFAULT_PASSWORD,
-          name: user.Email.split("@")[0],
+          name: user?.FirstName || user?.Name || user?.Email.split("@")[0],
+          last_name: user?.LastName || "",
           image:
             "./files/survey-images/f083b530-f531-4e6b-8e5c-d6558874fb4a_Vector (11).png",
           role_id:

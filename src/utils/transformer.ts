@@ -329,13 +329,15 @@ export const transformTeam = (
 export const transformGroup = (
   team: Partial<TTeam>,
   userIds: number[],
-  access_type:Partial<AccessType>) => {
+  access_type: Partial<AccessType>
+) => {
   return {
     name: team.GroupName,
-    is_active: true,
+    is_active: team?.Active,
     created_at: team.GroupCreationTime?.$date,
     group_members: userIds.map((userId) => ({ user_id: userId })),
-    access_type_id:access_type ? access_type.id : null ,
+    access_type_id: access_type ? access_type.id : null,
     identifier: team._id?.$oid || "",
+    is_new: true,
   };
 };

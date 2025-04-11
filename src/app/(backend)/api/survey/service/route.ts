@@ -202,8 +202,7 @@ export async function POST(request: Request) {
     // Upload the PDF to Supabase
     // Make a POST request to the external API after generating the HTML
 
-    const apiUrl = "http://localhost:3001/api/v1/survey/survey-pdf";
-
+    const apiUrl = "http://3.101.36.117:3001/api/v1/survey/survey-pdf";
     const payload = {
       startDate,
       endDate,
@@ -212,6 +211,7 @@ export async function POST(request: Request) {
       MsWalkerLogoBase64,
       data,
     };
+    console.log(JSON.stringify(payload));
 
     try {
       const data = await axios.post(apiUrl, payload, {
