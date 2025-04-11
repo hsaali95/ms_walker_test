@@ -28,7 +28,7 @@ export const Survey_Column = [
   "Item Name",
   // "Other item",
   "Number of Cases",
-  "Display Cost",
+  "Display Cost or Bonus/Credit Amount",
   "Image",
   "Action",
 ];
