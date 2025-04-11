@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
-import { saltRounds } from "./constant";
+import { BUCKET, saltRounds } from "./constant";
 import moment from "moment";
 import dayjs from "dayjs";
 import { getCookies } from "./cookies";
+import client from "@/db/config/AWS";
+import fs from "fs";
+import { ObjectCannedACL, PutObjectCommand } from "@aws-sdk/client-s3";
 export const hashPassword = (plainText: string): Promise<string> => {
   return bcrypt.hash(plainText, saltRounds);
 };
@@ -77,4 +80,16 @@ export function formatImageLinks(surveyFiles: any, imageBaseUrl: any) {
   return helper.wrapInQuotes("-");
 }
 
-
+export const uploadFile = (
+  key: string,
+  buffer: Buffer<any> | fs.ReadStream
+) => {
+  return client.send(
+    new PutObjectCommand({
+      ACL: ObjectCannedACL.public_read,
+      Bucket: BUCKET,
+      Key: "survey-images/" + key,
+      Body: buffer,
+    })
+  );
+};

@@ -61,7 +61,7 @@ export async function POST(request: Request) {
         },
         { returning: true }
       );
-      console.log("newSurveys", newSurveys);
+
       const SurveyFileArray: any = [];
       for (let k = 0; k < surveyData[j].file_id.length; k++) {
         SurveyFileArray.push({
@@ -75,9 +75,6 @@ export async function POST(request: Request) {
       }
     }
 
-    console.log("surveyResponses", newSurveys);
-
-    console.log("************************surveyResponses", newSurveys);
     return successResponse(
       {
         surveys: newSurveys,

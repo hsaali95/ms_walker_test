@@ -2,13 +2,12 @@ import { errorResponse, successResponse } from "@/utils/response.decorator";
 import {
   DeleteObjectCommand,
   ListObjectsV2Command,
-  ObjectCannedACL,
-  PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import { BUCKET } from "@/utils/constant";
 import client from "@/db/config/AWS";
 import fs from "fs";
 import path from "path";
+import { uploadFile } from "@/utils/helper";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -21,15 +20,7 @@ export const POST = async () => {
       const file = files[i];
       const fileStream = fs.createReadStream(path.join(dirPath + "/" + file));
 
-      const uploadParams = {
-        Bucket: BUCKET,
-        Key: `survey-images/${file}`, // S3 object key
-        Body: fileStream,
-        ACL: ObjectCannedACL.public_read,
-      };
-
-      const command = new PutObjectCommand(uploadParams);
-      await client.send(command);
+      await uploadFile(file, fileStream);
       console.log(`progress: ${i + 1} / ${files.length}`);
     }
 

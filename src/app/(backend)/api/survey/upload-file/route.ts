@@ -1,8 +1,6 @@
 import { errorResponse, successResponse } from "@/utils/response.decorator";
-import client from "@/db/config/AWS";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { BUCKET } from "@/utils/constant";
 import File from "@/db/models/file";
+import { uploadFile } from "@/utils/helper";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 export const routeSegmentConfig = {
@@ -34,14 +32,7 @@ export const POST = async (req: Request) => {
 
     const buffer = Buffer.from(base64.split(",").pop(), "base64");
 
-    await client.send(
-      new PutObjectCommand({
-        ACL: "public-read",
-        Bucket: BUCKET,
-        Key: "survey-images/" + filePath,
-        Body: buffer,
-      })
-    );
+    await uploadFile(filePath, buffer);
 
     // Save the file information to the database
     const createdFile = await File.create({

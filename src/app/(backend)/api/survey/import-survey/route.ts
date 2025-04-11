@@ -8,6 +8,7 @@ import { promises as fs } from "fs";
 import Users from "@/db/models/user";
 import { env } from "process";
 import SurveyStatus from "@/db/models/survey-status";
+import { uploadFile } from "@/utils/helper";
 
 export const dynamic = "force-dynamic"; // ✅ Forces API to fetch fresh data on every request
 
@@ -16,7 +17,8 @@ const fileUpload = async (fileUrl: string) => {
   // Fetch the file from the external URL
   const response = await fetch(fileUrl);
   const blob = await response.blob();
-
+  const arrayBuffer = await blob.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
   const isImage = blob.type.startsWith("image/");
   if (isImage) {
     // const bucketName = process.env.SUPABASE_BUCKET_NAME!; // Replace with your actual Supabase bucket name from .env
@@ -24,7 +26,7 @@ const fileUpload = async (fileUrl: string) => {
     const file_name = fileUrl.split("/").pop();
     // Create a unique file name using the original file name
     const filePath = `${Date.now()}-${file_name}`;
-
+    await uploadFile(filePath, buffer);
     // Dynamically determine content type based on file extension
     // const fileExtension = file_name!.split(".").pop()?.toLowerCase();
     // const contentType = getContentType(fileExtension);
