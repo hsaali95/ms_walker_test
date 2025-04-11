@@ -1,5 +1,9 @@
 import { toast, TypeOptions } from "react-toastify";
-export const Toaster = (type: TypeOptions, message: string) => {
+export const Toaster = (
+  type: TypeOptions,
+  message: string,
+  ToasterId?: number
+) => {
   return toast(message, {
     type: type,
     position: "top-right",
@@ -10,7 +14,7 @@ export const Toaster = (type: TypeOptions, message: string) => {
     draggable: true,
     progress: undefined,
     theme: "colored",
-    toastId: Math.floor(Math.random() * 100),
+    toastId: ToasterId ? ToasterId : Math.floor(Math.random() * 100),
   });
 };
 

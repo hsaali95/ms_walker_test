@@ -425,7 +425,7 @@ export const addTeamSchema = z.object({
         );
       },
       {
-        message: "Please select users",
+        message: "Please select manager",
       }
     ),
 });
@@ -478,7 +478,7 @@ export const editTeamSchema = z.object({
         );
       },
       {
-        message: "Please select users",
+        message: "Please select manager",
       }
     ),
 });

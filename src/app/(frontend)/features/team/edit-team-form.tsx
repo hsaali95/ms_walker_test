@@ -37,7 +37,7 @@ const EditTeamModal = ({ openModal, setOpenModal, teamData }: any) => {
   });
   const onSubmit = async (data: FieldValues) => {
     if (!usersList.length) {
-      Toaster("info", "One user at least must be in the user list");
+      Toaster("info", "One user at least must be in the user list",1);
       return;
     }
     dispatch(
