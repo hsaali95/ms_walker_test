@@ -74,6 +74,7 @@ async function* generateData(queryOptions: any) {
         {
           model: SurveyFile,
           as: "survey_file",
+          separate: true,
           attributes: {
             exclude: ["created_at", "updated_at", "deleted_at", "deleted_by"],
           },
