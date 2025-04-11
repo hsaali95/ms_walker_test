@@ -50,10 +50,10 @@ export const helper = {
     url: string,
     filename: string
   ): Promise<string> => {
-    let image = await axios.get(url, {
+    const image = await axios.get(url, {
       responseType: "arraybuffer",
     });
-    let returnedB64 = Buffer.from(image.data).toString("base64");
+    const returnedB64 = Buffer.from(image.data).toString("base64");
     const imageFile = await imageCompression.getFilefromDataUrl(
       returnedB64,
       filename
