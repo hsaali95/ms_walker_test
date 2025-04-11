@@ -40,7 +40,10 @@ const AddGroupModal = () => {
   });
   const handleOpenModal = () => setOpenModal(true);
   const onSubmit = async (data: FieldValues) => {
-    console.log("data", data);
+    if (!usersList.length) {
+      Toaster("info", "One user at least must be in the user list");
+      return;
+    }
     dispatch(
       createGroup({
         access_type_id: data.access_type.id,
